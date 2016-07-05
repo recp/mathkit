@@ -34,13 +34,20 @@ typedef struct MkVector {
 
 typedef struct MkMatrix {
   MkVector base;
-  size_t   m; /* rows */
-  size_t   n; /* columns */
+  size_t   rows;
+  size_t   columns;
 } MkMatrix;
 
 MkMatrix *
 mkMatrixNew(size_t itemSize,
-            size_t m,
-            size_t n);
+            size_t rows,
+            size_t columns);
+
+MkMatrix *
+mkMatrixNew4x4f(bool identity);
+
+MkMatrix *
+mkMatrixNew4x4d(bool identity);
+
 
 #endif /* mathkit_h */
