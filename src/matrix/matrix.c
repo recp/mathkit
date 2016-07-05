@@ -34,10 +34,14 @@ mkMatrixNew4x4f(bool identity) {
   if (identity) {
     float *value;
     int    i;
+    int    j;
+
+    i = 0;
+    j = 0;
 
     value = matrix->base.value;
-    for (i = 0; i < matrix->rows; i++)
-      *(value + n - i) = 1.0f;
+    for (; i < matrix->rows; i++)
+      *(value + i * n + j++) = 1.0f;
   }
 
 #undef n
@@ -56,10 +60,14 @@ mkMatrixNew4x4d(bool identity) {
   if (identity) {
     double *value;
     int     i;
+    int     j;
+
+    i = 0;
+    j = 0;
 
     value = matrix->base.value;
-    for (i = 0; i < matrix->rows; i++)
-      *(value + n - i) = 1.0;
+    for (; i < matrix->rows; i++)
+      *(value + i * n + j++) = 1.0;
   }
 
 #undef n
