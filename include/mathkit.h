@@ -60,6 +60,8 @@ mkMatrixPrint(MkMatrix * matrix,
               MkPrintFn itemPrinter,
               FILE * __restrict ostream);
 
+void
+mkMatrixTranspose(MkMatrix * matrix);
 MK_EXTERN
 MkPrintFn mkFloatPrinter;
 

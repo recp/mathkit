@@ -95,3 +95,29 @@ mkMatrixPrint(MkMatrix * matrix,
   fprintf(ostream, "\n\n");
 }
 
+void
+mkMatrixTranspose(MkMatrix * matrix) {
+  char  *newValue;
+  size_t itemSize;
+  size_t rows;
+  size_t i;
+  size_t j;
+
+  itemSize = matrix->base.itemSize;
+  rows     = matrix->rows;
+  newValue = malloc(matrix->base.itemSize * matrix->base.itemCount);
+
+  for (i = 0; i < matrix->rows; i++) {
+    for (j = 0; j < matrix->columns; j++)
+      memcpy((newValue + (j * rows + i) * itemSize),
+             MkMatrixGet(matrix, i, j),
+             itemSize);
+  }
+
+  free(matrix->base.value);
+
+  matrix->rows       = matrix->rows;
+  matrix->columns    = rows;
+  matrix->base.value = newValue;
+}
+
