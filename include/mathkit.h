@@ -13,8 +13,12 @@
 
 #include "mk-common.h"
 
+#define MkMatrixGet(_matrix, _i, _j)                                          \
+  ((char *)_matrix->base.value                                                \
+        + (_i * _matrix->rows + _j) * (_matrix->base.itemSize))
+
 #define MkMatrixSet(_matrix, _i, _j, _val)                                    \
-  memcpy(_matrix->base.value + i * j,                                         \
+  memcpy(MkMatrixGet(_matrix, _i, _j)                                         \
          _val,                                                                \
          sizeof(_matrix->base.itemSize))
 
@@ -23,8 +27,6 @@
          _val,                                                                \
          sizeof(_matrix->base.itemSize))
 
-#define MkMatrixGet(_matrix, _i, _j)                                          \
-   (_matrix->base.value + i * j)
 
 typedef struct MkVector {
   size_t itemSize;
