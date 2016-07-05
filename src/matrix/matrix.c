@@ -198,3 +198,24 @@ mkMatrixIsIdentity(MkMatrix * matrix) {
 ret:
   return isIdentity;
 }
+
+void
+mkMatrixApplyScalarL(void * __restrict other,
+                     MkMatrix * matrix,
+                     MkOp op) {
+  void  *itemPos;
+  char  *value;
+  size_t i;
+  size_t j;
+  size_t itemSize;
+
+  itemSize   = matrix->base.itemSize;
+  value      = matrix->base.value;
+
+  for (i = 0; i < matrix->rows; i++) {
+    for (j = 0; j < matrix->columns; j++) {
+      itemPos = (value + (i * matrix->rows + j) * itemSize);
+      op(itemPos, other);
+    }
+  }
+}

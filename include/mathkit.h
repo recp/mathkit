@@ -32,6 +32,8 @@
 typedef void (*MkPrintFn)(FILE * __restrict ostream,
                           void * __restrict item);
 
+typedef void (*MkOp)(void * __restrict a, void * __restrict b);
+
 typedef struct MkVector {
   size_t itemSize;
   size_t itemCount;
@@ -67,6 +69,37 @@ mkMatrixTranspose(MkMatrix * matrix);
 
 bool
 mkMatrixIsIdentity(MkMatrix * matrix);
+
+void
+mkMatrixApplyScalarL(void * __restrict other,
+                     MkMatrix * matrix,
+                     MkOp op);
+
+
+/* buit-in operators */
+
+/* scalar multiplication operators
+ *
+ * mkOp [OpType][Param1 Type][Param2 Type]
+ * mkOp [OpType][Param1 and Param2 Type]
+ *
+ * Op Types:
+ *   M: multiplication
+ */
+
+MK_EXTERN
+MkOp mkOpMFlt;
+
+MK_EXTERN
+MkOp mkOpMDbl;
+
+MK_EXTERN
+MkOp mkOpMInt32;
+
+MK_EXTERN
+MkOp mkOpMInt64;
+
+/* buit-in printers */
 
 MK_EXTERN
 MkPrintFn mkFloatPrinter;
