@@ -75,3 +75,23 @@ mkMatrixNew4x4d(bool identity) {
   return matrix;
 }
 
+void
+mkMatrixPrint(MkMatrix * matrix,
+              MkPrintFn itemPrinter,
+              FILE * __restrict ostream) {
+  size_t i;
+  size_t j;
+
+  fprintf(ostream, "\nMatrix (%ldx%ld):\n",
+          matrix->rows, matrix->columns);
+
+  for (i = 0; i < matrix->rows; i++) {
+    for (j = 0; j < matrix->columns; j++)
+      itemPrinter(ostream, MkMatrixGet(matrix, i, j));
+  
+    fprintf(ostream, "\n");
+  }
+
+  fprintf(ostream, "\n\n");
+}
+

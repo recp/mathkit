@@ -27,4 +27,10 @@
 
 #define MK_ARRAY_LEN(ARR) sizeof(ARR) / sizeof(ARR[0]);
 
+#ifndef __MATHKIT_SRC_
+#  define MK_EXTERN extern
+#else
+#  define MK_EXTERN
+#endif
+
 #endif /* mk_common_h */
