@@ -109,6 +109,54 @@ mkMatrixNew4x4d(bool identity) {
   return matrix;
 }
 
+MkMatrix *
+mkMatrixNewFromf(size_t rows,
+                 size_t columns,
+                 float * data) {
+  MkMatrix *matrix;
+  float     oneVal;
+  float     zeroVal;
+
+  oneVal  = 1.0f;
+  zeroVal = 0.0f;
+
+  matrix = mkMatrixNew(sizeof(float),
+                       rows,
+                       columns,
+                       &zeroVal,
+                       &oneVal);
+
+  memcpy(matrix->base.value,
+         data,
+         sizeof(float) * rows * columns);
+
+  return matrix;
+}
+
+MkMatrix *
+mkMatrixNewFromd(size_t rows,
+                 size_t columns,
+                 double * data) {
+  MkMatrix *matrix;
+  double    oneVal;
+  double    zeroVal;
+
+  oneVal  = 1.0;
+  zeroVal = 0.0;
+
+  matrix = mkMatrixNew(sizeof(double),
+                       rows,
+                       columns,
+                       &zeroVal,
+                       &oneVal);
+
+  memcpy(matrix->base.value,
+         data,
+         sizeof(double) * rows * columns);
+
+  return matrix;
+}
+
 void
 mkMatrixPrint(MkMatrix * matrix,
               MkPrintFn itemPrinter,

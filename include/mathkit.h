@@ -59,6 +59,16 @@ mkMatrixNew4x4f(bool identity);
 MkMatrix *
 mkMatrixNew4x4d(bool identity);
 
+MkMatrix *
+mkMatrixNewFromf(size_t rows,
+                 size_t columns,
+                 float * data);
+
+MkMatrix *
+mkMatrixNewFromd(size_t rows,
+                 size_t columns,
+                 double * data);
+
 void
 mkMatrixPrint(MkMatrix * matrix,
               MkPrintFn itemPrinter,
