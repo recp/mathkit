@@ -69,6 +69,12 @@ mkMatrixNewFromd(size_t rows,
                  size_t columns,
                  double * data);
 
+MkMatrix *
+mkMatrixNewFrom4x4f(float * data);
+
+MkMatrix *
+mkMatrixNewFrom4x4d(double * data);
+
 void
 mkMatrixPrint(MkMatrix * matrix,
               MkPrintFn itemPrinter,

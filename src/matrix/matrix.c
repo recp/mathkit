@@ -157,6 +157,16 @@ mkMatrixNewFromd(size_t rows,
   return matrix;
 }
 
+MkMatrix *
+mkMatrixNewFrom4x4f(float * data) {
+  return mkMatrixNewFromf(4, 4, data);
+}
+
+MkMatrix *
+mkMatrixNewFrom4x4d(double * data) {
+  return mkMatrixNewFromd(4, 4, data);
+}
+
 void
 mkMatrixPrint(MkMatrix * matrix,
               MkPrintFn itemPrinter,
