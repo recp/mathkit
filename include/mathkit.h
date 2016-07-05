@@ -35,7 +35,7 @@ typedef void (*MkPrintFn)(FILE * __restrict ostream,
 typedef struct MkVector {
   size_t itemSize;
   size_t itemCount;
-  void * value;
+  void   *value;
 } MkVector;
 
 typedef struct MkMatrix {
@@ -47,7 +47,9 @@ typedef struct MkMatrix {
 MkMatrix *
 mkMatrixNew(size_t itemSize,
             size_t rows,
-            size_t columns);
+            size_t columns,
+            void  *zeroVal,
+            void  *oneVal);
 
 MkMatrix *
 mkMatrixNew4x4f(bool identity);
@@ -62,6 +64,10 @@ mkMatrixPrint(MkMatrix * matrix,
 
 void
 mkMatrixTranspose(MkMatrix * matrix);
+
+bool
+mkMatrixIsIdentity(MkMatrix * matrix);
+
 MK_EXTERN
 MkPrintFn mkFloatPrinter;
 
