@@ -19,7 +19,7 @@
         + (_i * _matrix->rows + _j) * (_matrix->base.itemSize))
 
 #define MkMatrixSet(_matrix, _i, _j, _val)                                    \
-  memcpy(MkMatrixGet(_matrix, _i, _j)                                         \
+  memcpy(MkMatrixGet(_matrix, _i, _j),                                        \
          _val,                                                                \
          sizeof(_matrix->base.itemSize))
 
