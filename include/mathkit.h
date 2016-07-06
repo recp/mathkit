@@ -153,4 +153,14 @@ MkPrintFn mkFloatPrinter;
 MK_EXTERN
 MkPrintFn mkDoublePrinter;
 
+MK_EXTERN void * const MkFloatZero;
+MK_EXTERN void * const MkDoubleZero;
+MK_EXTERN void * const MkInt32Zero;
+MK_EXTERN void * const MkInt64Zero;
+
+MK_EXTERN void * const MkFloatOne;
+MK_EXTERN void * const MkDoubleOne;
+MK_EXTERN void * const MkInt32One;
+MK_EXTERN void * const MkInt64One;
+
 #endif /* mathkit_h */

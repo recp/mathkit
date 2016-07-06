@@ -156,6 +156,28 @@ MkOp * const mkOpAdditionInt32 = &mkOpAdditionInt32Impl;
 MK_EXTERN
 MkOp * const mkOpAdditionInt64 = &mkOpAdditionInt64Impl;
 
+
+static float   Mk__floatZero  = 0.0f;
+static double  Mk__doubleZero = 0.0;
+static int32_t Mk__int32Zero  = 0;
+static int64_t Mk__int64Zero  = 0L;
+
+static float   Mk__floatOne   = 1.0f;
+static double  Mk__doubleOne  = 1.0;
+static int32_t Mk__int32One   = 1;
+static int64_t Mk__int64One   = 1L;
+
+
+MK_EXTERN void * const MkFloatZero  = &Mk__floatZero;
+MK_EXTERN void * const MkDoubleZero = &Mk__doubleZero;
+MK_EXTERN void * const MkInt32Zero  = &Mk__int32Zero;
+MK_EXTERN void * const MkInt64Zero  = &Mk__int64Zero;
+
+MK_EXTERN void * const MkFloatOne   = &Mk__floatOne;
+MK_EXTERN void * const MkDoubleOne  = &Mk__doubleOne;
+MK_EXTERN void * const MkInt32One   = &Mk__int32One;
+MK_EXTERN void * const MkInt64One   = &Mk__int64One;
+
 /* ************************************************************************* */
 
 static
