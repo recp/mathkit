@@ -42,6 +42,7 @@ typedef enum MkOpType {
 typedef struct MkOp {
   MkOpType type;
   MkOpFn   op;
+  MkOpFn   addop;
 } MkOp;
 
 typedef struct MkVector {

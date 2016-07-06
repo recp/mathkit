@@ -85,51 +85,59 @@ MkPrintFn mkDoublePrinter = mkDoublePrinterImpl;
 /* Op */
 static
 MkOp mkOpMultiplyFImpl = {
-  .type = MK_OP_TYPE_MULTIPLY,
-  .op   = mkOpMFltImpl
+  .type  = MK_OP_TYPE_MULTIPLY,
+  .op    = mkOpMFltImpl,
+  .addop = mkOpAFltImpl
 };
 
 static
 MkOp mkOpMultiplyDImpl = {
-  .type = MK_OP_TYPE_MULTIPLY,
-  .op   = mkOpMDblImpl
+  .type  = MK_OP_TYPE_MULTIPLY,
+  .op    = mkOpMDblImpl,
+  .addop = mkOpADblImpl
 };
 
 static
 MkOp mkOpMultiplyInt32Impl = {
-  .type = MK_OP_TYPE_MULTIPLY,
-  .op   = mkOpMInt32Impl
+  .type  = MK_OP_TYPE_MULTIPLY,
+  .op    = mkOpMInt32Impl,
+  .addop = mkOpAInt32Impl
 };
 
 static
 MkOp mkOpMultiplyInt64Impl = {
-  .type = MK_OP_TYPE_MULTIPLY,
-  .op   = mkOpMInt64Impl
+  .type  = MK_OP_TYPE_MULTIPLY,
+  .op    = mkOpMInt64Impl,
+  .addop = mkOpAInt64Impl
 };
 
 /* addition */
 static
 MkOp mkOpAdditionFImpl = {
-  .type = MK_OP_TYPE_ADDITION,
-  .op   = mkOpAFltImpl
+  .type  = MK_OP_TYPE_ADDITION,
+  .op    = mkOpAFltImpl,
+  .addop = mkOpAFltImpl
 };
 
 static
 MkOp mkOpAdditionDImpl = {
-  .type = MK_OP_TYPE_ADDITION,
-  .op   = mkOpADblImpl
+  .type  = MK_OP_TYPE_ADDITION,
+  .op    = mkOpADblImpl,
+  .addop = mkOpADblImpl
 };
 
 static
 MkOp mkOpAdditionInt32Impl = {
-  .type = MK_OP_TYPE_ADDITION,
-  .op   = mkOpAInt32Impl
+  .type  = MK_OP_TYPE_ADDITION,
+  .op    = mkOpAInt32Impl,
+  .addop = mkOpAInt32Impl
 };
 
 static
 MkOp mkOpAdditionInt64Impl = {
-  .type = MK_OP_TYPE_ADDITION,
-  .op   = mkOpAInt64Impl
+  .type  = MK_OP_TYPE_ADDITION,
+  .op    = mkOpAInt64Impl,
+  .addop = mkOpAInt64Impl
 };
 
 MK_EXTERN
