@@ -101,6 +101,10 @@ mkMatrixApplyScalarL(void * __restrict other,
                      MkMatrix * matrix,
                      MkOp * __restrict op);
 
+void
+mkMatrixApplyMatrixL(MkMatrix * __restrict matrixL,
+                     MkMatrix * __restrict matrix,
+                     MkOp * __restrict op);
 
 void
 mkMatrixApplyMatrixR(MkMatrix * __restrict matrix,
