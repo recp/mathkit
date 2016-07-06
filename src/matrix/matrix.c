@@ -171,17 +171,17 @@ mkMatrixPrint(MkMatrix * matrix,
   size_t i;
   size_t j;
 
-  fprintf(ostream, "\nMatrix (%ldx%ld):\n",
+  fprintf(ostream, "Matrix (%ldx%ld):\n",
           matrix->rows, matrix->columns);
 
   for (i = 0; i < matrix->rows; i++) {
     for (j = 0; j < matrix->columns; j++)
       itemPrinter(ostream, MkMatrixGet(matrix, i, j));
-  
+
     fprintf(ostream, "\n");
   }
 
-  fprintf(ostream, "\n\n");
+  fprintf(ostream, "\n");
 }
 
 void

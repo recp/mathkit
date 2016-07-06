@@ -193,7 +193,7 @@ inline
 void
 mkFloatPrinterImpl(FILE * __restrict ostream,
                    void * __restrict item) {
-  fprintf(ostream, "\t%0.3ff,", *(float *)item);
+  fprintf(ostream, "\t%0.2ff,", *(float *)item);
 }
 
 static
@@ -201,7 +201,7 @@ inline
 void
 mkDoublePrinterImpl(FILE * __restrict ostream,
                     void * __restrict item) {
-  fprintf(ostream, "\t%0.3f,", *(double *)item);
+  fprintf(ostream, "\t%0.2f,", *(double *)item);
 }
 
 /* multiplication */
