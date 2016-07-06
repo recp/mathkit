@@ -104,16 +104,23 @@ mkMatrixApplyScalarL(void * __restrict other,
  */
 
 MK_EXTERN
-MkOp mkOpMFlt;
+MkOp mkOpMultiplyF;
 
 MK_EXTERN
-MkOp mkOpMDbl;
+MkOp mkOpMultiplyD;
 
 MK_EXTERN
-MkOp mkOpMInt32;
+MkOp mkOpMultiplyInt32;
 
 MK_EXTERN
-MkOp mkOpMInt64;
+MkOp mkOpMultiplyInt64;
+
+
+MK_EXTERN
+
+MK_EXTERN
+
+MK_EXTERN
 
 /* buit-in printers */
 

@@ -54,16 +54,16 @@ MkPrintFn mkDoublePrinter = mkDoublePrinterImpl;
 
 /* Op */
 MK_EXTERN
-MkOp mkOpMFlt = mkOpMFltImpl;
+MkOp mkOpMultiplyF = mkOpMFltImpl;
 
 MK_EXTERN
-MkOp mkOpMDbl = mkOpMDblImpl;
+MkOp mkOpMultiplyD = mkOpMDblImpl;
 
 MK_EXTERN
-MkOp mkOpMInt32 = mkOpMInt32Impl;
+MkOp mkOpMultiplyInt32 = mkOpMInt32Impl;
 
 MK_EXTERN
-MkOp mkOpMInt64 = mkOpMInt64Impl;
+MkOp mkOpMultiplyInt64 = mkOpMInt64Impl;
 
 /* ************************************************************************* */
 
