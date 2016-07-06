@@ -65,19 +65,19 @@ MkMatrix *
 mkMatrixNewFrom4x4d(double * data);
 
 void
-mkMatrixPrint(MkMatrix * matrix,
+mkMatrixPrint(MkMatrix * __restrict matrix,
               MkPrintFn itemPrinter,
               FILE * __restrict ostream);
 
 void
-mkMatrixTranspose(MkMatrix * matrix);
+mkMatrixTranspose(MkMatrix * __restrict matrix);
 
 bool
-mkMatrixIsIdentity(MkMatrix * matrix);
+mkMatrixIsIdentity(MkMatrix * __restrict matrix);
 
 void
 mkMatrixApplyScalarL(void * __restrict other,
-                     MkMatrix * matrix,
+                     MkMatrix * __restrict matrix,
                      MkOp * __restrict op);
 
 void

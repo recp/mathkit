@@ -197,7 +197,7 @@ mkMatrixNewFrom4x4d(double * data) {
 }
 
 void
-mkMatrixPrint(MkMatrix * matrix,
+mkMatrixPrint(MkMatrix * __restrict matrix,
               MkPrintFn itemPrinter,
               FILE * __restrict ostream) {
   size_t i;
@@ -217,7 +217,7 @@ mkMatrixPrint(MkMatrix * matrix,
 }
 
 void
-mkMatrixTranspose(MkMatrix * matrix) {
+mkMatrixTranspose(MkMatrix * __restrict matrix) {
   char  *newValue;
   size_t itemSize;
   size_t rows;
@@ -250,7 +250,7 @@ mkMatrixTranspose(MkMatrix * matrix) {
 }
 
 bool
-mkMatrixIsIdentity(MkMatrix * matrix) {
+mkMatrixIsIdentity(MkMatrix * __restrict matrix) {
   void  *itemPos;
   char  *value;
   char  *zeroVal;
@@ -290,7 +290,7 @@ ret:
 
 void
 mkMatrixApplyScalarL(void * __restrict other,
-                     MkMatrix * matrix,
+                     MkMatrix * __restrict matrix,
                      MkOp * __restrict op) {
   void  *itemPos;
   char  *value;
