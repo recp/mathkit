@@ -5,7 +5,8 @@
  * Full license can be found in the LICENSE file
  */
 
-#include "../../include/mathkit.h"
+
+#include "../../include/mk-matrix.h"
 #include <assert.h>
 
 static

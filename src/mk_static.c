@@ -7,7 +7,7 @@
 
 #define __MATHKIT_SRC_
 
-#include "../include/mathkit.h"
+#include "../include/mk.h"
 
 static
 inline

@@ -33,4 +33,20 @@
 #  define MK_EXTERN
 #endif
 
+typedef void (*MkPrintFn)(FILE * __restrict ostream,
+void * __restrict item);
+
+typedef void (*MkOpFn)(void * __restrict a, void * __restrict b);
+
+typedef enum MkOpType {
+  MK_OP_TYPE_MULTIPLY,
+  MK_OP_TYPE_ADDITION
+} MkOpType;
+
+typedef struct MkOp {
+  MkOpType type;
+  MkOpFn   op;
+  MkOpFn   addop;
+} MkOp;
+
 #endif /* mk_common_h */
