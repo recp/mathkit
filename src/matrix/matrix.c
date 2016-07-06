@@ -500,7 +500,6 @@ mk__matrixMultiplyMatrix(MkMatrix * __restrict matrixL,
   void     *tmpSum;
   void     *tmpMult;
   size_t itemSize;
-  size_t newItemCount;
   size_t rowsL;
   size_t colsR;
   size_t i;
@@ -517,7 +516,6 @@ mk__matrixMultiplyMatrix(MkMatrix * __restrict matrixL,
                           matrixL->base.value - matrixL->base.itemSize * 2,
                           matrixL->base.value - matrixL->base.itemSize);
 
-  newItemCount = rowsL * colsR;
   itemSize     = matrixR->base.itemSize;
   newValue     = newMatrix->base.value;
 
@@ -593,8 +591,10 @@ mk__matrixAdditionMatrix(MkMatrix * __restrict matrixL,
   MkMatrix *newMatrix;
   char     *valueA;
   char     *valueB;
+  char     *valueC;
   void     *itemPosA;
   void     *itemPosB;
+  void     *itemPosC;
   size_t itemSize;
   size_t cols;
   size_t i;
@@ -610,13 +610,17 @@ mk__matrixAdditionMatrix(MkMatrix * __restrict matrixL,
                           matrixL->base.value - itemSize);
 
   valueA    = newMatrix->base.value;
+  valueB    = matrixL->base.value;
+  valueC    = matrixR->base.value;
 
   for (i = 0; i < matrixL->rows; i++) {
     for (j = 0; j < cols; j++) {
       itemPosA = (valueA + (i * cols + j) * itemSize);
       itemPosB = (valueB + (i * cols + j) * itemSize);
+      itemPosC = (valueC + (i * cols + j) * itemSize);
 
       op->op(itemPosA, itemPosB);
+      op->op(itemPosA, itemPosC);
     }
   }
 
