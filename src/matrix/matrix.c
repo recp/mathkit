@@ -260,7 +260,7 @@ ret:
 void
 mkMatrixApplyScalarL(void * __restrict other,
                      MkMatrix * matrix,
-                     MkOp op) {
+                     MkOp * __restrict op) {
   void  *itemPos;
   char  *value;
   size_t i;
@@ -273,7 +273,7 @@ mkMatrixApplyScalarL(void * __restrict other,
   for (i = 0; i < matrix->rows; i++) {
     for (j = 0; j < matrix->columns; j++) {
       itemPos = (value + (i * matrix->rows + j) * itemSize);
-      op(itemPos, other);
+      op->op(itemPos, other);
     }
   }
 }

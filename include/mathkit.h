@@ -32,7 +32,17 @@
 typedef void (*MkPrintFn)(FILE * __restrict ostream,
                           void * __restrict item);
 
-typedef void (*MkOp)(void * __restrict a, void * __restrict b);
+typedef void (*MkOpFn)(void * __restrict a, void * __restrict b);
+
+typedef enum MkOpType {
+  MK_OP_TYPE_MULTIPLY,
+  MK_OP_TYPE_ADDITION
+} MkOpType;
+
+typedef struct MkOp {
+  MkOpType type;
+  MkOpFn   op;
+} MkOp;
 
 typedef struct MkVector {
   size_t itemSize;
@@ -89,7 +99,7 @@ mkMatrixIsIdentity(MkMatrix * matrix);
 void
 mkMatrixApplyScalarL(void * __restrict other,
                      MkMatrix * matrix,
-                     MkOp op);
+                     MkOp * __restrict op);
 
 
 /* buit-in operators */
@@ -98,29 +108,19 @@ mkMatrixApplyScalarL(void * __restrict other,
  *
  * mkOp [OpType][Param1 Type][Param2 Type]
  * mkOp [OpType][Param1 and Param2 Type]
- *
- * Op Types:
- *   M: multiplication
  */
 
 MK_EXTERN
-MkOp mkOpMultiplyF;
+MkOp * const mkOpMultiplyF;
 
 MK_EXTERN
-MkOp mkOpMultiplyD;
+MkOp * const mkOpMultiplyD;
 
 MK_EXTERN
-MkOp mkOpMultiplyInt32;
+MkOp * const mkOpMultiplyInt32;
 
 MK_EXTERN
-MkOp mkOpMultiplyInt64;
-
-
-MK_EXTERN
-
-MK_EXTERN
-
-MK_EXTERN
+MkOp * const mkOpMultiplyInt64;
 
 /* buit-in printers */
 

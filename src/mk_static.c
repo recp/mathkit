@@ -53,17 +53,42 @@ MK_EXTERN
 MkPrintFn mkDoublePrinter = mkDoublePrinterImpl;
 
 /* Op */
-MK_EXTERN
-MkOp mkOpMultiplyF = mkOpMFltImpl;
+static
+MkOp mkOpMultiplyFImpl = {
+  .type = MK_OP_TYPE_MULTIPLY,
+  .op   = mkOpMFltImpl
+};
+
+static
+MkOp mkOpMultiplyDImpl = {
+  .type = MK_OP_TYPE_MULTIPLY,
+  .op   = mkOpMDblImpl
+};
+
+static
+MkOp mkOpMultiplyInt32Impl = {
+  .type = MK_OP_TYPE_MULTIPLY,
+  .op   = mkOpMInt32Impl
+};
+
+static
+MkOp mkOpMultiplyInt64Impl = {
+  .type = MK_OP_TYPE_MULTIPLY,
+  .op   = mkOpMInt64Impl
+};
+
 
 MK_EXTERN
-MkOp mkOpMultiplyD = mkOpMDblImpl;
+MkOp * const mkOpMultiplyF = &mkOpMultiplyFImpl;
 
 MK_EXTERN
-MkOp mkOpMultiplyInt32 = mkOpMInt32Impl;
+MkOp * const mkOpMultiplyD = &mkOpMultiplyDImpl;
 
 MK_EXTERN
-MkOp mkOpMultiplyInt64 = mkOpMInt64Impl;
+MkOp * const mkOpMultiplyInt32 = &mkOpMultiplyInt32Impl;
+
+MK_EXTERN
+MkOp * const mkOpMultiplyInt64 = &mkOpMultiplyInt64Impl;
 
 /* ************************************************************************* */
 
