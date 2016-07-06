@@ -16,7 +16,7 @@
 
 #define MkMatrixGet(_matrix, _i, _j)                                          \
   ((char *)_matrix->base.value                                                \
-        + (_i * _matrix->rows + _j) * (_matrix->base.itemSize))
+        + (_i * _matrix->columns + _j) * (_matrix->base.itemSize))
 
 #define MkMatrixSet(_matrix, _i, _j, _val)                                    \
   memcpy(MkMatrixGet(_matrix, _i, _j),                                        \
