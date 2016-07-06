@@ -6,6 +6,25 @@
  */
 
 #include "../../include/mathkit.h"
+#include <assert.h>
+
+static
+void
+mk__matrixMultiplyMatrixL(MkMatrix * __restrict destMatrix,
+                          MkMatrix * __restrict matrixL,
+                          MkOp * __restrict op);
+
+static
+void
+mk__matrixMultiplyMatrixR(MkMatrix * __restrict destMatrix,
+                          MkMatrix * __restrict matrixR,
+                          MkOp * __restrict op);
+
+static
+MkMatrix *
+mk__matrixMultiplyMatrix(MkMatrix * __restrict matrixL,
+                         MkMatrix * __restrict matrixR,
+                         MkOp * __restrict op);
 
 MkMatrix *
 mkMatrixNew(size_t itemSize,
@@ -275,4 +294,233 @@ mkMatrixApplyScalarL(void * __restrict other,
       op->op(itemPos, other);
     }
   }
+}
+
+void
+mkMatrixApplyMatrixL(MkMatrix * __restrict destMatrix,
+                     MkMatrix * __restrict matrixL,
+                     MkOp * __restrict op) {
+  if (op->type == MK_OP_TYPE_MULTIPLY) {
+    assert(destMatrix->columns == matrixL->rows
+           && "matrix's columns must match to R's rows");
+
+    mk__matrixMultiplyMatrixL(destMatrix, matrixL, op);
+  }
+}
+
+void
+mkMatrixApplyMatrixR(MkMatrix * __restrict destMatrix,
+                     MkMatrix * __restrict matrixR,
+                     MkOp * __restrict op) {
+  if (op->type == MK_OP_TYPE_MULTIPLY) {
+    assert(matrixR->columns == destMatrix->rows
+           && "L's columns must match to matrix's rows");
+
+
+    mk__matrixMultiplyMatrixR(destMatrix, matrixR, op);
+  }
+}
+
+MkMatrix *
+mkMatrixApplyMatrix(MkMatrix * __restrict matrixL,
+                    MkMatrix * __restrict matrixR,
+                    MkOp * __restrict op) {
+  if (op->type == MK_OP_TYPE_MULTIPLY) {
+    assert(matrixR->columns == matrixL->rows
+           && "L's columns must match to matrix's rows");
+
+    return mk__matrixMultiplyMatrix(matrixL, matrixR, op);
+  }
+
+  return NULL;
+}
+
+static
+void
+mk__matrixMultiplyMatrixL(MkMatrix * __restrict destMatrix,
+                          MkMatrix * __restrict matrixL,
+                          MkOp * __restrict op) {
+  char  *newValue;
+  void  *tmpSum;
+  void  *tmpMult;
+  size_t itemSize;
+  size_t newItemCount;
+  size_t rowsL;
+  size_t colsR;
+  size_t i;
+  size_t j;
+  size_t jL;
+  size_t iR;
+
+  rowsL        = matrixL->rows;
+  colsR        = destMatrix->columns;
+
+  newItemCount = rowsL * colsR;
+  itemSize     = destMatrix->base.itemSize;
+  newValue     = malloc(itemSize * (newItemCount + 2));
+
+  tmpSum       = malloc(itemSize);
+  tmpMult      = malloc(itemSize);
+
+  /* save zeroVal and oneVal */
+  memcpy(newValue,
+         destMatrix->base.value - itemSize * 2,
+         itemSize * 2);
+
+  for (i = 0; i < rowsL; i++) {
+    for (j = 0; j < colsR; j++) {
+      memset(tmpSum, '\0', itemSize);
+
+      for (iR = 0, jL = 0;
+           iR < matrixL->columns;
+           iR++, jL++) {
+        memcpy(tmpMult,
+               MkMatrixGet(matrixL, i, jL),
+               itemSize);
+
+        op->op(tmpMult, MkMatrixGet(destMatrix, iR, j));
+        op->addop(tmpSum, tmpMult);
+      }
+
+      memcpy((newValue + (i * colsR + j) * itemSize),
+             tmpSum,
+             itemSize);
+    }
+  }
+
+  free(tmpSum);
+  free(tmpMult);
+
+  free(destMatrix->base.value - itemSize * 2);
+
+  destMatrix->rows       = rowsL;
+  destMatrix->base.value = newValue;
+}
+
+static
+void
+mk__matrixMultiplyMatrixR(MkMatrix * __restrict destMatrix,
+                          MkMatrix * __restrict matrixR,
+                          MkOp * __restrict op) {
+  char  *newValue;
+  void  *tmpSum;
+  void  *tmpMult;
+  size_t itemSize;
+  size_t newItemCount;
+  size_t rowsL;
+  size_t colsR;
+  size_t i;
+  size_t j;
+  size_t jL;
+  size_t iR;
+
+  rowsL        = destMatrix->rows;
+  colsR        = matrixR->columns;
+
+  newItemCount = rowsL * colsR;
+  itemSize     = matrixR->base.itemSize;
+  newValue     = malloc(itemSize * (newItemCount + 2));
+
+  tmpSum       = malloc(itemSize);
+  tmpMult      = malloc(itemSize);
+
+  /* save zeroVal and oneVal */
+  memcpy(newValue,
+         matrixR->base.value - itemSize * 2,
+         itemSize * 2);
+
+  for (i = 0; i < rowsL; i++) {
+    for (j = 0; j < colsR; j++) {
+      memset(tmpSum, '\0', itemSize);
+
+      for (iR = 0, jL = 0;
+           iR < destMatrix->columns;
+           iR++, jL++) {
+        memcpy(tmpMult,
+               MkMatrixGet(destMatrix, i, jL),
+               itemSize);
+
+        op->op(tmpMult, MkMatrixGet(matrixR, iR, j));
+        op->addop(tmpSum, tmpMult);
+      }
+
+      memcpy((newValue + (i * colsR + j) * itemSize),
+             tmpSum,
+             itemSize);
+    }
+  }
+
+  free(tmpSum);
+  free(tmpMult);
+
+  free(destMatrix->base.value - itemSize * 2);
+
+  destMatrix->columns    = colsR;
+  destMatrix->base.value = newValue;
+}
+
+static
+MkMatrix *
+mk__matrixMultiplyMatrix(MkMatrix * __restrict matrixL,
+                         MkMatrix * __restrict matrixR,
+                         MkOp * __restrict op) {
+  MkMatrix *newMatrix;
+  char     *newValue;
+  void     *tmpSum;
+  void     *tmpMult;
+  size_t itemSize;
+  size_t newItemCount;
+  size_t rowsL;
+  size_t colsR;
+  size_t i;
+  size_t j;
+  size_t jL;
+  size_t iR;
+
+  rowsL = matrixL->rows;
+  colsR = matrixR->columns;
+
+  newMatrix = mkMatrixNew(matrixL->base.itemSize,
+                          rowsL,
+                          colsR,
+                          matrixL->base.value - matrixL->base.itemSize * 2,
+                          matrixL->base.value - matrixL->base.itemSize);
+
+  newItemCount = rowsL * colsR;
+  itemSize     = matrixR->base.itemSize;
+  newValue     = newMatrix->base.value;
+
+  tmpSum       = malloc(itemSize);
+  tmpMult      = malloc(itemSize);
+
+  /* save zeroVal and oneVal */
+  memcpy(newValue,
+         matrixR->base.value - itemSize * 2,
+         itemSize * 2);
+
+  for (i = 0; i < rowsL; i++) {
+    for (j = 0; j < colsR; j++) {
+      memset(tmpSum, '\0', itemSize);
+
+      for (iR = 0, jL = 0;
+           iR < matrixL->columns;
+           iR++, jL++) {
+        memcpy(tmpMult,
+               MkMatrixGet(matrixL, i, jL),
+               itemSize);
+
+        op->op(tmpMult, MkMatrixGet(matrixR, iR, j));
+        op->addop(tmpSum, tmpMult);
+      }
+
+      memcpy((newValue + (i * colsR + j) * itemSize),
+             tmpSum,
+             itemSize);
+    }
+  }
+
+  free(tmpSum);
+  free(tmpMult);
+
+  return newMatrix;
 }
