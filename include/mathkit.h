@@ -102,13 +102,18 @@ mkMatrixApplyScalarL(void * __restrict other,
                      MkOp * __restrict op);
 
 
-/* buit-in operators */
+void
+mkMatrixApplyMatrixR(MkMatrix * __restrict matrix,
+                     MkMatrix * __restrict matrixR,
+                     MkOp * __restrict op);
 
-/* scalar multiplication operators
+/* buit-in operators
  *
  * mkOp [OpType][Param1 Type][Param2 Type]
  * mkOp [OpType][Param1 and Param2 Type]
  */
+
+/* multiplication operators */
 
 MK_EXTERN
 MkOp * const mkOpMultiplyF;
@@ -121,6 +126,20 @@ MkOp * const mkOpMultiplyInt32;
 
 MK_EXTERN
 MkOp * const mkOpMultiplyInt64;
+
+/* addition operators */
+
+MK_EXTERN
+MkOp * const mkOpAdditionF;
+
+MK_EXTERN
+MkOp * const mkOpAdditionD;
+
+MK_EXTERN
+MkOp * const mkOpAdditionInt32;
+
+MK_EXTERN
+MkOp * const mkOpAdditionInt64;
 
 /* buit-in printers */
 
