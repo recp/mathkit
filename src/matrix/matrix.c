@@ -15,7 +15,6 @@ mkMatrixNew(size_t itemSize,
             void  *oneVal) {
   MkMatrix *matrix;
   char     *value;
-  char     *zeroPos;
   size_t    itemCount;
 
   itemCount = rows * columns;
@@ -29,12 +28,10 @@ mkMatrixNew(size_t itemSize,
   /* +1 for zeroVal, +1 for oneVal */
   value = calloc(itemSize, matrix->base.itemCount + 2);
 
-  zeroPos = value + itemSize * itemCount;
+  memcpy(value, zeroVal, itemSize);
+  memcpy(value + itemSize, oneVal, itemSize);
 
-  memcpy(zeroPos, zeroVal, itemSize);
-  memcpy(zeroPos + itemSize, oneVal, itemSize);
-
-  matrix->base.value = value;
+  matrix->base.value = value + itemSize * 2;
 
   return matrix;
 }
@@ -200,8 +197,8 @@ mkMatrixTranspose(MkMatrix * matrix) {
   newValue = malloc(matrix->base.itemSize * (matrix->base.itemCount + 2));
 
   /* save zeroVal and oneVal */
-  memcpy(newValue + matrix->base.itemSize * matrix->base.itemCount,
-         matrix->base.value + matrix->base.itemSize * matrix->base.itemCount,
+  memcpy(newValue,
+         matrix->base.value - itemSize * 2,
          itemSize * 2);
 
   for (i = 0; i < matrix->rows; i++) {
@@ -211,7 +208,7 @@ mkMatrixTranspose(MkMatrix * matrix) {
              itemSize);
   }
 
-  free(matrix->base.value);
+  free(matrix->base.value - itemSize * 2);
 
   matrix->rows       = matrix->rows;
   matrix->columns    = rows;
@@ -232,8 +229,8 @@ mkMatrixIsIdentity(MkMatrix * matrix) {
   isIdentity = false;
   itemSize   = matrix->base.itemSize;
   value      = matrix->base.value;
-  zeroVal    = matrix->base.value + matrix->base.itemCount;
-  oneVal     = zeroVal + matrix->base.itemSize;
+  zeroVal    = matrix->base.value - itemSize * 2;
+  oneVal     = zeroVal + itemSize;
 
   for (i = 0; i < matrix->rows; i++) {
     for (j = 0; j < matrix->columns; j++) {
