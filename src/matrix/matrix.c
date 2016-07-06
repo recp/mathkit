@@ -125,7 +125,7 @@ mkMatrixNewFromf(size_t rows,
 
   memcpy(matrix->base.value,
          data,
-         sizeof(float) * rows * columns);
+         sizeof(float) * matrix->base.itemCount);
 
   return matrix;
 }
@@ -189,12 +189,14 @@ mkMatrixTranspose(MkMatrix * matrix) {
   char  *newValue;
   size_t itemSize;
   size_t rows;
+  size_t cols;
   size_t i;
   size_t j;
 
   itemSize = matrix->base.itemSize;
   rows     = matrix->rows;
-  newValue = malloc(matrix->base.itemSize * (matrix->base.itemCount + 2));
+  cols     = matrix->columns;
+  newValue = malloc(itemSize * (matrix->base.itemCount + 2));
 
   /* save zeroVal and oneVal */
   memcpy(newValue,
@@ -210,7 +212,7 @@ mkMatrixTranspose(MkMatrix * matrix) {
 
   free(matrix->base.value - itemSize * 2);
 
-  matrix->rows       = matrix->rows;
+  matrix->rows       = cols;
   matrix->columns    = rows;
   matrix->base.value = newValue;
 }
@@ -234,7 +236,7 @@ mkMatrixIsIdentity(MkMatrix * matrix) {
 
   for (i = 0; i < matrix->rows; i++) {
     for (j = 0; j < matrix->columns; j++) {
-      itemPos = (value + (i * matrix->rows + j) * itemSize);
+      itemPos = (value + (i * matrix->columns + j) * itemSize);
 
       if (i != j) {
         if (memcmp(itemPos, zeroVal, itemSize) != 0)
@@ -269,7 +271,7 @@ mkMatrixApplyScalarL(void * __restrict other,
 
   for (i = 0; i < matrix->rows; i++) {
     for (j = 0; j < matrix->columns; j++) {
-      itemPos = (value + (i * matrix->rows + j) * itemSize);
+      itemPos = (value + (i * matrix->columns + j) * itemSize);
       op->op(itemPos, other);
     }
   }
