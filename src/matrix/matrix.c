@@ -34,12 +34,6 @@ mk__matrixAdditionMatrixL(MkMatrix * __restrict destMatrix,
                           MkOp * __restrict op);
 
 static
-void
-mk__matrixAdditionMatrixR(MkMatrix * __restrict destMatrix,
-                          MkMatrix * __restrict matrixR,
-                          MkOp * __restrict op);
-
-static
 MkMatrix *
 mk__matrixAdditionMatrix(MkMatrix * __restrict matrixL,
                          MkMatrix * __restrict matrixR,
