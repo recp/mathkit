@@ -235,8 +235,8 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
          matrix->base.value - itemSize * 2,
          itemSize * 2);
 
-  for (i = 0; i < matrix->rows; i++) {
-    for (j = 0; j < matrix->columns; j++)
+  for (i = 0; i < rows; i++) {
+    for (j = 0; j < cols; j++)
       memcpy((newValue + (j * rows + i) * itemSize),
              MkMatrixGet(matrix, i, j),
              itemSize);
