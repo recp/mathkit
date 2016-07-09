@@ -22,12 +22,12 @@
 #define MkMatrixSet(_matrix, _i, _j, _val)                                    \
   memcpy(MkMatrixGet(_matrix, _i, _j),                                        \
          _val,                                                                \
-         sizeof(_matrix->base.itemSize))
+         _matrix->base.itemSize)
 
 #define MkMatrixSet2(_matrix, _matrixPos, _val)                               \
   memcpy(_matrixPos,                                                          \
          _val,                                                                \
-         sizeof(_matrix->base.itemSize))
+         _matrix->base.itemSize)
 
 typedef struct MkMatrix {
   MkVector base;
