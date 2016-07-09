@@ -29,6 +29,8 @@
          _val,                                                                \
          _matrix->base.itemSize)
 
+#define MkMatrixVal(_matrix) (_matrix->base.value)
+
 typedef struct MkMatrix {
   MkVector base;
   size_t   rows;
