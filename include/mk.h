@@ -25,30 +25,30 @@
 /* multiplication operators */
 
 MK_EXTERN
-MkOp * const mkOpMultiplyF;
+MkOp * const mkOpMultF;
 
 MK_EXTERN
-MkOp * const mkOpMultiplyD;
+MkOp * const mkOpMultD;
 
 MK_EXTERN
-MkOp * const mkOpMultiplyInt32;
+MkOp * const mkOpMultInt32;
 
 MK_EXTERN
-MkOp * const mkOpMultiplyInt64;
+MkOp * const mkOpMultInt64;
 
 /* addition operators */
 
 MK_EXTERN
-MkOp * const mkOpAdditionF;
+MkOp * const mkOpAddF;
 
 MK_EXTERN
-MkOp * const mkOpAdditionD;
+MkOp * const mkOpAddD;
 
 MK_EXTERN
-MkOp * const mkOpAdditionInt32;
+MkOp * const mkOpAddInt32;
 
 MK_EXTERN
-MkOp * const mkOpAdditionInt64;
+MkOp * const mkOpAddInt64;
 
 /* buit-in printers */
 
