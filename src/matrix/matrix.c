@@ -5,7 +5,6 @@
  * Full license can be found in the LICENSE file
  */
 
-
 #include "../../include/mk-matrix.h"
 #include <assert.h>
 
@@ -289,9 +288,9 @@ ret:
 }
 
 void
-mkMatrixApplyScalarL(void * __restrict other,
-                     MkMatrix * __restrict matrix,
-                     MkOp * __restrict op) {
+mkMatrixScale(MkMatrix * __restrict matrix,
+              void * __restrict other,
+              MkOp * __restrict op) {
   void  *itemPos;
   char  *value;
   size_t i;
@@ -310,9 +309,9 @@ mkMatrixApplyScalarL(void * __restrict other,
 }
 
 void
-mkMatrixApplyMatrixL(MkMatrix * __restrict destMatrix,
-                     MkMatrix * __restrict matrixL,
-                     MkOp * __restrict op) {
+mkMatrixMatrixL(MkMatrix * __restrict destMatrix,
+                MkMatrix * __restrict matrixL,
+                MkOp * __restrict op) {
   if (op->type == MK_OP_TYPE_MULTIPLY) {
     assert(destMatrix->columns == matrixL->rows
            && "matrix's columns must match to R's rows");
@@ -328,9 +327,9 @@ mkMatrixApplyMatrixL(MkMatrix * __restrict destMatrix,
 }
 
 void
-mkMatrixApplyMatrixR(MkMatrix * __restrict destMatrix,
-                     MkMatrix * __restrict matrixR,
-                     MkOp * __restrict op) {
+mkMatrixMatrixR(MkMatrix * __restrict destMatrix,
+                MkMatrix * __restrict matrixR,
+                MkOp * __restrict op) {
   if (op->type == MK_OP_TYPE_MULTIPLY) {
     assert(matrixR->columns == destMatrix->rows
            && "L's columns must match to matrix's rows");
@@ -347,9 +346,9 @@ mkMatrixApplyMatrixR(MkMatrix * __restrict destMatrix,
 }
 
 MkMatrix *
-mkMatrixApplyMatrix(MkMatrix * __restrict matrixL,
-                    MkMatrix * __restrict matrixR,
-                    MkOp * __restrict op) {
+mkMatrixMatrix(MkMatrix * __restrict matrixL,
+               MkMatrix * __restrict matrixR,
+               MkOp * __restrict op) {
   if (op->type == MK_OP_TYPE_MULTIPLY) {
     assert(matrixR->columns == matrixL->rows
            && "L's columns must match to matrix's rows");

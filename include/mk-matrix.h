@@ -78,23 +78,23 @@ bool
 mkMatrixIsIdentity(MkMatrix * __restrict matrix);
 
 void
-mkMatrixApplyScalarL(void * __restrict other,
-                     MkMatrix * __restrict matrix,
-                     MkOp * __restrict op);
+mkMatrixScale(MkMatrix * __restrict matrix,
+              void * __restrict other,
+              MkOp * __restrict op);
 
 void
-mkMatrixApplyMatrixL(MkMatrix * __restrict destMatrix,
-                     MkMatrix * __restrict matrixL,
-                     MkOp * __restrict op);
+mkMatrixMatrixL(MkMatrix * __restrict destMatrix,
+                MkMatrix * __restrict matrixL,
+                MkOp * __restrict op);
 
 void
-mkMatrixApplyMatrixR(MkMatrix * __restrict destMatrix,
-                     MkMatrix * __restrict matrixR,
-                     MkOp * __restrict op);
+mkMatrixMatrixR(MkMatrix * __restrict destMatrix,
+                MkMatrix * __restrict matrixR,
+                MkOp * __restrict op);
 
 MkMatrix *
-mkMatrixApplyMatrix(MkMatrix * __restrict matrixL,
-                    MkMatrix * __restrict matrixR,
-                    MkOp * __restrict op);
+mkMatrixMatrix(MkMatrix * __restrict matrixL,
+               MkMatrix * __restrict matrixR,
+               MkOp * __restrict op);
 
 #endif /* mk_matrix_h */
