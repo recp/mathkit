@@ -10,33 +10,33 @@
 
 static
 void
-mk__matrixMultiplyMatrixL(MkMatrix * __restrict destMatrix,
-                          MkMatrix * __restrict matrixL,
-                          MkOp * __restrict op);
+mk__matrixMultMatrixL(MkMatrix * __restrict destMatrix,
+                      MkMatrix * __restrict matrixL,
+                      MkOp * __restrict op);
 
 static
 void
-mk__matrixMultiplyMatrixR(MkMatrix * __restrict destMatrix,
-                          MkMatrix * __restrict matrixR,
-                          MkOp * __restrict op);
+mk__matrixMultMatrixR(MkMatrix * __restrict destMatrix,
+                      MkMatrix * __restrict matrixR,
+                      MkOp * __restrict op);
 
 static
 MkMatrix *
-mk__matrixMultiplyMatrix(MkMatrix * __restrict matrixL,
-                         MkMatrix * __restrict matrixR,
-                         MkOp * __restrict op);
+mk__matrixMultMatrix(MkMatrix * __restrict matrixL,
+                     MkMatrix * __restrict matrixR,
+                     MkOp * __restrict op);
 
 static
 void
-mk__matrixAdditionMatrixL(MkMatrix * __restrict destMatrix,
-                          MkMatrix * __restrict matrixL,
-                          MkOp * __restrict op);
+mk__matrixAddMatrixL(MkMatrix * __restrict destMatrix,
+                     MkMatrix * __restrict matrixL,
+                     MkOp * __restrict op);
 
 static
 MkMatrix *
-mk__matrixAdditionMatrix(MkMatrix * __restrict matrixL,
-                         MkMatrix * __restrict matrixR,
-                         MkOp * __restrict op);
+mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
+                    MkMatrix * __restrict matrixR,
+                    MkOp * __restrict op);
 
 MkMatrix *
 mkMatrixNew(size_t itemSize,
@@ -316,13 +316,13 @@ mkMatrixMatrixL(MkMatrix * __restrict destMatrix,
     assert(destMatrix->columns == matrixL->rows
            && "matrix's columns must match to R's rows");
 
-    mk__matrixMultiplyMatrixL(destMatrix, matrixL, op);
+    mk__matrixMultMatrixL(destMatrix, matrixL, op);
   } else if (op->type == MK_OP_TYPE_ADDITION) {
     assert(matrixL->rows == destMatrix->rows
            && matrixL->columns == destMatrix->columns
            && "to addition, matrix dimensions must be same");
 
-    mk__matrixAdditionMatrixL(destMatrix, matrixL, op);
+    mk__matrixAddMatrixL(destMatrix, matrixL, op);
   }
 }
 
@@ -335,13 +335,13 @@ mkMatrixMatrixR(MkMatrix * __restrict destMatrix,
            && "L's columns must match to matrix's rows");
 
 
-    mk__matrixMultiplyMatrixR(destMatrix, matrixR, op);
+    mk__matrixMultMatrixR(destMatrix, matrixR, op);
   } else if (op->type == MK_OP_TYPE_ADDITION) {
     assert(destMatrix->rows == matrixR->rows
            && destMatrix->columns == matrixR->columns
            && "to addition, matrix dimensions must be same");
 
-    mk__matrixAdditionMatrixL(destMatrix, matrixR, op);
+    mk__matrixAddMatrixL(destMatrix, matrixR, op);
   }
 }
 
@@ -353,13 +353,13 @@ mkMatrixMatrix(MkMatrix * __restrict matrixL,
     assert(matrixR->columns == matrixL->rows
            && "L's columns must match to matrix's rows");
 
-    return mk__matrixMultiplyMatrix(matrixL, matrixR, op);
+    return mk__matrixMultMatrix(matrixL, matrixR, op);
   } else if (op->type == MK_OP_TYPE_ADDITION) {
     assert(matrixL->rows == matrixR->rows
            && matrixL->columns == matrixR->columns
            && "to addition, matrix dimensions must be same");
 
-    return mk__matrixAdditionMatrix(matrixL, matrixR, op);
+    return mk__matrixAddMatrix(matrixL, matrixR, op);
   }
 
   return NULL;
@@ -367,9 +367,9 @@ mkMatrixMatrix(MkMatrix * __restrict matrixL,
 
 static
 void
-mk__matrixMultiplyMatrixL(MkMatrix * __restrict destMatrix,
-                          MkMatrix * __restrict matrixL,
-                          MkOp * __restrict op) {
+mk__matrixMultMatrixL(MkMatrix * __restrict destMatrix,
+                      MkMatrix * __restrict matrixL,
+                      MkOp * __restrict op) {
   char  *newValue;
   void  *tmpSum;
   void  *tmpMult;
@@ -429,9 +429,9 @@ mk__matrixMultiplyMatrixL(MkMatrix * __restrict destMatrix,
 
 static
 void
-mk__matrixMultiplyMatrixR(MkMatrix * __restrict destMatrix,
-                          MkMatrix * __restrict matrixR,
-                          MkOp * __restrict op) {
+mk__matrixMultMatrixR(MkMatrix * __restrict destMatrix,
+                      MkMatrix * __restrict matrixR,
+                      MkOp * __restrict op) {
   char  *newValue;
   void  *tmpSum;
   void  *tmpMult;
@@ -491,9 +491,9 @@ mk__matrixMultiplyMatrixR(MkMatrix * __restrict destMatrix,
 
 static
 MkMatrix *
-mk__matrixMultiplyMatrix(MkMatrix * __restrict matrixL,
-                         MkMatrix * __restrict matrixR,
-                         MkOp * __restrict op) {
+mk__matrixMultMatrix(MkMatrix * __restrict matrixL,
+                     MkMatrix * __restrict matrixR,
+                     MkOp * __restrict op) {
   MkMatrix *newMatrix;
   char     *newValue;
   void     *tmpSum;
@@ -555,9 +555,9 @@ mk__matrixMultiplyMatrix(MkMatrix * __restrict matrixL,
 
 static
 void
-mk__matrixAdditionMatrixL(MkMatrix * __restrict destMatrix,
-                          MkMatrix * __restrict matrixL,
-                          MkOp * __restrict op) {
+mk__matrixAddMatrixL(MkMatrix * __restrict destMatrix,
+                     MkMatrix * __restrict matrixL,
+                     MkOp * __restrict op) {
   char  *valueA;
   char  *valueB;
   void  *itemPosA;
@@ -584,9 +584,9 @@ mk__matrixAdditionMatrixL(MkMatrix * __restrict destMatrix,
 
 static
 MkMatrix *
-mk__matrixAdditionMatrix(MkMatrix * __restrict matrixL,
-                         MkMatrix * __restrict matrixR,
-                         MkOp * __restrict op) {
+mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
+                    MkMatrix * __restrict matrixR,
+                    MkOp * __restrict op) {
   MkMatrix *newMatrix;
   char     *valueA;
   char     *valueB;
