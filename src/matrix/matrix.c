@@ -407,6 +407,8 @@ mk__matrixMultMatrixL(MkMatrix * __restrict destMatrix,
          destMatrix->base.value - itemSize * 2,
          itemSize * 2);
 
+  newValue += itemSize * 2;
+
   for (i = 0; i < rowsL; i++) {
     for (j = 0; j < colsR; j++) {
       memset(tmpSum, '\0', itemSize);
@@ -468,6 +470,8 @@ mk__matrixMultMatrixR(MkMatrix * __restrict destMatrix,
   memcpy(newValue,
          matrixR->base.value - itemSize * 2,
          itemSize * 2);
+
+  newValue += itemSize * 2;
 
   for (i = 0; i < rowsL; i++) {
     for (j = 0; j < colsR; j++) {
@@ -535,6 +539,8 @@ mk__matrixMultMatrix(MkMatrix * __restrict matrixL,
   memcpy(newValue,
          matrixR->base.value - itemSize * 2,
          itemSize * 2);
+
+  newValue += itemSize * 2;
 
   for (i = 0; i < rowsL; i++) {
     for (j = 0; j < colsR; j++) {
