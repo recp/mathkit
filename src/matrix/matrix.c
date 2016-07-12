@@ -38,6 +38,7 @@ mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
                     MkMatrix * __restrict matrixR,
                     MkOp * __restrict op);
 
+MK_EXPORT
 MkMatrix *
 mkMatrixNew(size_t itemSize,
             size_t rows,
@@ -67,6 +68,7 @@ mkMatrixNew(size_t itemSize,
   return matrix;
 }
 
+MK_EXPORT
 void
 mkMatrixFill(MkMatrix * __restrict matrix,
              void * value) {
@@ -75,6 +77,7 @@ mkMatrixFill(MkMatrix * __restrict matrix,
          matrix->base.itemCount * matrix->base.itemSize);
 }
 
+MK_EXPORT
 MkMatrix *
 mkMatrixNew4x4f(bool identity) {
   MkMatrix *matrix;
@@ -110,6 +113,7 @@ mkMatrixNew4x4f(bool identity) {
   return matrix;
 }
 
+MK_EXPORT
 MkMatrix *
 mkMatrixNew4x4d(bool identity) {
   MkMatrix *matrix;
@@ -145,6 +149,7 @@ mkMatrixNew4x4d(bool identity) {
   return matrix;
 }
 
+MK_EXPORT
 MkMatrix *
 mkMatrixNewFromf(size_t rows,
                  size_t columns,
@@ -169,6 +174,7 @@ mkMatrixNewFromf(size_t rows,
   return matrix;
 }
 
+MK_EXPORT
 MkMatrix *
 mkMatrixNewFromd(size_t rows,
                  size_t columns,
@@ -193,16 +199,19 @@ mkMatrixNewFromd(size_t rows,
   return matrix;
 }
 
+MK_EXPORT
 MkMatrix *
 mkMatrixNewFrom4x4f(float * data) {
   return mkMatrixNewFromf(4, 4, data);
 }
 
+MK_EXPORT
 MkMatrix *
 mkMatrixNewFrom4x4d(double * data) {
   return mkMatrixNewFromd(4, 4, data);
 }
 
+MK_EXPORT
 void
 mkMatrixPrint(MkMatrix * __restrict matrix,
               MkPrintFn itemPrinter,
@@ -223,6 +232,7 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
   fprintf(ostream, "\n");
 }
 
+MK_EXPORT
 void
 mkMatrixTranspose(MkMatrix * __restrict matrix) {
   char  *newValue;
@@ -258,6 +268,7 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
   matrix->base.value = newValue;
 }
 
+MK_EXPORT
 bool
 mkMatrixIsIdentity(MkMatrix * __restrict matrix) {
   void  *itemPos;
@@ -297,6 +308,7 @@ ret:
   return isIdentity;
 }
 
+MK_EXPORT
 void
 mkMatrixScale(MkMatrix * __restrict matrix,
               void * __restrict other,
@@ -318,6 +330,7 @@ mkMatrixScale(MkMatrix * __restrict matrix,
   }
 }
 
+MK_EXPORT
 void
 mkMatrixMatrixL(MkMatrix * __restrict destMatrix,
                 MkMatrix * __restrict matrixL,
@@ -336,6 +349,7 @@ mkMatrixMatrixL(MkMatrix * __restrict destMatrix,
   }
 }
 
+MK_EXPORT
 void
 mkMatrixMatrixR(MkMatrix * __restrict destMatrix,
                 MkMatrix * __restrict matrixR,
@@ -355,6 +369,7 @@ mkMatrixMatrixR(MkMatrix * __restrict destMatrix,
   }
 }
 
+MK_EXPORT
 MkMatrix *
 mkMatrixMatrix(MkMatrix * __restrict matrixL,
                MkMatrix * __restrict matrixR,

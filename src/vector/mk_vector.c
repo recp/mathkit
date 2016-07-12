@@ -9,6 +9,7 @@
 #include "../../include/mk-vector.h"
 #include <assert.h>
 
+MK_EXPORT
 MkVector *
 mkVecNew(size_t itemSize,
          size_t itemCount,
@@ -35,6 +36,7 @@ mkVecNew(size_t itemSize,
   return vec;
 }
 
+MK_EXPORT
 MkVector *
 mkVecNewf(size_t itemCount,
           float *value) {
@@ -49,6 +51,7 @@ mkVecNewf(size_t itemCount,
   return vec;
 }
 
+MK_EXPORT
 MkVector *
 mkVecNewd(size_t  itemCount,
           double *value) {
@@ -63,6 +66,7 @@ mkVecNewd(size_t  itemCount,
   return vec;
 }
 
+MK_EXPORT
 MkVector *
 mkVecNew3f(float x, float y, float z) {
   MkVector *vec;
@@ -83,6 +87,7 @@ mkVecNew3f(float x, float y, float z) {
   return vec;
 }
 
+MK_EXPORT
 MkVector *
 mkVecNew3d(double x, double y, double z) {
   MkVector *vec;

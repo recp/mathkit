@@ -8,6 +8,10 @@
 #ifndef mathkit_h
 #  define mathkit_h
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -74,4 +78,7 @@ MK_EXTERN void * const MkDoubleOne;
 MK_EXTERN void * const MkInt32One;
 MK_EXTERN void * const MkInt64One;
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* mathkit_h */
