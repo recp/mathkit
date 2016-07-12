@@ -21,6 +21,18 @@ void
 mkDoublePrinterImpl(FILE * __restrict ostream,
                     void * __restrict item);
 
+static
+inline
+void
+mkInt32PrinterImpl(FILE * __restrict ostream,
+                  void * __restrict item);
+
+static
+inline
+void
+mkInt64PrinterImpl(FILE * __restrict ostream,
+                   void * __restrict item);
+
 /* multiplication */
 
 static
@@ -81,6 +93,12 @@ MkPrintFn mkFloatPrinter = mkFloatPrinterImpl;
 
 MK_EXTERN
 MkPrintFn mkDoublePrinter = mkDoublePrinterImpl;
+
+MK_EXTERN
+MkPrintFn mkInt32Printer = mkInt32PrinterImpl;
+
+MK_EXTERN
+MkPrintFn mkInt64Printer = mkInt64PrinterImpl;
 
 /* Op */
 static
@@ -202,6 +220,22 @@ void
 mkDoublePrinterImpl(FILE * __restrict ostream,
                     void * __restrict item) {
   fprintf(ostream, "\t%0.2f,", *(double *)item);
+}
+
+static
+inline
+void
+mkInt32PrinterImpl(FILE * __restrict ostream,
+                   void * __restrict item) {
+  fprintf(ostream, "\t%d,", *(int32_t *)item);
+}
+
+static
+inline
+void
+mkInt64PrinterImpl(FILE * __restrict ostream,
+                   void * __restrict item) {
+  fprintf(ostream, "\t%lld,", *(int64_t *)item);
 }
 
 /* multiplication */

@@ -58,6 +58,12 @@ MkPrintFn mkFloatPrinter;
 MK_EXTERN
 MkPrintFn mkDoublePrinter;
 
+MK_EXTERN
+MkPrintFn mkInt32Printer;
+
+MK_EXTERN
+MkPrintFn mkInt64Printer;
+
 MK_EXTERN void * const MkFloatZero;
 MK_EXTERN void * const MkDoubleZero;
 MK_EXTERN void * const MkInt32Zero;
