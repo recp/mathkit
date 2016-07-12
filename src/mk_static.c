@@ -102,28 +102,28 @@ MkPrintFn mkInt64Printer = mkInt64PrinterImpl;
 
 /* Op */
 static
-MkOp mkOpMultiplyFImpl = {
+MkOp mkOpMultFImpl = {
   .type  = MK_OP_TYPE_MULTIPLY,
   .op    = mkOpMFltImpl,
   .addop = mkOpAFltImpl
 };
 
 static
-MkOp mkOpMultiplyDImpl = {
+MkOp mkOpMultDImpl = {
   .type  = MK_OP_TYPE_MULTIPLY,
   .op    = mkOpMDblImpl,
   .addop = mkOpADblImpl
 };
 
 static
-MkOp mkOpMultiplyInt32Impl = {
+MkOp mkOpMultInt32Impl = {
   .type  = MK_OP_TYPE_MULTIPLY,
   .op    = mkOpMInt32Impl,
   .addop = mkOpAInt32Impl
 };
 
 static
-MkOp mkOpMultiplyInt64Impl = {
+MkOp mkOpMultInt64Impl = {
   .type  = MK_OP_TYPE_MULTIPLY,
   .op    = mkOpMInt64Impl,
   .addop = mkOpAInt64Impl
@@ -131,56 +131,56 @@ MkOp mkOpMultiplyInt64Impl = {
 
 /* addition */
 static
-MkOp mkOpAdditionFImpl = {
+MkOp mkOpAddFImpl = {
   .type  = MK_OP_TYPE_ADDITION,
   .op    = mkOpAFltImpl,
   .addop = mkOpAFltImpl
 };
 
 static
-MkOp mkOpAdditionDImpl = {
+MkOp mkOpAddDImpl = {
   .type  = MK_OP_TYPE_ADDITION,
   .op    = mkOpADblImpl,
   .addop = mkOpADblImpl
 };
 
 static
-MkOp mkOpAdditionInt32Impl = {
+MkOp mkOpAddInt32Impl = {
   .type  = MK_OP_TYPE_ADDITION,
   .op    = mkOpAInt32Impl,
   .addop = mkOpAInt32Impl
 };
 
 static
-MkOp mkOpAdditionInt64Impl = {
+MkOp mkOpAddInt64Impl = {
   .type  = MK_OP_TYPE_ADDITION,
   .op    = mkOpAInt64Impl,
   .addop = mkOpAInt64Impl
 };
 
 MK_EXTERN
-MkOp * const mkOpMultiplyF = &mkOpMultiplyFImpl;
+MkOp * const mkOpMultF = &mkOpMultFImpl;
 
 MK_EXTERN
-MkOp * const mkOpMultiplyD = &mkOpMultiplyDImpl;
+MkOp * const mkOpMultD = &mkOpMultDImpl;
 
 MK_EXTERN
-MkOp * const mkOpMultiplyInt32 = &mkOpMultiplyInt32Impl;
+MkOp * const mkOpMultInt32 = &mkOpMultInt32Impl;
 
 MK_EXTERN
-MkOp * const mkOpMultiplyInt64 = &mkOpMultiplyInt64Impl;
+MkOp * const mkOpMultInt64 = &mkOpMultInt64Impl;
 
 MK_EXTERN
-MkOp * const mkOpAdditionF = &mkOpAdditionFImpl;
+MkOp * const mkOpAddF = &mkOpAddFImpl;
 
 MK_EXTERN
-MkOp * const mkOpAdditionD = &mkOpAdditionDImpl;
+MkOp * const mkOpAddD = &mkOpAddDImpl;
 
 MK_EXTERN
-MkOp * const mkOpAdditionInt32 = &mkOpAdditionInt32Impl;
+MkOp * const mkOpAddInt32 = &mkOpAddInt32Impl;
 
 MK_EXTERN
-MkOp * const mkOpAdditionInt64 = &mkOpAdditionInt64Impl;
+MkOp * const mkOpAddInt64 = &mkOpAddInt64Impl;
 
 
 static float   Mk__floatZero  = 0.0f;
