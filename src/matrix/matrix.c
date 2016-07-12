@@ -67,6 +67,14 @@ mkMatrixNew(size_t itemSize,
   return matrix;
 }
 
+void
+mkMatrixFill(MkMatrix * __restrict matrix,
+             void * value) {
+  memcpy(MkMatrixVal(matrix),
+         value,
+         matrix->base.itemCount * matrix->base.itemSize);
+}
+
 MkMatrix *
 mkMatrixNew4x4f(bool identity) {
   MkMatrix *matrix;

@@ -44,6 +44,10 @@ mkMatrixNew(size_t itemSize,
             void  *zeroVal,
             void  *oneVal);
 
+void
+mkMatrixFill(MkMatrix * __restrict matrix,
+             void * value);
+
 MkMatrix *
 mkMatrixNew4x4f(bool identity);
 
