@@ -245,7 +245,7 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
 
   matrix->rows       = cols;
   matrix->columns    = rows;
-  matrix->base.value = newValue;
+  matrix->base.value = newValue + itemSize * 2;
 }
 
 bool
