@@ -242,6 +242,8 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
          matrix->base.value - itemSize * 2,
          itemSize * 2);
 
+  newValue += itemSize *2;
+
   for (i = 0; i < rows; i++) {
     for (j = 0; j < cols; j++)
       memcpy((newValue + (j * rows + i) * itemSize),
@@ -253,7 +255,7 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
 
   matrix->rows       = cols;
   matrix->columns    = rows;
-  matrix->base.value = newValue + itemSize * 2;
+  matrix->base.value = newValue;
 }
 
 bool
