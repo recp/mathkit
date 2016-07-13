@@ -620,7 +620,6 @@ mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
   size_t    itemSize;
 
   itemSize     = matrixL->base.itemSize;
-  itemPosA     = newMatrix->base.value;
   itemPosB     = matrixL->base.value;
   itemPosC     = matrixR->base.value;
   itemPosA_end = itemPosA + itemSize * matrixL->base.itemCount;
@@ -630,6 +629,8 @@ mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
                           matrixL->columns,
                           itemPosB - itemSize * 2,
                           itemPosB - itemSize);
+
+  itemPosA = newMatrix->base.value;
 
   while (itemPosA != itemPosA_end) {
     op->op(itemPosA, itemPosB);
