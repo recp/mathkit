@@ -590,27 +590,20 @@ mk__matrixAddMatrixL(MkMatrix * __restrict destMatrix,
                      MkMatrix * __restrict matrixL,
                      MkOp * __restrict op) {
   char  *itemPosA;
+  char  *itemPosA_end;
   char  *itemPosB;
   size_t itemSize;
-  size_t cols;
-  size_t rows;
-  size_t i;
-  size_t j;
 
-  cols     = destMatrix->columns;
-  rows     = destMatrix->rows;
-  itemSize = destMatrix->base.itemSize;
+  itemSize     = destMatrix->base.itemSize;
+  itemPosA     = destMatrix->base.value;
+  itemPosB     = matrixL->base.value;
+  itemPosA_end = itemPosA + itemSize * matrixL->base.itemCount;
 
-  itemPosA = destMatrix->base.value;
-  itemPosB = matrixL->base.value;
+  while (itemPosA != itemPosA_end) {
+    op->op(itemPosA, itemPosB);
 
-  for (i = 0; i < rows; i++) {
-    for (j = 0; j < cols; j++) {
-      op->op(itemPosA, itemPosB);
-
-      itemPosA += itemSize;
-      itemPosB += itemSize;
-    }
+    itemPosA += itemSize;
+    itemPosB += itemSize;
   }
 }
 
@@ -621,37 +614,30 @@ mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
                     MkOp * __restrict op) {
   MkMatrix *newMatrix;
   void     *itemPosA;
+  char     *itemPosA_end;
   void     *itemPosB;
   void     *itemPosC;
-  size_t itemSize;
-  size_t cols;
-  size_t rows;
-  size_t i;
-  size_t j;
+  size_t    itemSize;
 
-  cols     = matrixL->columns;
-  rows     = matrixL->rows;
-  itemSize = matrixL->base.itemSize;
-
-  itemPosA = newMatrix->base.value;
-  itemPosB = matrixL->base.value;
-  itemPosC = matrixR->base.value;
+  itemSize     = matrixL->base.itemSize;
+  itemPosA     = newMatrix->base.value;
+  itemPosB     = matrixL->base.value;
+  itemPosC     = matrixR->base.value;
+  itemPosA_end = itemPosA + itemSize * matrixL->base.itemCount;
 
   newMatrix = mkMatrixNew(itemSize,
                           matrixL->rows,
-                          cols,
+                          matrixL->columns,
                           itemPosB - itemSize * 2,
                           itemPosB - itemSize);
 
-  for (i = 0; i < cols; i++) {
-    for (j = 0; j < cols; j++) {
-      op->op(itemPosA, itemPosB);
-      op->op(itemPosA, itemPosC);
+  while (itemPosA != itemPosA_end) {
+    op->op(itemPosA, itemPosB);
+    op->op(itemPosA, itemPosC);
 
-      itemPosA += itemSize;
-      itemPosB += itemSize;
-      itemPosC += itemSize;
-    }
+    itemPosA += itemSize;
+    itemPosB += itemSize;
+    itemPosC += itemSize;
   }
 
   return newMatrix;
