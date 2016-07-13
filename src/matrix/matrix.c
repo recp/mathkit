@@ -589,26 +589,27 @@ void
 mk__matrixAddMatrixL(MkMatrix * __restrict destMatrix,
                      MkMatrix * __restrict matrixL,
                      MkOp * __restrict op) {
-  char  *valueA;
-  char  *valueB;
-  void  *itemPosA;
-  void  *itemPosB;
+  char  *itemPosA;
+  char  *itemPosB;
   size_t itemSize;
   size_t cols;
+  size_t rows;
   size_t i;
   size_t j;
 
   cols     = destMatrix->columns;
+  rows     = destMatrix->rows;
   itemSize = destMatrix->base.itemSize;
-  valueA   = destMatrix->base.value;
-  valueB   = matrixL->base.value;
 
-  for (i = 0; i < destMatrix->rows; i++) {
+  itemPosA = destMatrix->base.value;
+  itemPosB = matrixL->base.value;
+
+  for (i = 0; i < rows; i++) {
     for (j = 0; j < cols; j++) {
-      itemPosA = (valueA + (i * cols + j) * itemSize);
-      itemPosB = (valueB + (i * cols + j) * itemSize);
-
       op->op(itemPosA, itemPosB);
+
+      itemPosA += itemSize;
+      itemPosB += itemSize;
     }
   }
 }
@@ -619,38 +620,37 @@ mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
                     MkMatrix * __restrict matrixR,
                     MkOp * __restrict op) {
   MkMatrix *newMatrix;
-  char     *valueA;
-  char     *valueB;
-  char     *valueC;
   void     *itemPosA;
   void     *itemPosB;
   void     *itemPosC;
   size_t itemSize;
   size_t cols;
+  size_t rows;
   size_t i;
   size_t j;
 
-  cols      = matrixL->columns;
-  itemSize  = matrixL->base.itemSize;
+  cols     = matrixL->columns;
+  rows     = matrixL->rows;
+  itemSize = matrixL->base.itemSize;
+
+  itemPosA = newMatrix->base.value;
+  itemPosB = matrixL->base.value;
+  itemPosC = matrixR->base.value;
 
   newMatrix = mkMatrixNew(itemSize,
                           matrixL->rows,
                           cols,
-                          matrixL->base.value - itemSize * 2,
-                          matrixL->base.value - itemSize);
+                          itemPosB - itemSize * 2,
+                          itemPosB - itemSize);
 
-  valueA    = newMatrix->base.value;
-  valueB    = matrixL->base.value;
-  valueC    = matrixR->base.value;
-
-  for (i = 0; i < matrixL->rows; i++) {
+  for (i = 0; i < cols; i++) {
     for (j = 0; j < cols; j++) {
-      itemPosA = (valueA + (i * cols + j) * itemSize);
-      itemPosB = (valueB + (i * cols + j) * itemSize);
-      itemPosC = (valueC + (i * cols + j) * itemSize);
-
       op->op(itemPosA, itemPosB);
       op->op(itemPosA, itemPosC);
+
+      itemPosA += itemSize;
+      itemPosB += itemSize;
+      itemPosC += itemSize;
     }
   }
 
