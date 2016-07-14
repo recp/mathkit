@@ -5,8 +5,13 @@
  * Full license can be found in the LICENSE file
  */
 
+#include "../../include/mk.h"
 #include "../../include/mk-matrix.h"
+
+#include "../mk__mem.h"
+
 #include <assert.h>
+#include <string.h>
 
 static
 void
@@ -235,37 +240,55 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
 MK_EXPORT
 void
 mkMatrixTranspose(MkMatrix * __restrict matrix) {
-  char  *newValue;
+  char  *value;
+  char  *itemPosA;
+  char  *itemPosA_row;
+  char  *itemPosB;
+  char  *itemPosB_row;
   size_t itemSize;
   size_t rows;
   size_t cols;
+  size_t colsOff;
   size_t i;
   size_t j;
 
-  itemSize = matrix->base.itemSize;
-  rows     = matrix->rows;
-  cols     = matrix->columns;
-  newValue = malloc(itemSize * (matrix->base.itemCount + 2));
+  itemSize     = matrix->base.itemSize;
+  rows         = matrix->rows;
+  cols         = matrix->columns;
+  value        = matrix->base.value;
+  colsOff      = cols * itemSize;
+  itemPosA_row = value;
+  itemPosB_row = value;
 
-  /* save zeroVal and oneVal */
-  memcpy(newValue,
-         matrix->base.value - itemSize * 2,
-         itemSize * 2);
-
-  newValue += itemSize *2;
-
+  char tmp[itemSize];
   for (i = 0; i < rows; i++) {
-    for (j = 0; j < cols; j++)
-      memcpy((newValue + (j * rows + i) * itemSize),
-             MkMatrixGet(matrix, i, j),
-             itemSize);
+    itemPosA = itemPosA_row;
+    itemPosB = itemPosB_row;
+
+    for (j = 0; j < i && j < cols; j++) {
+      itemPosB += j * colsOff;
+
+      mk__memcpy(tmp,
+                 itemPosB,
+                 itemSize);
+
+      mk__memcpy(itemPosB,
+                 itemPosA,
+                 itemSize);
+
+      mk__memcpy(itemPosA,
+                 tmp,
+                 itemSize);
+
+      itemPosA += itemSize;
+    }
+
+    itemPosA_row += colsOff;
+    itemPosB_row += itemSize;
   }
 
-  free(matrix->base.value - itemSize * 2);
-
-  matrix->rows       = cols;
-  matrix->columns    = rows;
-  matrix->base.value = newValue;
+  matrix->rows    = cols;
+  matrix->columns = rows;
 }
 
 MK_EXPORT
