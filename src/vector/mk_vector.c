@@ -29,9 +29,9 @@ mkVecNew(size_t itemSize,
     value = calloc(itemSize, vec->itemCount + 2);
 
   memcpy(value, zeroVal, itemSize);
-  memcpy(value + itemSize, oneVal, itemSize);
+  memcpy((char *)value + itemSize, oneVal, itemSize);
 
-  vec->value = value + itemSize * 2;
+  vec->value = (char *)value + itemSize * 2;
 
   return vec;
 }
@@ -78,7 +78,7 @@ mkVecNew3f(float x, float y, float z) {
                  MkFloatZero,
                  MkFloatOne);
 
-  val = vec->value;
+  val = (float *)vec->value;
 
   val[0] = x;
   val[1] = y;
@@ -99,7 +99,7 @@ mkVecNew3d(double x, double y, double z) {
                  MkFloatZero,
                  MkFloatOne);
 
-  val = vec->value;
+  val = (double *)vec->value;
 
   val[0] = x;
   val[1] = y;

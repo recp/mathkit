@@ -33,7 +33,7 @@ extern "C" {
          _val,                                                                \
          _matrix->base.itemSize)
 
-#define MkMatrixVal(_matrix) (_matrix->base.value)
+#define MkMatrixVal(_matrix) ((void *)_matrix->base.value)
 
 typedef struct MkMatrix {
   MkVector base;

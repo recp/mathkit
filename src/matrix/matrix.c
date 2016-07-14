@@ -48,7 +48,7 @@ mkMatrixNew(size_t itemSize,
   MkMatrix *matrix;
   char     *value;
   size_t    itemCount;
-
+ 
   itemCount = rows * columns;
 
   matrix = calloc(sizeof(*matrix), 1);
@@ -103,7 +103,7 @@ mkMatrixNew4x4f(bool identity) {
     i = 0;
     j = 0;
 
-    value = matrix->base.value;
+    value = (float *)matrix->base.value;
     for (; i < matrix->rows; i++)
       *(value + i * n + j++) = 1.0f;
   }
@@ -139,7 +139,7 @@ mkMatrixNew4x4d(bool identity) {
     i = 0;
     j = 0;
 
-    value = matrix->base.value;
+    value = (double *)matrix->base.value;
     for (; i < matrix->rows; i++)
       *(value + i * n + j++) = 1.0;
   }
@@ -271,7 +271,7 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
 MK_EXPORT
 bool
 mkMatrixIsIdentity(MkMatrix * __restrict matrix) {
-  void  *itemPos;
+  char  *itemPos;
   char  *value;
   char  *zeroVal;
   char  *oneVal;
@@ -313,7 +313,7 @@ void
 mkMatrixScale(MkMatrix * __restrict matrix,
               void * __restrict other,
               MkOp * __restrict op) {
-  void  *itemPos;
+  char  *itemPos;
   char  *value;
   size_t i;
   size_t j;
@@ -396,8 +396,8 @@ mk__matrixMultMatrixL(MkMatrix * __restrict destMatrix,
                       MkMatrix * __restrict matrixL,
                       MkOp * __restrict op) {
   char  *newValue;
-  void  *tmpSum;
-  void  *tmpMult;
+  char  *tmpSum;
+  char  *tmpMult;
   size_t itemSize;
   size_t newItemCount;
   size_t rowsL;
@@ -460,8 +460,8 @@ mk__matrixMultMatrixR(MkMatrix * __restrict destMatrix,
                       MkMatrix * __restrict matrixR,
                       MkOp * __restrict op) {
   char  *newValue;
-  void  *tmpSum;
-  void  *tmpMult;
+  char  *tmpSum;
+  char  *tmpMult;
   size_t itemSize;
   size_t newItemCount;
   size_t rowsL;
@@ -525,8 +525,8 @@ mk__matrixMultMatrix(MkMatrix * __restrict matrixL,
                      MkOp * __restrict op) {
   MkMatrix *newMatrix;
   char     *newValue;
-  void     *tmpSum;
-  void     *tmpMult;
+  char     *tmpSum;
+  char     *tmpMult;
   size_t itemSize;
   size_t rowsL;
   size_t colsR;
@@ -615,10 +615,10 @@ mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
                     MkMatrix * __restrict matrixR,
                     MkOp * __restrict op) {
   MkMatrix *newMatrix;
-  void     *itemPosA;
+  char     *itemPosA;
   char     *itemPosA_end;
-  void     *itemPosB;
-  void     *itemPosC;
+  char     *itemPosB;
+  char     *itemPosC;
   size_t    itemSize;
   MkOpFn    opFn;
 

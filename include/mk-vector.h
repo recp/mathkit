@@ -27,7 +27,7 @@ typedef enum MkVecFlags {
 typedef struct MkVector {
   size_t     itemSize;
   size_t     itemCount;
-  void      *value;
+  char      *value;
   MkVecFlags flags;
 } MkVector;
 
