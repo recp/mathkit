@@ -219,7 +219,7 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
   size_t i;
   size_t j;
 
-  fprintf(ostream, "Matrix (%ldx%ld):\n",
+  fprintf(ostream, "Matrix (%zux%zu):\n",
           matrix->rows, matrix->columns);
 
   for (i = 0; i < matrix->rows; i++) {
