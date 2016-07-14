@@ -88,15 +88,19 @@ mkOpAInt64Impl(void * __restrict a,
 /* ************************************************************************* */
 
 /* Printers */
+MK_EXPORT
 MK_EXTERN
 MkPrintFn mkFloatPrinter = mkFloatPrinterImpl;
 
+MK_EXPORT
 MK_EXTERN
 MkPrintFn mkDoublePrinter = mkDoublePrinterImpl;
 
+MK_EXPORT
 MK_EXTERN
 MkPrintFn mkInt32Printer = mkInt32PrinterImpl;
 
+MK_EXPORT
 MK_EXTERN
 MkPrintFn mkInt64Printer = mkInt64PrinterImpl;
 
@@ -158,27 +162,35 @@ MkOp mkOpAddInt64Impl = {
   .addop = mkOpAInt64Impl
 };
 
+MK_EXPORT
 MK_EXTERN
 MkOp * const mkOpMultF = &mkOpMultFImpl;
 
+MK_EXPORT
 MK_EXTERN
 MkOp * const mkOpMultD = &mkOpMultDImpl;
 
+MK_EXPORT
 MK_EXTERN
 MkOp * const mkOpMultInt32 = &mkOpMultInt32Impl;
 
+MK_EXPORT
 MK_EXTERN
 MkOp * const mkOpMultInt64 = &mkOpMultInt64Impl;
 
+MK_EXPORT
 MK_EXTERN
 MkOp * const mkOpAddF = &mkOpAddFImpl;
 
+MK_EXPORT
 MK_EXTERN
 MkOp * const mkOpAddD = &mkOpAddDImpl;
 
+MK_EXPORT
 MK_EXTERN
 MkOp * const mkOpAddInt32 = &mkOpAddInt32Impl;
 
+MK_EXPORT
 MK_EXTERN
 MkOp * const mkOpAddInt64 = &mkOpAddInt64Impl;
 
@@ -194,15 +206,15 @@ static int32_t Mk__int32One   = 1;
 static int64_t Mk__int64One   = 1L;
 
 
-MK_EXTERN void * const MkFloatZero  = &Mk__floatZero;
-MK_EXTERN void * const MkDoubleZero = &Mk__doubleZero;
-MK_EXTERN void * const MkInt32Zero  = &Mk__int32Zero;
-MK_EXTERN void * const MkInt64Zero  = &Mk__int64Zero;
+MK_EXPORT MK_EXTERN void * const MkFloatZero  = &Mk__floatZero;
+MK_EXPORT MK_EXTERN void * const MkDoubleZero = &Mk__doubleZero;
+MK_EXPORT MK_EXTERN void * const MkInt32Zero  = &Mk__int32Zero;
+MK_EXPORT MK_EXTERN void * const MkInt64Zero  = &Mk__int64Zero;
 
-MK_EXTERN void * const MkFloatOne   = &Mk__floatOne;
-MK_EXTERN void * const MkDoubleOne  = &Mk__doubleOne;
-MK_EXTERN void * const MkInt32One   = &Mk__int32One;
-MK_EXTERN void * const MkInt64One   = &Mk__int64One;
+MK_EXPORT MK_EXTERN void * const MkFloatOne   = &Mk__floatOne;
+MK_EXPORT MK_EXTERN void * const MkDoubleOne  = &Mk__doubleOne;
+MK_EXPORT MK_EXTERN void * const MkInt32One   = &Mk__int32One;
+MK_EXPORT MK_EXTERN void * const MkInt64One   = &Mk__int64One;
 
 /* ************************************************************************* */
 
