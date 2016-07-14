@@ -601,6 +601,7 @@ mk__matrixAddMatrixL(MkMatrix * __restrict destMatrix,
   itemPosA_end = (char *)itemPosA + itemSize * matrixL->base.itemCount;
   opFn         = op->op;
 
+MK_PRAGMA_UNROLL(4)
   while (itemPosA != itemPosA_end) {
     opFn(itemPosA, itemPosB);
 
@@ -636,6 +637,7 @@ mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
   itemPosA_end = itemPosA + itemSize * matrixL->base.itemCount;
   opFn         = op->op;
 
+MK_PRAGMA_UNROLL(4)
   while (itemPosA != itemPosA_end) {
     opFn(itemPosA, itemPosB);
     opFn(itemPosA, itemPosC);

@@ -20,9 +20,11 @@
 #    define MK_EXPORT __declspec(dllimport)
 #  endif
 #  define _mathkit_hide
+#  define MK_PRAGMA_UNROLL(n)
 #else
 #  define MK_EXPORT      __attribute__((visibility("default")))
 #  define _mathkit_hide __attribute__((visibility("hidden")))
+#  define MK_PRAGMA_UNROLL(n) _Pragma("unroll(" ## n ##")")
 #endif
 
 #define MK_ARRAY_LEN(ARR) sizeof(ARR) / sizeof(ARR[0]);
