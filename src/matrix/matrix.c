@@ -589,18 +589,20 @@ void
 mk__matrixAddMatrixL(MkMatrix * __restrict destMatrix,
                      MkMatrix * __restrict matrixL,
                      MkOp * __restrict op) {
-  char  *itemPosA;
-  char  *itemPosA_end;
-  char  *itemPosB;
-  size_t itemSize;
+  char    *itemPosA;
+  char    *itemPosA_end;
+  char    *itemPosB;
+  size_t   itemSize;
+  MkOpFn   opFn;
 
   itemSize     = destMatrix->base.itemSize;
   itemPosA     = destMatrix->base.value;
   itemPosB     = matrixL->base.value;
-  itemPosA_end = itemPosA + itemSize * matrixL->base.itemCount;
+  itemPosA_end = (char *)itemPosA + itemSize * matrixL->base.itemCount;
+  opFn         = op->op;
 
   while (itemPosA != itemPosA_end) {
-    op->op(itemPosA, itemPosB);
+    opFn(itemPosA, itemPosB);
 
     itemPosA += itemSize;
     itemPosB += itemSize;
@@ -618,6 +620,7 @@ mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
   void     *itemPosB;
   void     *itemPosC;
   size_t    itemSize;
+  MkOpFn    opFn;
 
   itemSize     = matrixL->base.itemSize;
   itemPosB     = matrixL->base.value;
@@ -631,10 +634,11 @@ mk__matrixAddMatrix(MkMatrix * __restrict matrixL,
                           itemPosB - itemSize);
 
   itemPosA = newMatrix->base.value;
+  opFn     = op->op;
 
   while (itemPosA != itemPosA_end) {
-    op->op(itemPosA, itemPosB);
-    op->op(itemPosA, itemPosC);
+    opFn(itemPosA, itemPosB);
+    opFn(itemPosA, itemPosC);
 
     itemPosA += itemSize;
     itemPosB += itemSize;
