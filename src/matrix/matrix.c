@@ -621,7 +621,7 @@ mk__matrixAddMatrixL(MkMatrix * __restrict destMatrix,
   itemSize     = destMatrix->base.itemSize;
   itemPosA     = destMatrix->base.value;
   itemPosB     = matrixL->base.value;
-  itemPosA_end = (char *)itemPosA + itemSize * matrixL->base.itemCount;
+  itemPosA_end = itemPosA + itemSize * matrixL->base.itemCount;
   opFn         = op->op;
 
 MK_PRAGMA_UNROLL_4
