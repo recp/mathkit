@@ -241,54 +241,68 @@ MK_EXPORT
 void
 mkMatrixTranspose(MkMatrix * __restrict matrix) {
   char  *value;
-  char  *itemPosA;
-  char  *itemPosA_row;
-  char  *itemPosB;
-  char  *itemPosB_row;
+  char  *posA;
+  char  *posB;
+  char  *posA_row;
+  char  *posB_row;
   size_t itemSize;
   size_t rows;
   size_t cols;
+  size_t sqmatSize;
   size_t colsOff;
   size_t i;
   size_t j;
+  size_t itemCount;
 
-  itemSize     = matrix->base.itemSize;
-  rows         = matrix->rows;
-  cols         = matrix->columns;
-  value        = matrix->base.value;
-  colsOff      = cols * itemSize;
-  itemPosA_row = value;
-  itemPosB_row = value;
+  itemSize  = matrix->base.itemSize;
+  itemCount = matrix->base.itemCount;
+  rows      = matrix->rows;
+  cols      = matrix->columns;
+  value     = matrix->base.value;
 
-  char tmp[itemSize];
-  for (i = 0; i < rows; i++) {
-    itemPosA = itemPosA_row;
-    itemPosB = itemPosB_row;
-
-    for (j = 0; j < i && j < cols; j++) {
-      itemPosB += j * colsOff;
-
-      mk__memcpy(tmp,
-                 itemPosB,
-                 itemSize);
-
-      mk__memcpy(itemPosB,
-                 itemPosA,
-                 itemSize);
-
-      mk__memcpy(itemPosA,
-                 tmp,
-                 itemSize);
-
-      itemPosA += itemSize;
-    }
-
-    itemPosA_row += colsOff;
-    itemPosB_row += itemSize;
-  }
+  colsOff   = cols * itemSize;
+  posA_row  = value;
+  posB_row  = value;
 
   matrix->rows    = cols;
   matrix->columns = rows;
+
+  char tmp[itemSize];
+
+  /* Step 1 */
+  /* Swap/Transpose symmetric locations (square matrix) */
+  sqmatSize = cols > rows ? rows : cols;
+
+  for (i = 0; i < sqmatSize; i++) {
+    posA = posA_row;
+    posB = posB_row;
+
+    for (j = 0; j < i && j < sqmatSize; j++) {
+      mk__memcpy(tmp,
+                 posB,
+                 itemSize);
+
+      mk__memcpy(posB,
+                 posA,
+                 itemSize);
+
+      mk__memcpy(posA,
+                 tmp,
+                 itemSize);
+
+      posA += itemSize;
+      posB += colsOff;
+    }
+
+    posA_row += colsOff;
+    posB_row += itemSize;
+  }
+
+  if (rows == cols)
+    return;
+
+  /* Step 2 */
+  /* Swap/Transpose asymmetric locations (non-square piece) */
 }
 
 MK_EXPORT
