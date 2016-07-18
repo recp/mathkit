@@ -221,15 +221,25 @@ void
 mkMatrixPrint(MkMatrix * __restrict matrix,
               MkPrintFn itemPrinter,
               FILE * __restrict ostream) {
+  char  *pos;
+  size_t rows;
+  size_t cols;
+  size_t itemSize;
   size_t i;
   size_t j;
 
-  fprintf(ostream, "Matrix (%zux%zu):\n",
-          matrix->rows, matrix->columns);
+  rows     = matrix->rows;
+  cols     = matrix->columns;
+  pos      = matrix->base.value;
+  itemSize = matrix->base.itemSize;
 
-  for (i = 0; i < matrix->rows; i++) {
-    for (j = 0; j < matrix->columns; j++)
-      itemPrinter(ostream, MkMatrixGet(matrix, i, j));
+  fprintf(ostream, "Matrix (%zux%zu):\n", rows, cols);
+
+  for (i = 0; i < rows; i++) {
+    for (j = 0; j < cols; j++) {
+      itemPrinter(ostream, pos);
+      pos += itemSize;
+    }
 
     fprintf(ostream, "\n");
   }
