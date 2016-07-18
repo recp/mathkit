@@ -248,7 +248,6 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
   size_t itemSize;
   size_t rows;
   size_t cols;
-  size_t sqmatSize;
   size_t colsOff;
   size_t i;
   size_t j;
@@ -269,15 +268,60 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
 
   char tmp[itemSize];
 
-  /* Step 1 */
-  /* Swap/Transpose symmetric locations (square matrix) */
-  sqmatSize = cols > rows ? rows : cols;
+  /* Transpose square matrix */
+  if (rows == cols) {
+    for (i = 0; i < rows; i++) {
+      posA = posA_row;
+      posB = posB_row;
 
-  for (i = 0; i < sqmatSize; i++) {
-    posA = posA_row;
-    posB = posB_row;
+      for (j = 0; j < i && j < rows; j++) {
+        mk__memcpy(tmp,
+                   posB,
+                   itemSize);
 
-    for (j = 0; j < i && j < sqmatSize; j++) {
+        mk__memcpy(posB,
+                   posA,
+                   itemSize);
+
+        mk__memcpy(posA,
+                   tmp,
+                   itemSize);
+
+        posA += itemSize;
+        posB += colsOff;
+      }
+
+      posA_row += colsOff;
+      posB_row += itemSize;
+    }
+    
+    return;
+  }
+
+  /* Transpose non-square matrix */
+  {
+    size_t posA_off;
+    size_t posB_off; /* position in trasposed matrix */
+    size_t count;
+    size_t slctdPosA;
+    size_t mod;
+    char   valA[itemSize];
+    char   flags[itemCount - 2];
+
+    count     = 2;
+    posA      = value + itemSize;
+    slctdPosA = posA_off = 1; /* ignore 0,0 */
+
+    for (; slctdPosA < sizeof(flags); slctdPosA++)
+      flags[slctdPosA] = 0x00;
+
+MK_PRAGMA_UNROLL_4
+    do {
+      /* find transposed position */
+      mod      = posA_off % cols;
+      posB_off = rows * mod + (posA_off - mod) / cols;
+      posB     = value + posB_off * itemSize;
+
       mk__memcpy(tmp,
                  posB,
                  itemSize);
@@ -286,23 +330,26 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
                  posA,
                  itemSize);
 
-      mk__memcpy(posA,
+      mk__memcpy(valA,
                  tmp,
                  itemSize);
 
-      posA += itemSize;
-      posB += colsOff;
-    }
+      flags[posA_off] = 0x01;
 
-    posA_row += colsOff;
-    posB_row += itemSize;
+      /* next position */
+      if (posB_off != slctdPosA) {
+        posA     = valA;
+        posA_off = posB_off;
+        continue;
+      }
+
+      while (!flags[++slctdPosA]);
+
+      posA     = value + itemSize * slctdPosA;
+      posA_off = slctdPosA;
+
+    } while (++count != itemCount);
   }
-
-  if (rows == cols)
-    return;
-
-  /* Step 2 */
-  /* Swap/Transpose asymmetric locations (non-square piece) */
 }
 
 MK_EXPORT
