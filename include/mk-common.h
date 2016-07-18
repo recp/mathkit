@@ -36,7 +36,7 @@
 #endif
 
 typedef void (*MkPrintFn)(FILE * __restrict ostream,
-void * __restrict item);
+                          void * __restrict item);
 
 typedef void (*MkOpFn)(void * __restrict a, void * __restrict b);
 
