@@ -24,4 +24,17 @@
     while (srci != srci_end)                                                  \
       *desti++ = *srci++;                                                     \
   } while (0)
+
+#define mk__memzero(dest, size)                                               \
+  do {                                                                        \
+    int32_t *desti;                                                           \
+    int32_t *desti_end;                                                       \
+                                                                              \
+    desti     = (int32_t *)dest;                                              \
+    desti_end = (int32_t *)((char *)desti + size);                            \
+                                                                              \
+    while (desti != desti_end)                                                \
+      *desti++ = 0;                                                           \
+  } while (0)
+
 #endif /* mk__mem_h */
