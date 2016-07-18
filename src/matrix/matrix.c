@@ -77,9 +77,9 @@ MK_EXPORT
 void
 mkMatrixFill(MkMatrix * __restrict matrix,
              void * value) {
-  memcpy(MkMatrixVal(matrix),
-         value,
-         matrix->base.itemCount * matrix->base.itemSize);
+  mk__memcpy(MkMatrixVal(matrix),
+             value,
+             matrix->base.itemCount * matrix->base.itemSize);
 }
 
 MK_EXPORT
