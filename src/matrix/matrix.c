@@ -248,7 +248,7 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
   size_t itemSize;
   size_t rows;
   size_t cols;
-  size_t colsOff;
+  size_t rowsOff;
   size_t i;
   size_t j;
   size_t itemCount;
@@ -259,17 +259,18 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
   cols      = matrix->columns;
   value     = matrix->base.value;
 
-  colsOff   = cols * itemSize;
-  posA_row  = value;
-  posB_row  = value;
+  rowsOff   = rows * itemSize;
 
   matrix->rows    = cols;
   matrix->columns = rows;
 
-  char tmp[itemSize];
-
   /* Transpose square matrix */
   if (rows == cols) {
+    char tmp[itemSize];
+
+    posA_row  = value;
+    posB_row  = value;
+
     for (i = 0; i < rows; i++) {
       posA = posA_row;
       posB = posB_row;
@@ -288,10 +289,10 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
                    itemSize);
 
         posA += itemSize;
-        posB += colsOff;
+        posB += rowsOff;
       }
 
-      posA_row += colsOff;
+      posA_row += rowsOff;
       posB_row += itemSize;
     }
     
@@ -300,55 +301,30 @@ mkMatrixTranspose(MkMatrix * __restrict matrix) {
 
   /* Transpose non-square matrix */
   {
-    size_t posA_off;
-    size_t posB_off; /* position in trasposed matrix */
-    size_t count;
-    size_t slctdPosA;
-    size_t mod;
-    char   valA[itemSize];
-    char   flags[itemCount - 2];
+    char trans[itemSize * itemCount];
 
-    count     = 2;
-    posA      = value + itemSize;
-    slctdPosA = posA_off = 1; /* ignore 0,0 */
+    posB_row  = trans;
+    posA      = value;
 
-    for (; slctdPosA < sizeof(flags); slctdPosA++)
-      flags[slctdPosA] = 0x00;
+    for (i = 0; i < rows; i++) {
+      posB = posB_row;
 
 MK_PRAGMA_UNROLL_4
-    do {
-      /* find transposed position */
-      mod      = posA_off % cols;
-      posB_off = rows * mod + (posA_off - mod) / cols;
-      posB     = value + posB_off * itemSize;
+      for (j = 0; j < cols; j++) {
+        mk__memcpy(posB,
+                   posA,
+                   itemSize);
 
-      mk__memcpy(tmp,
-                 posB,
-                 itemSize);
-
-      mk__memcpy(posB,
-                 posA,
-                 itemSize);
-
-      mk__memcpy(valA,
-                 tmp,
-                 itemSize);
-
-      flags[posA_off] = 0x01;
-
-      /* next position */
-      if (posB_off != slctdPosA) {
-        posA     = valA;
-        posA_off = posB_off;
-        continue;
+        posA += itemSize;
+        posB += rowsOff;
       }
 
-      while (!flags[++slctdPosA]);
+      posB_row += itemSize;
+    }
 
-      posA     = value + itemSize * slctdPosA;
-      posA_off = slctdPosA;
-
-    } while (++count != itemCount);
+    mk__memcpy(value,
+               trans,
+               sizeof(trans));
   }
 }
 
