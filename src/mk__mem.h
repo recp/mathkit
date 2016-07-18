@@ -18,7 +18,7 @@
     int32_t *desti;                                                           \
                                                                               \
     srci     = (int32_t *)src;                                                \
-    srci_end = (int32_t *)((char *)srci + itemSize);                          \
+    srci_end = (int32_t *)((char *)srci + size);                              \
     desti    = (int32_t *)dest;                                               \
                                                                               \
     while (srci != srci_end)                                                  \
