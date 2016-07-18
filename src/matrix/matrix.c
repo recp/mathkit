@@ -384,20 +384,21 @@ mkMatrixScale(MkMatrix * __restrict matrix,
               void * __restrict other,
               MkOp * __restrict op) {
   char  *itemPos;
+  char  *itemPos_end;
   char  *value;
-  size_t i;
-  size_t j;
   size_t itemSize;
+  MkOpFn opFn;
 
-  itemSize   = matrix->base.itemSize;
-  value      = matrix->base.value;
+  itemSize    = matrix->base.itemSize;
+  value       = matrix->base.value;
+  itemPos     = value;
+  itemPos_end = itemPos + itemSize * matrix->base.itemCount;
+  opFn        = op->op;
 
-  for (i = 0; i < matrix->rows; i++) {
-    for (j = 0; j < matrix->columns; j++) {
-      itemPos = (value + (i * matrix->columns + j) * itemSize);
-      op->op(itemPos, other);
-    }
-  }
+MK_PRAGMA_UNROLL_4
+  do {
+    opFn(itemPos, other);
+  } while ((itemPos += itemSize) != itemPos_end);
 }
 
 MK_EXPORT
