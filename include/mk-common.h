@@ -11,6 +11,7 @@
 /* since C99 or compiler ext */
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <errno.h>
 
 #if defined(_WIN32)
