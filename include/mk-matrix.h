@@ -42,15 +42,13 @@ MK_EXPORT
 __attribute((always_inline))
 inline
 MkMatrix *
-mkMatrixNew(size_t rows,
-            size_t cols,
-            MkBufLayout * __restrict layout) {
+mkMatrixNew(MkBufLayout * __restrict layout) {
    MkMatrix *matrix;
 
    matrix = (MkMatrix *)calloc(sizeof(*matrix), 1);
-   matrix->count  = rows * cols;
-   matrix->rows   = rows;
-   matrix->cols   = cols;
+   matrix->count  = layout->count[0] * layout->count[1];
+   matrix->rows   = layout->count[0];
+   matrix->cols   = layout->count[1];
    matrix->layout = layout;
    matrix->isize  = mkItemSize(layout);
 
