@@ -7,6 +7,9 @@
 
 #ifndef mk_matrix_impl_mat_h
 #define mk_matrix_impl_mat_h
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -158,4 +161,7 @@ mkMatrixMatrixMultL(MkMatrix * __restrict matrix,
    }
 }
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* mk_matrix_impl_mat_h */

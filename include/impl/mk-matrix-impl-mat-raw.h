@@ -7,6 +7,9 @@
 
 #ifndef mk_matrix_impl_mat_raw_h
 #define mk_matrix_impl_mat_raw_h
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "mk-matrix-impl-raw.h"
 #include <stdlib.h>
@@ -192,4 +195,7 @@ mkRawMatrixMult(void * __restrict mL,
    }
 }
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* mk_matrix_impl_mat_raw_h */

@@ -7,6 +7,9 @@
 
 #ifndef mk_matrix_impl_sc_h
 #define mk_matrix_impl_sc_h
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -90,4 +93,7 @@ mkMatrixDiv(MkMatrix * __restrict matrix,
    }
 }
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* mk_matrix_impl_sc_h */
