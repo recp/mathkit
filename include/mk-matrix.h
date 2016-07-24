@@ -19,68 +19,18 @@ extern "C" {
 #include "mk-common.h"
 #include "mk-vector.h"
 
-#define MkMatrixGet(_matrix, _i, _j)                                          \
-  ((char *)_matrix->base.value                                                \
-        + (_i * _matrix->columns + _j) * (_matrix->base.itemSize))
-
-#define MkMatrixSet(_matrix, _i, _j, _val)                                    \
-  memcpy(MkMatrixGet(_matrix, _i, _j),                                        \
-         _val,                                                                \
-         _matrix->base.itemSize)
-
-#define MkMatrixSet2(_matrix, _matrixPos, _val)                               \
-  memcpy(_matrixPos,                                                          \
-         _val,                                                                \
-         _matrix->base.itemSize)
-
-#define MkMatrixVal(_matrix) ((void *)_matrix->base.value)
-
 typedef struct MkMatrix {
-  MkVector base;
-  size_t   rows;
-  size_t   columns;
+   void        *value;
+   MkBufLayout *layout;
+   size_t       rows;
+   size_t       cols;
+   size_t       isize;
+   size_t       count;
+   int          bufindex;
 } MkMatrix;
 
-MK_EXPORT
-MkMatrix *
-mkMatrixNew(size_t itemSize,
-            size_t rows,
-            size_t columns,
-            void  *zeroVal,
-            void  *oneVal);
-
-MK_EXPORT
-void
-mkMatrixFill(MkMatrix * __restrict matrix,
-             void * value);
-
-MK_EXPORT
-MkMatrix *
-mkMatrixNew4x4f(bool identity);
-
-MK_EXPORT
-MkMatrix *
-mkMatrixNew4x4d(bool identity);
-
-MK_EXPORT
-MkMatrix *
-mkMatrixNewFromf(size_t rows,
-                 size_t columns,
-                 float * data);
-
-MK_EXPORT
-MkMatrix *
-mkMatrixNewFromd(size_t rows,
-                 size_t columns,
-                 double * data);
-
-MK_EXPORT
-MkMatrix *
-mkMatrixNewFrom4x4f(float * data);
-
-MK_EXPORT
-MkMatrix *
-mkMatrixNewFrom4x4d(double * data);
+#include "impl/mk-matrix-impl-sc.h"
+#include "impl/mk-matrix-impl-mat.h"
 
 MK_EXPORT
 void
@@ -89,36 +39,48 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
               FILE * __restrict ostream);
 
 MK_EXPORT
-void
-mkMatrixTranspose(MkMatrix * __restrict matrix);
+__attribute((always_inline))
+inline
+MkMatrix *
+mkMatrixNew(size_t rows,
+            size_t cols,
+            MkBufLayout * __restrict layout) {
+   MkMatrix *matrix;
 
-MK_EXPORT
-bool
-mkMatrixIsIdentity(MkMatrix * __restrict matrix);
+   matrix = (MkMatrix *)calloc(sizeof(*matrix), 1);
+   matrix->count  = rows * cols;
+   matrix->rows   = rows;
+   matrix->cols   = cols;
+   matrix->layout = layout;
+   matrix->isize  = mkItemSize(layout);
 
-MK_EXPORT
+   return matrix;
+}
+
+inline
 void
 mkMatrixScale(MkMatrix * __restrict matrix,
               void * __restrict other,
-              MkOp * __restrict op);
+              const MkBufLayout layout);
 
-MK_EXPORT
+
+inline
 void
-mkMatrixMatrixL(MkMatrix * __restrict destMatrix,
-                MkMatrix * __restrict matrixL,
-                MkOp * __restrict op);
+mkMatrixAdd(MkMatrix * __restrict matrix,
+            void * __restrict other,
+            const MkBufLayout layout);
 
-MK_EXPORT
+inline
 void
-mkMatrixMatrixR(MkMatrix * __restrict destMatrix,
-                MkMatrix * __restrict matrixR,
-                MkOp * __restrict op);
+mkMatrixSub(MkMatrix * __restrict matrix,
+            void * __restrict other,
+            const MkBufLayout layout);
 
-MK_EXPORT
-MkMatrix *
-mkMatrixMatrix(MkMatrix * __restrict matrixL,
-               MkMatrix * __restrict matrixR,
-               MkOp * __restrict op);
+inline
+void
+mkMatrixDiv(MkMatrix * __restrict matrix,
+            void * __restrict other,
+            const MkBufLayout layout);
 
 #ifdef __cplusplus
 }
