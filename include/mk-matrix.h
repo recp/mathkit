@@ -55,6 +55,21 @@ mkMatrixNew(MkBufLayout * __restrict layout) {
    return matrix;
 }
 
+MK_EXPORT
+__attribute((always_inline))
+inline
+void
+mkMatrixInit(MkMatrix * __restrict matrix,
+             MkBufLayout * __restrict layout) {
+
+   matrix->count    = layout->count[0] * layout->count[1];
+   matrix->rows     = layout->count[0];
+   matrix->cols     = layout->count[1];
+   matrix->layout   = layout;
+   matrix->isize    = mkItemSize(layout);
+   matrix->bufindex = 0;
+}
+
 inline
 void
 mkMatrixScale(MkMatrix * __restrict matrix,
