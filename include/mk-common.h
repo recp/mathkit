@@ -72,8 +72,8 @@ typedef struct MkBufLayout {
 __attribute((always_inline))
 inline
 size_t
-mkItemSize(MkBufLayout * __restrict layout) {
-   switch (layout->type) {
+mkItemSize(const MkBufLayout layout) {
+   switch (layout.type) {
       case MK_FLOAT:  return sizeof(float);   break;
       case MK_DOUBLE: return sizeof(double);  break;
       case MK_INT32:  return sizeof(int32_t); break;

@@ -41,33 +41,29 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
 MK_EXPORT
 __attribute((always_inline))
 inline
-MkMatrix *
-mkMatrixNew(MkBufLayout * __restrict layout) {
-   MkMatrix *matrix;
+void
+mkMatrixInit(MkMatrix * __restrict matrix,
+             const MkBufLayout layout) {
 
-   matrix = (MkMatrix *)calloc(sizeof(*matrix), 1);
-   matrix->count  = layout->count[0] * layout->count[1];
-   matrix->rows   = layout->count[0];
-   matrix->cols   = layout->count[1];
-   matrix->layout = layout;
-   matrix->isize  = mkItemSize(layout);
-
-   return matrix;
+   matrix->count    = layout.count[0] * layout.count[1];
+   matrix->rows     = layout.count[0];
+   matrix->cols     = layout.count[1];
+   matrix->isize    = mkItemSize(layout);
+   matrix->bufindex = 0;
 }
 
 MK_EXPORT
 __attribute((always_inline))
 inline
-void
-mkMatrixInit(MkMatrix * __restrict matrix,
-             MkBufLayout * __restrict layout) {
+MkMatrix *
+mkMatrixNew(void * __restrict value,
+            const MkBufLayout layout) {
+   MkMatrix *matrix;
 
-   matrix->count    = layout->count[0] * layout->count[1];
-   matrix->rows     = layout->count[0];
-   matrix->cols     = layout->count[1];
-   matrix->layout   = layout;
-   matrix->isize    = mkItemSize(layout);
-   matrix->bufindex = 0;
+   matrix = malloc(sizeof(*matrix));
+   mkMatrixInit(matrix, layout);
+
+   return matrix;
 }
 
 inline
