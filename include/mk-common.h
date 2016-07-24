@@ -69,6 +69,7 @@ typedef struct MkBufLayout {
 #define MK_DEF_LAYOUT(MK__TYPE, MK__M, MK__N, MK__RT)                         \
   (MkBufLayout){MK__TYPE, MK__M, MK__N, MK__RT}
 
+__attribute((always_inline))
 inline
 size_t
 mkItemSize(MkBufLayout * __restrict layout) {
