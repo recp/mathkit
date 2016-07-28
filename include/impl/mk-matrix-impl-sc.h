@@ -37,7 +37,7 @@ extern "C" {
      break;                                                                   \
   }
 
-inline
+MK_INLINE
 void
 mkMatrixScale(MkMatrix * __restrict matrix,
               void * __restrict other,
@@ -51,7 +51,7 @@ mkMatrixScale(MkMatrix * __restrict matrix,
    }
 }
 
-inline
+MK_INLINE
 void
 mkMatrixAdd(MkMatrix * __restrict matrix,
             void * __restrict other,
@@ -65,7 +65,7 @@ mkMatrixAdd(MkMatrix * __restrict matrix,
    }
 }
 
-inline
+MK_INLINE
 void
 mkMatrixSub(MkMatrix * __restrict matrix,
             void * __restrict other,
@@ -79,7 +79,7 @@ mkMatrixSub(MkMatrix * __restrict matrix,
    }
 }
 
-inline
+MK_INLINE
 void
 mkMatrixDiv(MkMatrix * __restrict matrix,
             void * __restrict other,

@@ -39,8 +39,7 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
               FILE * __restrict ostream);
 
 MK_EXPORT
-__attribute((always_inline))
-inline
+MK_INLINE
 void
 mkMatrixInit(MkMatrix * __restrict matrix,
              const MkBufLayout layout) {
@@ -53,8 +52,7 @@ mkMatrixInit(MkMatrix * __restrict matrix,
 }
 
 MK_EXPORT
-__attribute((always_inline))
-inline
+MK_INLINE
 MkMatrix *
 mkMatrixNew(void * __restrict value,
             const MkBufLayout layout) {

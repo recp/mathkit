@@ -77,7 +77,7 @@ extern "C" {
            *(posB + j + i) = *posA++;                                         \
   }
 
-inline
+MK_INLINE
 void
 mkMatrixTranspose(MkMatrix * __restrict matrix,
                   void * __restrict bufs[2],
@@ -90,7 +90,7 @@ mkMatrixTranspose(MkMatrix * __restrict matrix,
    }
 }
 
-inline
+MK_INLINE
 void
 mkMatrixTransposeTo(MkMatrix * __restrict matrix,
                     void * __restrict dest,
@@ -106,8 +106,7 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
 #define mk_mmultl(MK__M, MK__ML, MK__BUFS, MK__LAY)                           \
    mkMatrixMatrixMultL(MK__M, MK__ML, MK__BUFS, MK__LAY)
 
-__attribute((always_inline))
-inline
+MK_INLINE
 void
 mkMatrixMatrixMultL(MkMatrix * __restrict matrix,
                     MkMatrix * __restrict matrixL,

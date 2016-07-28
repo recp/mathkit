@@ -16,8 +16,7 @@ extern "C" {
 
 #include <stdlib.h>
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkGlmMatrixAdd4x4(float * __restrict m,
                   float val) {
@@ -31,8 +30,7 @@ mkGlmMatrixAdd4x4(float * __restrict m,
    m[14] += val; m[15] += val;
 }
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkGlmMatrixAdd4x4d(double * __restrict m,
                    double val) {
@@ -46,8 +44,7 @@ mkGlmMatrixAdd4x4d(double * __restrict m,
    m[14] += val; m[15] += val;
 }
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkGlmMatrixScale4x4(float * __restrict m,
                     float val) {
@@ -61,8 +58,7 @@ mkGlmMatrixScale4x4(float * __restrict m,
    m[14] *= val; m[15] *= val;
 }
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkGlmMatrixScale4x4d(double * __restrict m,
                      double val) {
@@ -76,8 +72,7 @@ mkGlmMatrixScale4x4d(double * __restrict m,
    m[14] *= val; m[15] *= val;
 }
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkGlmMatrixMatrixAdd4x4(float * __restrict m,
                         float * __restrict m2) {
@@ -91,8 +86,7 @@ mkGlmMatrixMatrixAdd4x4(float * __restrict m,
    m[14] += m2[14]; m[15] += m2[15];
 }
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkGlmMatrixMatrixAdd4x4d(double * __restrict m,
                          double * __restrict m2) {
@@ -106,8 +100,7 @@ mkGlmMatrixMatrixAdd4x4d(double * __restrict m,
    m[14] += m2[14]; m[15] += m2[15];
 }
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkRawMatrixMult4f(float * __restrict l,
                   float * __restrict r,
@@ -130,8 +123,7 @@ mkRawMatrixMult4f(float * __restrict l,
    d[15] = l[12] * r[3] + l[13] * r[7] + l[14] * r[11] + l[15] * r[15];
 }
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkRawMatrixMult4x4x3f(float * __restrict l,
                       float * __restrict r,
@@ -150,8 +142,7 @@ mkRawMatrixMult4x4x3f(float * __restrict l,
    d[11] = l[8]  * r[3] + l[9]  * r[7] + l[10] * r[11] + l[11] * r[15];
 }
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkRawMatrixTranspose4f(float * __restrict m,
                        float * __restrict d) {
@@ -161,8 +152,7 @@ mkRawMatrixTranspose4f(float * __restrict m,
    d[12] = m[3]; d[13] = m[7]; d[14] = m[11]; d[15] = m[15];
 }
 
-__attribute__((always_inline))
-inline
+MK_INLINE
 void
 mkRawMatrixMult(void * __restrict mL,
                 void * __restrict mR,

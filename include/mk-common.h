@@ -22,10 +22,12 @@
 #  endif
 #  define _mathkit_hide
 #  define MK_PRAGMA_UNROLL(n)
+#  define MK_INLINE __forceinline  
 #else
 #  define MK_EXPORT      __attribute__((visibility("default")))
 #  define _mathkit_hide __attribute__((visibility("hidden")))
 #  define MK_PRAGMA_UNROLL_4 _Pragma("unroll(4)")
+#  define MK_INLINE __attribute((always_inline)) inline
 #endif
 
 #define MK_ARRAY_LEN(ARR) sizeof(ARR) / sizeof(ARR[0]);
@@ -69,8 +71,7 @@ typedef struct MkBufLayout {
 #define MK_DEF_LAYOUT(MK__TYPE, MK__M, MK__N, MK__RT)                         \
   (MkBufLayout){MK__TYPE, MK__M, MK__N, MK__RT}
 
-__attribute((always_inline))
-inline
+MK_INLINE
 size_t
 mkItemSize(const MkBufLayout layout) {
    switch (layout.type) {
