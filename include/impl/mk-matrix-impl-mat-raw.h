@@ -166,7 +166,7 @@ mkRawMatrixMult(void * __restrict mL,
                   /* 4x4 4x4 */
 #if defined( __AVX__ )
                   case 4:  break;
-#elif defined( __SSE__ )
+#elif defined( __SSE__ ) || defined( __SSE2__ )
                   case 4: _mm_mmul4(ps,
                                     (float *)mDest,
                                     (float *)mL,
