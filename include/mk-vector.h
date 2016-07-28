@@ -31,32 +31,6 @@ typedef struct MkVector {
   MkVecFlags flags;
 } MkVector;
 
-MK_EXPORT
-MkVector *
-mkVecNew(size_t itemSize,
-         size_t itemCount,
-         void  *value,
-         void  *zeroVal,
-         void  *oneVal);
-
-MK_EXPORT
-MkVector *
-mkVecNewf(size_t itemCount,
-          float *value);
-
-MK_EXPORT
-MkVector *
-mkVecNewd(size_t  itemCount,
-          double *value);
-
-MK_EXPORT
-MkVector *
-mkVecNew3f(float x, float y, float z);
-
-MK_EXPORT
-MkVector *
-mkVecNew3d(double x, double y, double z);
-
 #ifdef __cplusplus
 }
 #endif
