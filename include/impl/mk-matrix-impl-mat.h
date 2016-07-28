@@ -133,11 +133,11 @@ mkMatrixMatrixMultL(MkMatrix * __restrict matrix,
          posB = (float *)bufs[2];
 
          /* max allowed size is 4x4 for manual computation */
-         if (__builtin_expect(!lay[0].runtime
-                              && lay[0].count[0] < 5
-                              && lay[0].count[1] < 5
-                              && lay[1].count[0] < 5
-                              && lay[1].count[1] < 5, 1)) {
+         if (mk_builtin_expect(!lay[0].runtime
+                               && lay[0].count[0] < 5
+                               && lay[0].count[1] < 5
+                               && lay[1].count[0] < 5
+                               && lay[1].count[1] < 5, 1)) {
 
             mkRawMatrixMult((float *)posA,
                             (float *)posB,

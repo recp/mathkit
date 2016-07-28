@@ -23,11 +23,13 @@
 #  define _mathkit_hide
 #  define MK_PRAGMA_UNROLL(n)
 #  define MK_INLINE __forceinline  
+#  define mk_builtin_expect(exp, c) exp
 #else
 #  define MK_EXPORT      __attribute__((visibility("default")))
 #  define _mathkit_hide __attribute__((visibility("hidden")))
 #  define MK_PRAGMA_UNROLL_4 _Pragma("unroll(4)")
 #  define MK_INLINE __attribute((always_inline)) inline
+#  define mk_builtin_expect(exp, c) __builtin_expect(exp, c)
 #endif
 
 #define MK_ARRAY_LEN(ARR) sizeof(ARR) / sizeof(ARR[0]);
