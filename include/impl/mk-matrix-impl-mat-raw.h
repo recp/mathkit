@@ -12,6 +12,8 @@ extern "C" {
 #endif
 
 #include "mk-matrix-impl-raw.h"
+#include "mk-intrin.h"
+
 #include <stdlib.h>
 
 __attribute__((always_inline))
@@ -172,9 +174,19 @@ mkRawMatrixMult(void * __restrict mL,
             case 4:
                switch (lay[1].count[1]) {
                   /* 4x4 4x4 */
-                  case 4: mkRawMatrixMult4f((float *)mL,
-                                            (float *)mR,
-                                            (float *)mDest); break;
+#if defined( __AVX__ )
+                  case 4:  break;
+#elif defined( __SSE__ )
+                  case 4: _mm_mmul4(ps,
+                                    (float *)mDest,
+                                    (float *)mL,
+                                    (float *)mR); break;
+#else
+
+                  case 4:  mkRawMatrixMult4f((float *)mL,
+                                             (float *)mR,
+                                             (float *)mDest); break;
+#endif
 
                   /* 4x4 4x3 */
                   case 3: break;

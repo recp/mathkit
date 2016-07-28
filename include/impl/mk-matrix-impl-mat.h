@@ -103,6 +103,9 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
    }
 }
 
+#define mk_mmultl(MK__M, MK__ML, MK__BUFS, MK__LAY)                           \
+   mkMatrixMatrixMultL(MK__M, MK__ML, MK__BUFS, MK__LAY)
+
 __attribute((always_inline))
 inline
 void
@@ -130,15 +133,27 @@ mkMatrixMatrixMultL(MkMatrix * __restrict matrix,
          posC = (float *)bufs[!bufindex];
          posB = (float *)bufs[2];
 
-         if (!lay[0].runtime) {
+         /* max allowed size is 4x4 for manual computation */
+         if (__builtin_expect(!lay[0].runtime
+                              && lay[0].count[0] < 5
+                              && lay[0].count[1] < 5
+                              && lay[1].count[0] < 5
+                              && lay[1].count[1] < 5, 1)) {
+
             mkRawMatrixMult((float *)posA,
                             (float *)posB,
                             (float *)posC,
                             lay);
          } else {
-            rowsL = matrixL->rows;
-            colsL = matrixL->cols;
-            colsR = matrix->cols;
+            if (lay[0].runtime) {
+               rowsL = matrixL->rows;
+               colsL = matrixL->cols;
+               colsR = matrix->cols;
+            } else {
+               rowsL = lay[0].count[0];
+               colsL = lay[0].count[1];
+               colsR = lay[0].count[1];
+            }
 
             for (i = 0; i < rowsL; i++)
                for (j = 0; j < colsR; j++) {
