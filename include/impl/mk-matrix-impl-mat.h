@@ -156,7 +156,8 @@ mkMatrixMatrixMultL(MkMatrix * __restrict matrix,
 
             for (i = 0; i < rowsL; i++)
                for (j = 0; j < colsR; j++) {
-                  for (tmpSum = iR = 0; iR < colsL; iR ++)
+                  tmpSum = 0.0f;
+                  for (iR = 0; iR < colsL; iR ++)
                      tmpSum += *(posA + i * colsR + iR)
                                    * *(posB + iR * colsR + j);
 
