@@ -60,7 +60,7 @@ mkMatrixNew(void * __restrict value,
             const MkBufLayout layout) {
    MkMatrix *matrix;
 
-   matrix = malloc(sizeof(*matrix));
+   matrix = (MkMatrix *)malloc(sizeof(*matrix));
    mkMatrixInit(matrix, layout);
 
    return matrix;
