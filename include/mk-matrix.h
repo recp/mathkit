@@ -38,7 +38,6 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
               MkPrintFn itemPrinter,
               FILE * __restrict ostream);
 
-MK_EXPORT
 MK_INLINE
 void
 mkMatrixInit(MkMatrix * __restrict matrix,
@@ -51,7 +50,6 @@ mkMatrixInit(MkMatrix * __restrict matrix,
    matrix->bufindex = 0;
 }
 
-MK_EXPORT
 MK_INLINE
 MkMatrix *
 mkMatrixNew(void * __restrict value,
@@ -64,26 +62,26 @@ mkMatrixNew(void * __restrict value,
    return matrix;
 }
 
-inline
+MK_INLINE
 void
 mkMatrixScale(MkMatrix * __restrict matrix,
               void * __restrict other,
               const MkBufLayout layout);
 
 
-inline
+MK_INLINE
 void
 mkMatrixAdd(MkMatrix * __restrict matrix,
             void * __restrict other,
             const MkBufLayout layout);
 
-inline
+MK_INLINE
 void
 mkMatrixSub(MkMatrix * __restrict matrix,
             void * __restrict other,
             const MkBufLayout layout);
 
-inline
+MK_INLINE
 void
 mkMatrixDiv(MkMatrix * __restrict matrix,
             void * __restrict other,
