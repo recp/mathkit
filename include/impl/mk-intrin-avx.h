@@ -8,6 +8,6 @@
 #ifndef mk_intrin_avx_h
 #define mk_intrin_avx_h
 
-#include <avxintrin.h>
+#include <immintrin.h>
 
 #endif /* mk_intrin_avx_h */
