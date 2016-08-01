@@ -150,6 +150,21 @@ mkRawMatrixMult4x4x3f(float * __restrict l,
 
 MK_INLINE
 void
+mkRawMatrixMult4x4x2f(float * __restrict l,
+                      float * __restrict r,
+                      float * __restrict d) {
+   d[0]  = l[0]  * r[0] + l[1]  * r[2] + l[2]  * r[4]  + l[3]  * r[6];
+   d[1]  = l[0]  * r[1] + l[1]  * r[3] + l[2]  * r[5]  + l[3]  * r[7];
+   d[2]  = l[4]  * r[0] + l[5]  * r[2] + l[6]  * r[4]  + l[7]  * r[6];
+   d[3]  = l[4]  * r[1] + l[5]  * r[3] + l[6]  * r[5]  + l[7]  * r[7];
+   d[4]  = l[8]  * r[0] + l[8]  * r[2] + l[9]  * r[4]  + l[10]  * r[6];
+   d[5]  = l[8]  * r[1] + l[8]  * r[3] + l[9]  * r[5]  + l[10]  * r[7];
+   d[6]  = l[12] * r[0] + l[13] * r[2] + l[14] * r[4]  + l[15]  * r[6];
+   d[7]  = l[12] * r[1] + l[13] * r[3] + l[14] * r[5]  + l[15]  * r[7];
+}
+
+MK_INLINE
+void
 mkRawMatrixTranspose4f(float * __restrict m,
                        float * __restrict d) {
    d[0]  = m[0]; d[1]  = m[4]; d[2]  = m[8];  d[3]  = m[12];
@@ -180,7 +195,9 @@ mkRawMatrixMult(void * __restrict mL,
                                                 (float *)mDest); break;
                      
                   /* 4x4 4x2 */
-                  case 2: break;
+                  case 2: mkRawMatrixMult4x4x2f((float *)mL,
+                                                (float *)mR,
+                                                (float *)mDest); break;
 
                   default:
                      break;
