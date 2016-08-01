@@ -165,6 +165,54 @@ mkRawMatrixMult4x4x2f(float * __restrict l,
 
 MK_INLINE
 void
+mkRawMatrixMult3x4x4f(float * __restrict l,
+                      float * __restrict r,
+                      float * __restrict d) {
+   d[0]  = l[0]  * r[0] + l[1]  * r[4] + l[2]  * r[8]  + l[3]  * r[12];
+   d[1]  = l[0]  * r[1] + l[1]  * r[5] + l[2]  * r[9]  + l[3]  * r[13];
+   d[2]  = l[0]  * r[2] + l[1]  * r[6] + l[2]  * r[10] + l[3]  * r[14];
+   d[3]  = l[0]  * r[3] + l[1]  * r[7] + l[2]  * r[11] + l[3]  * r[15];
+   d[4]  = l[4]  * r[0] + l[5]  * r[4] + l[6]  * r[8]  + l[7]  * r[12];
+   d[5]  = l[4]  * r[1] + l[5]  * r[5] + l[6]  * r[9]  + l[7]  * r[13];
+   d[6]  = l[4]  * r[2] + l[5]  * r[6] + l[6]  * r[10] + l[7]  * r[14];
+   d[7]  = l[4]  * r[3] + l[5]  * r[7] + l[6]  * r[11] + l[7]  * r[15];
+   d[8]  = l[8]  * r[0] + l[9]  * r[4] + l[10] * r[8]  + l[11] * r[12];
+   d[9]  = l[8]  * r[1] + l[9]  * r[5] + l[10] * r[9]  + l[11] * r[13];
+   d[10] = l[8]  * r[2] + l[9]  * r[6] + l[10] * r[10] + l[11] * r[14];
+   d[11] = l[8]  * r[3] + l[9]  * r[7] + l[10] * r[11] + l[11] * r[15];
+}
+
+MK_INLINE
+void
+mkRawMatrixMult3x4x3f(float * __restrict l,
+                      float * __restrict r,
+                      float * __restrict d) {
+   d[0]  = l[0]  * r[0] + l[1]  * r[3] + l[2]  * r[6]  + l[3]  * r[9];
+   d[1]  = l[0]  * r[1] + l[1]  * r[4] + l[2]  * r[7]  + l[3]  * r[10];
+   d[2]  = l[0]  * r[2] + l[1]  * r[5] + l[2]  * r[8]  + l[3]  * r[11];
+   d[3]  = l[4]  * r[0] + l[5]  * r[3] + l[6]  * r[6]  + l[7]  * r[9];
+   d[4]  = l[4]  * r[1] + l[5]  * r[4] + l[6]  * r[7]  + l[7]  * r[10];
+   d[5]  = l[4]  * r[2] + l[5]  * r[5] + l[6]  * r[8]  + l[7]  * r[11];
+   d[6]  = l[8]  * r[0] + l[9]  * r[3] + l[10] * r[6]  + l[11] * r[9];
+   d[7]  = l[8]  * r[1] + l[9]  * r[4] + l[10] * r[7]  + l[11] * r[10];
+   d[8]  = l[8]  * r[2] + l[9]  * r[5] + l[10] * r[8]  + l[11] * r[11];
+}
+
+MK_INLINE
+void
+mkRawMatrixMult3x4x2f(float * __restrict l,
+                      float * __restrict r,
+                      float * __restrict d) {
+   d[0]  = l[0]  * r[0] + l[1]  * r[2] + l[2]  * r[4]  + l[3]  * r[6];
+   d[1]  = l[0]  * r[1] + l[1]  * r[3] + l[2]  * r[5]  + l[3]  * r[7];
+   d[2]  = l[4]  * r[0] + l[5]  * r[2] + l[6]  * r[4]  + l[7]  * r[6];
+   d[3]  = l[4]  * r[1] + l[5]  * r[3] + l[6]  * r[5]  + l[7]  * r[7];
+   d[4]  = l[8]  * r[0] + l[8]  * r[2] + l[9]  * r[4]  + l[10]  * r[6];
+   d[5]  = l[8]  * r[1] + l[8]  * r[3] + l[9]  * r[5]  + l[10]  * r[7];
+}
+
+MK_INLINE
+void
 mkRawMatrixTranspose4f(float * __restrict m,
                        float * __restrict d) {
    d[0]  = m[0]; d[1]  = m[4]; d[2]  = m[8];  d[3]  = m[12];
@@ -180,9 +228,9 @@ mkRawMatrixMult(void * __restrict mL,
                 void * __restrict mDest,
                 const MkBufLayout lay[2]) {
 
-   switch (lay[0].count[0]) {
+   switch (lay[0].count[1]) {
       case 4:
-         switch (lay[0].count[1]) {
+         switch (lay[0].count[0]) {
             case 4:
                switch (lay[1].count[1]) {
                   /* 4x4 4x4 */
@@ -199,10 +247,26 @@ mkRawMatrixMult(void * __restrict mL,
                                                 (float *)mR,
                                                 (float *)mDest); break;
 
-                  default:
-                     break;
-               }
-               break;
+                  default: break;
+               } break;
+            case 3:
+               switch (lay[1].count[1]) {
+                     /* 3x4 4x4 */
+                  case 4: mkRawMatrixMult3x4x4f((float *)mL,
+                                                (float *)mR,
+                                                (float *)mDest); break;
+                     /* 3x4 4x3 */
+                  case 3: mkRawMatrixMult3x4x3f((float *)mL,
+                                                (float *)mR,
+                                                (float *)mDest); break;
+
+                     /* 3x4 4x2 */
+                  case 2: mkRawMatrixMult3x4x2f((float *)mL,
+                                                (float *)mR,
+                                                (float *)mDest); break;
+
+                  default: break;
+               } break;
             default:
                break;
          }
