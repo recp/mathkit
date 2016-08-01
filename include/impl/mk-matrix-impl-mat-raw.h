@@ -105,6 +105,11 @@ void
 mkRawMatrixMult4f(float * __restrict l,
                   float * __restrict r,
                   float * __restrict d) {
+#if defined( __AVX__ )
+   _mm256_mmul4(s, d, l, r);
+#elif defined( __SSE__ ) || defined( __SSE2__ )
+   _mm_mmul4(s, d, l, r);
+#else
    d[0]  = l[0]  * r[0] + l[1]  * r[4] + l[2]  * r[8]  + l[3]  * r[12];
    d[1]  = l[0]  * r[1] + l[1]  * r[5] + l[2]  * r[9]  + l[3]  * r[13];
    d[2]  = l[0]  * r[2] + l[1]  * r[6] + l[2]  * r[10] + l[3]  * r[14];
@@ -121,6 +126,7 @@ mkRawMatrixMult4f(float * __restrict l,
    d[13] = l[12] * r[1] + l[13] * r[5] + l[14] * r[9]  + l[15] * r[13];
    d[14] = l[12] * r[2] + l[13] * r[6] + l[14] * r[10] + l[15] * r[14];
    d[15] = l[12] * r[3] + l[13] * r[7] + l[14] * r[11] + l[15] * r[15];
+#endif
 }
 
 MK_INLINE
@@ -164,23 +170,9 @@ mkRawMatrixMult(void * __restrict mL,
             case 4:
                switch (lay[1].count[1]) {
                   /* 4x4 4x4 */
-#if defined( __AVX__ )
-                  case 4: _mm256_mmul4(s,
-                                       (float *)mDest,
-                                       (float *)mL,
-                                       (float *)mR); break;
-#elif defined( __SSE__ ) || defined( __SSE2__ )
-                  case 4: _mm_mmul4(s,
-                                    (float *)mDest,
-                                    (float *)mL,
-                                    (float *)mR); break;
-#else
-
-                  case 4:  mkRawMatrixMult4f((float *)mL,
-                                             (float *)mR,
-                                             (float *)mDest); break;
-#endif
-
+                  case 4: mkRawMatrixMult4f((float *)mL,
+                                            (float *)mR,
+                                            (float *)mDest); break;
                   /* 4x4 4x3 */
                   case 3: break;
 
