@@ -166,7 +166,6 @@ mkRawMatrixMult(void * __restrict mL,
                 const MkBufLayout lay[2]) {
    switch (lay[0].count[0]) {
       case 4:
-         switch (lay[1].count[1]) {
             case 4:
                switch (lay[1].count[1]) {
                   /* 4x4 4x4 */
