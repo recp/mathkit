@@ -540,6 +540,7 @@ mkRawMatrixMult(void * __restrict mL,
                 void * __restrict mR,
                 void * __restrict mDest,
                 const MkBufLayout lay[2]) {
+   /* step 5: call mult macro */
 #define MK__rawMatrixMulT(R0, C0, C1, T)                                      \
   do {                                                                        \
     T * __restrict l;                                                         \
@@ -553,7 +554,8 @@ mkRawMatrixMult(void * __restrict mL,
     mkRawMatrixMult ## R0 ## x ## C0 ## x ## C1(l, r, d);                     \
   } while (0)
 
-#define MK__rawMatrixMul(R0, C0, C1)                                          \
+   /* step 4: select macro by type */
+#define MK__rawMatrixMulC(R0, C0, C1)                                         \
    switch (lay[0].type) {                                                     \
       case MK_FLOAT:  MK__rawMatrixMulT(R0, C0, C1, float);   break;          \
       case MK_DOUBLE: MK__rawMatrixMulT(R0, C0, C1, double);  break;          \
@@ -561,72 +563,32 @@ mkRawMatrixMult(void * __restrict mL,
       case MK_INT64:  MK__rawMatrixMulT(R0, C0, C1, int64_t); break;          \
    }
 
-   switch (lay[0].count[1]) {
-      case 4:
-         switch (lay[0].count[0]) {
-            case 4:
-               switch (lay[1].count[1]) {
-                  case 4: MK__rawMatrixMul(4, 4, 4); break;
-                  case 3: MK__rawMatrixMul(4, 4, 3); break;
-                  case 2: MK__rawMatrixMul(4, 4, 2); break;
-               } break;
-            case 3:
-               switch (lay[1].count[1]) {
-                  case 4: MK__rawMatrixMul(3, 4, 4); break;
-                  case 3: MK__rawMatrixMul(3, 4, 3); break;
-                  case 2: MK__rawMatrixMul(3, 4, 2); break;
-               } break;
-            case 2:
-               switch (lay[1].count[1]) {
-                  case 4: MK__rawMatrixMul(2, 4, 4); break;
-                  case 3: MK__rawMatrixMul(2, 4, 3); break;
-                  case 2: MK__rawMatrixMul(2, 4, 2); break;
-               } break;
-         } break;
-      case 3:
-         switch (lay[0].count[0]) {
-            case 4:
-               switch (lay[1].count[1]) {
-                  case 4: MK__rawMatrixMul(4, 3, 4); break;
-                  case 3: MK__rawMatrixMul(4, 3, 3); break;
-                  case 2: MK__rawMatrixMul(4, 3, 2); break;
-               } break;
-            case 3:
-               switch (lay[1].count[1]) {
-                  case 4: MK__rawMatrixMul(3, 3, 4); break;
-                  case 3: MK__rawMatrixMul(3, 3, 3); break;
-                  case 2: MK__rawMatrixMul(3, 3, 2); break;
-               } break;
-            case 2:
-               switch (lay[1].count[1]) {
-                  case 4: MK__rawMatrixMul(2, 3, 4); break;
-                  case 3: MK__rawMatrixMul(2, 3, 3); break;
-                  case 2: MK__rawMatrixMul(2, 3, 2); break;
-               } break;
-         } break;
-      case 2:
-         switch (lay[0].count[0]) {
-            case 4:
-               switch (lay[1].count[1]) {
-                  case 4: MK__rawMatrixMul(4, 2, 4); break;
-                  case 3: MK__rawMatrixMul(4, 2, 3); break;
-                  case 2: MK__rawMatrixMul(4, 2, 2); break;
-               } break;
-            case 3:
-               switch (lay[1].count[1]) {
-                  case 4: MK__rawMatrixMul(3, 2, 4); break;
-                  case 3: MK__rawMatrixMul(3, 2, 3); break;
-                  case 2: MK__rawMatrixMul(3, 2, 2); break;
-               } break;
-            case 2:
-               switch (lay[1].count[1]) {
-                  case 4: MK__rawMatrixMul(2, 2, 4); break;
-                  case 3: MK__rawMatrixMul(2, 2, 3); break;
-                  case 2: MK__rawMatrixMul(2, 2, 2); break;
-               } break;
-         } break;
+   /* step 3: select macro by column R (mR's column) */
+#define MK__rawMatrixMulByColR(a, b)                                          \
+   switch (lay[1].count[1]) {                                                 \
+      case 4: MK__rawMatrixMulC(a, b, 4); break;                              \
+      case 3: MK__rawMatrixMulC(a, b, 3); break;                              \
+      case 2: MK__rawMatrixMulC(a, b, 2); break;                              \
    }
 
+   /* step 2: select macro by row L (mL's row) */
+#define MK__rawMatrixMulByRowL(a)                                             \
+   switch (lay[0].count[0]) {                                                 \
+      case 4: MK__rawMatrixMulByColR(4, a); break;                            \
+      case 3: MK__rawMatrixMulByColR(3, a); break;                            \
+      case 2: MK__rawMatrixMulByColR(2, a); break;                            \
+   }
+
+   /* step 1: select macro by column L | row R */
+   switch (lay[0].count[1]) {
+      case 4: MK__rawMatrixMulByRowL(4); break;
+      case 3: MK__rawMatrixMulByRowL(3); break;
+      case 2: MK__rawMatrixMulByRowL(2); break;
+   }
+
+#undef MK__rawMatrixMulC
+#undef MK__rawMatrixMulByColR
+#undef MK__rawMatrixMulByRowL
 #undef MK__rawMatrixScT
 #undef MK__rawMatrixSc
 #undef MK__rawMatrixScImpl
