@@ -29,8 +29,8 @@ typedef struct MkMatrix {
    int          bufindex;
 } MkMatrix;
 
-#include "impl/mk-matrix-impl-sc.h"
-#include "impl/mk-matrix-impl-mat.h"
+#include "impl/mki-matrix-sc.h"
+#include "impl/mki-matrix-mat.h"
 
 MK_EXPORT
 void

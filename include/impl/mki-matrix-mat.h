@@ -16,7 +16,7 @@ extern "C" {
 
 #include "../mk-common.h"
 #include "../mk-vector.h"
-#include "mk-matrix-impl-mat-raw.h"
+#include "mki-matrix-raw.h"
 
 #define MK__MAT_TMPL_TRANSPOSE(MK__TYPE)                                      \
   {                                                                           \
