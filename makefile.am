@@ -1,0 +1,38 @@
+#******************************************************************************
+# Copyright (c), Recep Aslantas.                                              *
+#                                                                             *
+# MIT License (MIT), http://opensource.org/licenses/MIT                       *
+# Full license can be found in the LICENSE file                               *
+#                                                                             *
+#******************************************************************************
+
+ACLOCAL_AMFLAGS = -I m4
+
+AM_CFLAGS = -Wall \
+            -std=gnu99 \
+            -O3 \
+            -Wstrict-aliasing=2 \
+            -fstrict-aliasing \
+            -Wpedantic \
+            -Weffc++ \
+            -Wno-overlength-strings
+
+lib_LTLIBRARIES = libmk.la
+libmk_la_LDFLAGS = -no-undefined -version-info 0:1:0
+
+include_HEADERS = include/mk.h \
+                  include/mk-common.h \
+                  include/mk-matrix.h \
+                  include/mk-vector.h \
+                  include/impl/mk-intrin.h \
+                  include/impl/mk-intrin-sse.h \
+                  include/impl/mk-intrin-avx.h \
+                  include/impl/mki-matrix-sc.h \
+                  include/impl/mki-matrix-mat.h \
+                  include/impl/mki-matrix-raw.h
+
+libmk_la_SOURCES=\
+    src/mathkit.c \
+    src/mk_static.c \
+    src/vector/mk_vector.c \
+    src/matrix/matrix.c
