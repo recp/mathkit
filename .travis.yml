@@ -6,6 +6,4 @@ compiler:
 before_install:
 - test -n $CC && unset CC
 
-install: make get-deps
-
 script: sh ./autogen.sh && ./configure && make
