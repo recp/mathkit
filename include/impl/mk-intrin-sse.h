@@ -9,6 +9,7 @@
 #define mk_intrin_sse_h
 
 #include <xmmintrin.h>
+#include <emmintrin.h>
 
 /* float */
 #define _mm_madd_ps(L, R0, R1)                                                \

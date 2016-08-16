@@ -8,7 +8,6 @@
 #ifndef mk_matrix_impl_mat_raw_sse_h
 #define mk_matrix_impl_mat_raw_sse_h
 
-#include <xmmintrin.h>
 #include "mk-intrin-sse.h"
 
 #define mkRawMatrixMult4x4x4_sse_s(L, R, D)                                   \
@@ -31,10 +30,10 @@
 
 #define mkRawMatrixMult4x4x4_sse_d(L, R, D)                                   \
    do {                                                                       \
-      __m128 r0;                                                              \
-      __m128 r1;                                                              \
-      __m128 r2;                                                              \
-      __m128 r3;                                                              \
+      __m128d r0;                                                             \
+      __m128d r1;                                                             \
+      __m128d r2;                                                             \
+      __m128d r3;                                                             \
                                                                               \
       r0 = _mm_load_pd(R);                                                    \
       r1 = _mm_load_pd(R + 4);                                                \
@@ -76,10 +75,10 @@
 
 #define mkRawMatrixMult3x4x4_sse_d(L, R, D)                                   \
    do {                                                                       \
-      __m128 r0;                                                              \
-      __m128 r1;                                                              \
-      __m128 r2;                                                              \
-      __m128 r3;                                                              \
+      __m128d r0;                                                             \
+      __m128d r1;                                                             \
+      __m128d r2;                                                             \
+      __m128d r3;                                                             \
                                                                               \
       r0 = _mm_load_pd(R);                                                    \
       r1 = _mm_load_pd(R + 4);                                                \
@@ -118,10 +117,10 @@
 
 #define mkRawMatrixMult2x4x4_sse_d(L, R, D)                                   \
    do {                                                                       \
-      __m128 r0;                                                              \
-      __m128 r1;                                                              \
-      __m128 r2;                                                              \
-      __m128 r3;                                                              \
+      __m128d r0;                                                             \
+      __m128d r1;                                                             \
+      __m128d r2;                                                             \
+      __m128d r3;                                                             \
                                                                               \
       r0 = _mm_load_pd(R);                                                    \
       r1 = _mm_load_pd(R + 4);                                                \
@@ -158,9 +157,9 @@
 
 #define mkRawMatrixMult4x3x4_sse_d(L, R, D)                                   \
    do {                                                                       \
-      __m128 r0;                                                              \
-      __m128 r1;                                                              \
-      __m128 r2;                                                              \
+      __m128d r0;                                                             \
+      __m128d r1;                                                             \
+      __m128d r2;                                                             \
                                                                               \
       r0 = _mm_load_pd(R);                                                    \
       r1 = _mm_load_pd(R + 4);                                                \
@@ -198,9 +197,9 @@
 
 #define mkRawMatrixMult3x3x4_sse_d(L, R, D)                                   \
    do {                                                                       \
-      __m128 r0;                                                              \
-      __m128 r1;                                                              \
-      __m128 r2;                                                              \
+      __m128d r0;                                                             \
+      __m128d r1;                                                             \
+      __m128d r2;                                                             \
                                                                               \
       r0 = _mm_load_pd(R);                                                    \
       r1 = _mm_load_pd(R + 4);                                                \
@@ -235,9 +234,9 @@
 
 #define mkRawMatrixMult2x3x4_sse_d(L, R, D)                                   \
    do {                                                                       \
-      __m128 r0;                                                              \
-      __m128 r1;                                                              \
-      __m128 r2;                                                              \
+      __m128d r0;                                                             \
+      __m128d r1;                                                             \
+      __m128d r2;                                                             \
                                                                               \
       r0 = _mm_load_pd(R);                                                    \
       r1 = _mm_load_pd(R + 4);                                                \
@@ -270,8 +269,8 @@
 
 #define mkRawMatrixMult4x2x4_sse_d(L, R, D)                                   \
    do {                                                                       \
-      __m128 r0;                                                              \
-      __m128 r1;                                                              \
+      __m128d r0;                                                             \
+      __m128d r1;                                                             \
                                                                               \
       r0 = _mm_load_pd(R);                                                    \
       r1 = _mm_load_pd(R + 4);                                                \
@@ -298,15 +297,15 @@
       r0 = _mm_load_ps(R);                                                    \
       r1 = _mm_load_ps(R + 4);                                                \
                                                                               \
-      _mm_store_ps(D,     _mm_madd_ps(L,     r0, r1));                       \
-      _mm_store_ps(D + 4, _mm_madd_ps(L + 4, r0, r1));                       \
-      _mm_store_ps(D + 8, _mm_madd_ps(L + 8, r0, r1));                       \
+      _mm_store_ps(D,     _mm_madd_ps(L,     r0, r1));                        \
+      _mm_store_ps(D + 4, _mm_madd_ps(L + 4, r0, r1));                        \
+      _mm_store_ps(D + 8, _mm_madd_ps(L + 8, r0, r1));                        \
    } while (0)
 
 #define mkRawMatrixMult3x2x4_sse_d(L, R, D)                                   \
    do {                                                                       \
-      __m128 r0;                                                              \
-      __m128 r1;                                                              \
+      __m128d r0;                                                             \
+      __m128d r1;                                                             \
                                                                               \
       r0 = _mm_load_pd(R);                                                    \
       r1 = _mm_load_pd(R + 4);                                                \
@@ -337,8 +336,8 @@
 
 #define mkRawMatrixMult2x2x4_sse_d(L, R, D)                                   \
    do {                                                                       \
-      __m128 r0;                                                              \
-      __m128 r1;                                                              \
+      __m128d r0;                                                             \
+      __m128d r1;                                                             \
                                                                               \
       r0 = _mm_load_pd(R);                                                    \
       r1 = _mm_load_pd(R + 4);                                                \

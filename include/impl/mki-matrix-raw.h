@@ -13,6 +13,7 @@ extern "C" {
 
 #include <stdlib.h>
 #include <stdint.h>
+#include "mk-intrin.h"
 #include "mki-matrix-raw-sse.h"
 
 #define mkRawMatrixMult4x4x4(l, r, d)                                         \
