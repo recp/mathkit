@@ -5,9 +5,9 @@
  * Full license can be found in the LICENSE file
  */
 
-#include "../include/mk.h"
-
 #define __MATHKIT_SRC_
+
+#include "../include/mk.h"
 
 static
 inline
