@@ -12,6 +12,8 @@ extern "C" {
 #endif
 
 #include <stdlib.h>
+#include <stdint.h>
+#include "mki-matrix-raw-sse.h"
 
 #define mkRawMatrixMult4x4x4(l, r, d)                                         \
  do {                                                                         \
@@ -540,8 +542,21 @@ mkRawMatrixMult(void * __restrict mL,
                 void * __restrict mR,
                 void * __restrict mDest,
                 const MkBufLayout lay[2]) {
+   /* step 5.1.1: let compiler optimise */
+#define MK__rMMulb(R0, C0, C1, P)                                             \
+  mkRawMatrixMult ## R0 ## x ## C0 ## x ## C1(l, r, d)
+
+   /* step 5.1: check SSE/AVX */
+#if defined( __SSE__ ) || defined( __SSE2__ )
+#  define MK__rMMulb2(R0, C0, C1, P)                                          \
+    mkRawMatrixMult ## R0 ## x ## C0 ## x ## C1 ## _sse_##P(l, r, d)
+#else
+#  define MK__rmulb2(R0, C0, C1, P)                                           \
+    MK__rMMulb(R0, C0, C1, P);
+#endif
+
    /* step 5: call mult macro */
-#define MK__rawMatrixMulT(R0, C0, C1, T)                                      \
+#define MK__rMMulT(R0, C0, C1, P, B, T)                                       \
   do {                                                                        \
     T * __restrict l;                                                         \
     T * __restrict r;                                                         \
@@ -551,44 +566,46 @@ mkRawMatrixMult(void * __restrict mL,
     r = (T *)mR;                                                              \
     d = (T *)mDest;                                                           \
                                                                               \
-    mkRawMatrixMult ## R0 ## x ## C0 ## x ## C1(l, r, d);                     \
+    B(R0, C0, C1, P);                                                         \
   } while (0)
 
    /* step 4: select macro by type */
-#define MK__rawMatrixMulC(R0, C0, C1)                                         \
+#define MK__rMMulC(R0, C0, C1, B)                                             \
    switch (lay[0].type) {                                                     \
-      case MK_FLOAT:  MK__rawMatrixMulT(R0, C0, C1, float);   break;          \
-      case MK_DOUBLE: MK__rawMatrixMulT(R0, C0, C1, double);  break;          \
-      case MK_INT32:  MK__rawMatrixMulT(R0, C0, C1, int32_t); break;          \
-      case MK_INT64:  MK__rawMatrixMulT(R0, C0, C1, int64_t); break;          \
+     case MK_FLOAT:  MK__rMMulT(R0, C0, C1, s,   B, float);   break;          \
+     case MK_DOUBLE: MK__rMMulT(R0, C0, C1, d,   B, double); break;          \
+     case MK_INT32:  MK__rMMulT(R0, C0, C1, i32, MK__rMMulb, int32_t); break; \
+     case MK_INT64:  MK__rMMulT(R0, C0, C1, i64, MK__rMMulb, int64_t); break; \
    }
 
    /* step 3: select macro by column R (mR's column) */
-#define MK__rawMatrixMulByColR(a, b)                                          \
+#define MK__rMMulByColR(a, b)                                                 \
    switch (lay[1].count[1]) {                                                 \
-      case 4: MK__rawMatrixMulC(a, b, 4); break;                              \
-      case 3: MK__rawMatrixMulC(a, b, 3); break;                              \
-      case 2: MK__rawMatrixMulC(a, b, 2); break;                              \
+      case 4: MK__rMMulC(a, b, 4, MK__rMMulb2); break;                        \
+      case 3: MK__rMMulC(a, b, 3, MK__rMMulb);  break;                        \
+      case 2: MK__rMMulC(a, b, 2, MK__rMMulb);  break;                        \
    }
 
    /* step 2: select macro by row L (mL's row) */
-#define MK__rawMatrixMulByRowL(a)                                             \
+#define MK__rMMulByRowL(a)                                                    \
    switch (lay[0].count[0]) {                                                 \
-      case 4: MK__rawMatrixMulByColR(4, a); break;                            \
-      case 3: MK__rawMatrixMulByColR(3, a); break;                            \
-      case 2: MK__rawMatrixMulByColR(2, a); break;                            \
+      case 4: MK__rMMulByColR(4, a); break;                                   \
+      case 3: MK__rMMulByColR(3, a); break;                                   \
+      case 2: MK__rMMulByColR(2, a); break;                                   \
    }
 
    /* step 1: select macro by column L | row R */
    switch (lay[0].count[1]) {
-      case 4: MK__rawMatrixMulByRowL(4); break;
-      case 3: MK__rawMatrixMulByRowL(3); break;
-      case 2: MK__rawMatrixMulByRowL(2); break;
+      case 4: MK__rMMulByRowL(4); break;
+      case 3: MK__rMMulByRowL(3); break;
+      case 2: MK__rMMulByRowL(2); break;
    }
 
-#undef MK__rawMatrixMulC
-#undef MK__rawMatrixMulByColR
-#undef MK__rawMatrixMulByRowL
+#undef MK__rMMulb
+#undef MK__rMMulb2
+#undef MK__rMMulC
+#undef MK__rMMulByColR
+#undef MK__rMMulByRowL
 #undef MK__rawMatrixScT
 #undef MK__rawMatrixSc
 #undef MK__rawMatrixScImpl
