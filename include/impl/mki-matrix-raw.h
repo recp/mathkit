@@ -551,7 +551,7 @@ mkRawMatrixMult(void * __restrict mL,
 #  define MK__rMMulb2(R0, C0, C1, P)                                          \
     mkRawMatrixMult ## R0 ## x ## C0 ## x ## C1 ## _sse_##P(l, r, d)
 #else
-#  define MK__rmulb2(R0, C0, C1, P)                                           \
+#  define MK__rMMulb2(R0, C0, C1, P)                                          \
     MK__rMMulb(R0, C0, C1, P);
 #endif
 
@@ -572,8 +572,8 @@ mkRawMatrixMult(void * __restrict mL,
    /* step 4: select macro by type */
 #define MK__rMMulC(R0, C0, C1, B)                                             \
    switch (lay[0].type) {                                                     \
-     case MK_FLOAT:  MK__rMMulT(R0, C0, C1, s,   B, float);   break;          \
-     case MK_DOUBLE: MK__rMMulT(R0, C0, C1, d,   B, double); break;          \
+     case MK_FLOAT:  MK__rMMulT(R0, C0, C1, s,   B, float);  break;           \
+     case MK_DOUBLE: MK__rMMulT(R0, C0, C1, d,   B, double); break;           \
      case MK_INT32:  MK__rMMulT(R0, C0, C1, i32, MK__rMMulb, int32_t); break; \
      case MK_INT64:  MK__rMMulT(R0, C0, C1, i64, MK__rMMulb, int64_t); break; \
    }
