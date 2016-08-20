@@ -41,6 +41,7 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
 MK_INLINE
 void
 mkMatrixInit(MkMatrix * __restrict matrix,
+             void * __restrict value,
              const MkBufLayout layout) {
 
    matrix->count    = layout.count[0] * layout.count[1];
@@ -48,6 +49,7 @@ mkMatrixInit(MkMatrix * __restrict matrix,
    matrix->cols     = layout.count[1];
    matrix->isize    = mkItemSize(layout);
    matrix->bufindex = 0;
+   matrix->value    = value;
 }
 
 MK_INLINE
@@ -57,7 +59,7 @@ mkMatrixNew(void * __restrict value,
    MkMatrix *matrix;
 
    matrix = (MkMatrix *)malloc(sizeof(*matrix));
-   mkMatrixInit(matrix, layout);
+   mkMatrixInit(matrix, value, layout);
 
    return matrix;
 }
