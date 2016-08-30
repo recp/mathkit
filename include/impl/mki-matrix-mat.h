@@ -118,13 +118,10 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
    size_t i;                                                                  \
    size_t j;                                                                  \
    size_t iR;                                                                 \
-   int    bufindex;                                                           \
                                                                               \
-   bufindex = matrix->bufindex;                                               \
-                                                                              \
-   pL = (T *)bufs[bufindex];                                                  \
-   pD = (T *)bufs[!bufindex];                                                 \
-   pR = (T *)bufs[2];                                                         \
+   pL = (T *)matrixL->value;                                                  \
+   pR = (T *)matrixR->value;                                                  \
+   pD = (T *)dest->value;                                                     \
                                                                               \
    /* max allowed size is 4x4 for manual computation */                       \
    if (mk_builtin_expect(!lay[0].runtime                                      \
@@ -138,7 +135,7 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
       if (lay[0].runtime) {                                                   \
          rowsL = matrixL->rows;                                               \
          colsL = matrixL->cols;                                               \
-         colsR = matrix->cols;                                                \
+         colsR = matrixR->cols;                                               \
       } else {                                                                \
          rowsL = lay[0].count[0];                                             \
          colsL = lay[0].count[1];                                             \
@@ -154,20 +151,14 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
             *pD++ = tmpSum;                                                   \
          }                                                                    \
    }                                                                          \
-                                                                              \
-   matrix->bufindex = !bufindex;                                              \
-   matrix->value    = bufs[!bufindex];                                        \
-                                                                              \
-   if (bufs[bufindex] == bufs[2])                                             \
-      bufs[2] = bufs[!bufindex];                                              \
   } while (0)
 
 MK_INLINE
 void
-mkMatrixMatrixMultL(MkMatrix * __restrict matrix,
-                    MkMatrix * __restrict matrixL,
-                    void * __restrict bufs[3],
-                    const MkBufLayout lay[2]) {
+mkMatrixMatrixMul(MkMatrix * __restrict matrixL,
+                  MkMatrix * __restrict matrixR,
+                  MkMatrix * __restrict dest,
+                  const MkBufLayout lay[2]) {
    switch (lay[0].type) {
       case MK_FLOAT:  mkMatrixMatrixMultL_impl(float);   break;
       case MK_DOUBLE: mkMatrixMatrixMultL_impl(double);  break;
