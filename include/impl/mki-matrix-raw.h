@@ -421,7 +421,7 @@ extern "C" {
   } while (0)
 
 #define MK__rawMatrixSc(R0, C0, op)                                           \
-   switch (lay.type) {                                                        \
+   switch (hint.type) {                                                       \
       case MK_FLOAT:  MK__rawMatrixScT(R0, C0, op, float);   break;           \
       case MK_DOUBLE: MK__rawMatrixScT(R0, C0, op, double);  break;           \
       case MK_INT32:  MK__rawMatrixScT(R0, C0, op, int32_t); break;           \
@@ -429,21 +429,21 @@ extern "C" {
    }
 
 #define MK__rawMatrixScImpl(op)                                               \
-   switch (lay.count[1]) {                                                    \
+   switch (hint.count[1]) {                                                   \
       case 4:                                                                 \
-         switch (lay.count[1]) {                                              \
+         switch (hint.count[1]) {                                             \
             case 4: MK__rawMatrixSc(4, 4, op); break;                         \
             case 3: MK__rawMatrixSc(4, 3, op); break;                         \
             case 2: MK__rawMatrixSc(4, 2, op); break;                         \
          } break;                                                             \
       case 3:                                                                 \
-         switch (lay.count[1]) {                                              \
+         switch (hint.count[1]) {                                             \
             case 4: MK__rawMatrixSc(3, 4, op); break;                         \
             case 3: MK__rawMatrixSc(3, 3, op); break;                         \
             case 2: MK__rawMatrixSc(3, 2, op); break;                         \
          } break;                                                             \
       case 2:                                                                 \
-         switch (lay.count[1]) {                                              \
+         switch (hint.count[1]) {                                             \
             case 4: MK__rawMatrixSc(2, 4, op); break;                         \
             case 3: MK__rawMatrixSc(2, 3, op); break;                         \
             case 2: MK__rawMatrixSc(2, 2, op); break;                         \
@@ -517,7 +517,7 @@ MK_INLINE
 void
 mkRawMatrixAdd(void * __restrict m,
                void * __restrict val,
-               const MkBufLayout lay) {
+               const MkHint hint) {
   MK__rawMatrixScImpl(+=);
 }
 
@@ -525,7 +525,7 @@ MK_INLINE
 void
 mkRawMatrixSub(void * __restrict m,
                void * __restrict val,
-               const MkBufLayout lay) {
+               const MkHint hint) {
   MK__rawMatrixScImpl(-=);
 }
 
@@ -533,7 +533,7 @@ MK_INLINE
 void
 mkRawMatrixScale(void * __restrict m,
                  void * __restrict val,
-                 const MkBufLayout lay) {
+                 const MkHint hint) {
   MK__rawMatrixScImpl(*=);
 }
 
@@ -542,7 +542,7 @@ void
 mkRawMatrixMult(void * __restrict mL,
                 void * __restrict mR,
                 void * __restrict mDest,
-                const MkBufLayout lay[2]) {
+                const MkHint hint[2]) {
    /* step 5.1.1: let compiler optimise */
 #define MK__rMMulb(R0, C0, C1, P)                                             \
   mkRawMatrixMult ## R0 ## x ## C0 ## x ## C1(l, r, d)
@@ -572,7 +572,7 @@ mkRawMatrixMult(void * __restrict mL,
 
    /* step 4: select macro by type */
 #define MK__rMMulC(R0, C0, C1, B)                                             \
-   switch (lay[0].type) {                                                     \
+   switch (hint[0].type) {                                                    \
      case MK_FLOAT:  MK__rMMulT(R0, C0, C1, s,   B, float);  break;           \
      case MK_DOUBLE: MK__rMMulT(R0, C0, C1, d,   B, double); break;           \
      case MK_INT32:  MK__rMMulT(R0, C0, C1, i32, MK__rMMulb, int32_t); break; \
@@ -581,7 +581,7 @@ mkRawMatrixMult(void * __restrict mL,
 
    /* step 3: select macro by column R (mR's column) */
 #define MK__rMMulByColR(a, b)                                                 \
-   switch (lay[1].count[1]) {                                                 \
+   switch (hint[1].count[1]) {                                                \
       case 4: MK__rMMulC(a, b, 4, MK__rMMulb2); break;                        \
       case 3: MK__rMMulC(a, b, 3, MK__rMMulb);  break;                        \
       case 2: MK__rMMulC(a, b, 2, MK__rMMulb);  break;                        \
@@ -589,14 +589,14 @@ mkRawMatrixMult(void * __restrict mL,
 
    /* step 2: select macro by row L (mL's row) */
 #define MK__rMMulByRowL(a)                                                    \
-   switch (lay[0].count[0]) {                                                 \
+   switch (hint[0].count[0]) {                                                \
       case 4: MK__rMMulByColR(4, a); break;                                   \
       case 3: MK__rMMulByColR(3, a); break;                                   \
       case 2: MK__rMMulByColR(2, a); break;                                   \
    }
 
    /* step 1: select macro by column L | row R */
-   switch (lay[0].count[1]) {
+   switch (hint[0].count[1]) {
       case 4: MK__rMMulByRowL(4); break;
       case 3: MK__rMMulByRowL(3); break;
       case 2: MK__rMMulByRowL(2); break;
@@ -618,7 +618,7 @@ MK_INLINE
 void
 mkRawMatrixTranspose(void * __restrict m,
                      void * __restrict d,
-                     const MkBufLayout lay) {
+                     const MkHint hint) {
 #define MK__rawMatrixTransT(R0, C0, T)                                        \
   do {                                                                        \
     T * __restrict s;                                                         \
@@ -631,28 +631,28 @@ mkRawMatrixTranspose(void * __restrict m,
   } while (0)
 
 #define MK__rawMatrixTrans(R0, C0)                                            \
-   switch (lay.type) {                                                        \
+   switch (hint.type) {                                                       \
       case MK_FLOAT:  MK__rawMatrixTransT(R0, C0, float);   break;            \
       case MK_DOUBLE: MK__rawMatrixTransT(R0, C0, double);  break;            \
       case MK_INT32:  MK__rawMatrixTransT(R0, C0, int32_t); break;            \
       case MK_INT64:  MK__rawMatrixTransT(R0, C0, int64_t); break;            \
    }
 
-   switch (lay.count[1]) {
+   switch (hint.count[1]) {
       case 4:
-         switch (lay.count[1]) {
+         switch (hint.count[1]) {
             case 4: MK__rawMatrixTrans(4, 4); break;
             case 3: MK__rawMatrixTrans(4, 3); break;
             case 2: MK__rawMatrixTrans(4, 2); break;
          } break;
       case 3:
-         switch (lay.count[1]) {
+         switch (hint.count[1]) {
             case 4: MK__rawMatrixTrans(3, 4); break;
             case 3: MK__rawMatrixTrans(3, 3); break;
             case 2: MK__rawMatrixTrans(3, 2); break;
          } break;
       case 2:
-         switch (lay.count[1]) {
+         switch (hint.count[1]) {
             case 4: MK__rawMatrixTrans(2, 4); break;
             case 3: MK__rawMatrixTrans(2, 3); break;
             case 2: MK__rawMatrixTrans(2, 2); break;

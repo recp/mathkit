@@ -21,7 +21,7 @@ extern "C" {
 
 typedef struct MkMatrix {
    void        *value;
-   MkBufLayout *layout;
+   MkHint      *hint;
    size_t       rows;
    size_t       cols;
    size_t       isize;
@@ -39,12 +39,12 @@ MK_INLINE
 void
 mkMatrixInit(MkMatrix * __restrict matrix,
              void * __restrict value,
-             const MkBufLayout layout) {
+             const MkHint hint) {
 
-   matrix->count    = layout.count[0] * layout.count[1];
-   matrix->rows     = layout.count[0];
-   matrix->cols     = layout.count[1];
-   matrix->isize    = mkItemSize(layout);
+   matrix->count    = hint.count[0] * hint.count[1];
+   matrix->rows     = hint.count[0];
+   matrix->cols     = hint.count[1];
+   matrix->isize    = mkItemSize(hint);
    matrix->bufindex = 0;
    matrix->value    = value;
 }
@@ -52,11 +52,11 @@ mkMatrixInit(MkMatrix * __restrict matrix,
 MK_INLINE
 MkMatrix *
 mkMatrixNew(void * __restrict value,
-            const MkBufLayout layout) {
+            const MkHint hint) {
    MkMatrix *matrix;
 
    matrix = (MkMatrix *)malloc(sizeof(*matrix));
-   mkMatrixInit(matrix, value, layout);
+   mkMatrixInit(matrix, value, hint);
 
    return matrix;
 }
@@ -65,51 +65,51 @@ MK_INLINE
 void
 mkMatrixScale(MkMatrix * __restrict matrix,
               void * __restrict other,
-              const MkBufLayout layout);
+              const MkHint hint);
 
 MK_INLINE
 void
 mkMatrixAdd(MkMatrix * __restrict matrix,
             void * __restrict other,
-            const MkBufLayout layout);
+            const MkHint hint);
 
 MK_INLINE
 void
 mkMatrixSub(MkMatrix * __restrict matrix,
             void * __restrict other,
-            const MkBufLayout layout);
+            const MkHint hint);
 
 MK_INLINE
 void
 mkMatrixDiv(MkMatrix * __restrict matrix,
             void * __restrict other,
-            const MkBufLayout layout);
+            const MkHint hint);
 
 MK_INLINE
 void
 mkMatrixTranspose(MkMatrix * __restrict matrix,
                   void * __restrict bufs[2],
-                  const MkBufLayout lay);
+                  const MkHint hint);
 
 MK_INLINE
 void
 mkMatrixTransposeTo(MkMatrix * __restrict matrix,
                     void * __restrict dest,
-                    const MkBufLayout lay);
+                    const MkHint hint);
 
 MK_INLINE
 void
 mkMatrixMatrixMul(MkMatrix * __restrict matrixL,
                   MkMatrix * __restrict matrixR,
                   MkMatrix * __restrict dest,
-                  const MkBufLayout lay[2]);
+                  const MkHint hint[2]);
 
 MK_INLINE
 void
 mkMatrixMatrixMulN(MkMatrix * __restrict matrices[],
                    MkMatrix * __restrict dest,
                    size_t len,
-                   const MkBufLayout lay[]);
+                   const MkHint hint[]);
 
 #include "impl/mki-matrix-sc.h"
 #include "impl/mki-matrix-mat.h"

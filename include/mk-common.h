@@ -63,20 +63,20 @@ typedef enum MkItemType {
    MK_INT64
 } MkItemType;
 
-typedef struct MkBufLayout {
+typedef struct MkHint {
    MkItemType type;
    size_t     count[2];
    bool       runtime;
    bool       columnMajor;
-} MkBufLayout;
+} MkHint;
 
-#define MK_DEF_LAYOUT(MK__TYPE, MK__M, MK__N, MK__RT)                         \
-  (MkBufLayout){MK__TYPE, MK__M, MK__N, MK__RT}
+#define MK_HINT(MK__TYPE, MK__M, MK__N, MK__RT)                         \
+  (MkHint){MK__TYPE, MK__M, MK__N, MK__RT}
 
 MK_INLINE
 size_t
-mkItemSize(const MkBufLayout layout) {
-   switch (layout.type) {
+mkItemSize(const MkHint hint) {
+   switch (hint.type) {
       case MK_FLOAT:  return sizeof(float);   break;
       case MK_DOUBLE: return sizeof(double);  break;
       case MK_INT32:  return sizeof(int32_t); break;

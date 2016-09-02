@@ -30,9 +30,9 @@ extern "C" {
      size_t colMaxOff;                                                        \
      int    bufindex;                                                         \
                                                                               \
-     if (!lay.runtime) {                                                      \
-       m = lay.count[0];                                                      \
-       n = lay.count[1];                                                      \
+     if (!hint.runtime) {                                                     \
+       m = hint.count[0];                                                     \
+       n = hint.count[1];                                                     \
      } else {                                                                 \
        m = matrix->rows;                                                      \
        n = matrix->cols;                                                      \
@@ -61,9 +61,9 @@ extern "C" {
      size_t m;                                                                \
      size_t colMaxOff;                                                        \
                                                                               \
-     if (!lay.runtime) {                                                      \
-       m = lay.count[0];                                                      \
-       n = lay.count[1];                                                      \
+     if (!hint.runtime) {                                                     \
+       m = hint.count[0];                                                     \
+       n = hint.count[1];                                                     \
      } else {                                                                 \
        m = matrix->rows;                                                      \
        n = matrix->cols;                                                      \
@@ -82,8 +82,8 @@ MK_INLINE
 void
 mkMatrixTranspose(MkMatrix * __restrict matrix,
                   void * __restrict bufs[2],
-                  const MkBufLayout lay) {
-   switch (lay.type) {
+                  const MkHint hint) {
+   switch (hint.type) {
       case MK_FLOAT:  MK__MAT_TMPL_TRANSPOSE(float)   break;
       case MK_DOUBLE: MK__MAT_TMPL_TRANSPOSE(double)  break;
       case MK_INT32:  MK__MAT_TMPL_TRANSPOSE(int32_t) break;
@@ -95,17 +95,14 @@ MK_INLINE
 void
 mkMatrixTransposeTo(MkMatrix * __restrict matrix,
                     void * __restrict dest,
-                    const MkBufLayout lay) {
-   switch (lay.type) {
+                    const MkHint hint) {
+   switch (hint.type) {
       case MK_FLOAT:  MK__MAT_TMPL_TRANSPOSE_TO(float)   break;
       case MK_DOUBLE: MK__MAT_TMPL_TRANSPOSE_TO(double)  break;
       case MK_INT32:  MK__MAT_TMPL_TRANSPOSE_TO(int32_t) break;
       case MK_INT64:  MK__MAT_TMPL_TRANSPOSE_TO(int64_t) break;
    }
 }
-
-#define mk_mmultl(MK__M, MK__ML, MK__BUFS, MK__LAY)                           \
-   mkMatrixMatrixMultL(MK__M, MK__ML, MK__BUFS, MK__LAY)
 
 #define mkMatrixMatrixMultL_impl(T)                                           \
   do {                                                                        \
@@ -125,22 +122,22 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
    pD = (T *)dest->value;                                                     \
                                                                               \
    /* max allowed size is 4x4 for manual computation */                       \
-   if (mk_builtin_expect(!lay[0].runtime                                      \
-                         && lay[0].count[0] < 5                               \
-                         && lay[0].count[1] < 5                               \
-                         && lay[1].count[0] < 5                               \
-                         && lay[1].count[1] < 5, 1)) {                        \
+   if (mk_builtin_expect(!hint[0].runtime                                     \
+                         && hint[0].count[0] < 5                              \
+                         && hint[0].count[1] < 5                              \
+                         && hint[1].count[0] < 5                              \
+                         && hint[1].count[1] < 5, 1)) {                       \
                                                                               \
-      mkRawMatrixMult(pL, pR, pD, lay);                                       \
+      mkRawMatrixMult(pL, pR, pD, hint);                                      \
    } else {                                                                   \
-      if (lay[0].runtime) {                                                   \
+      if (hint[0].runtime) {                                                  \
          rowsL = matrixL->rows;                                               \
          colsL = matrixL->cols;                                               \
          colsR = matrixR->cols;                                               \
       } else {                                                                \
-         rowsL = lay[0].count[0];                                             \
-         colsL = lay[0].count[1];                                             \
-         colsR = lay[0].count[1];                                             \
+         rowsL = hint[0].count[0];                                            \
+         colsL = hint[0].count[1];                                            \
+         colsR = hint[0].count[1];                                            \
       }                                                                       \
                                                                               \
       for (i = 0; i < rowsL; i++)                                             \
@@ -175,12 +172,12 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
 	     pD = bufs[bufidx];                                                     \
                                                                               \
 	     /* max allowed size is 4x4 for manual computation */                   \
-	     if (mk_builtin_expect(!lay[0].runtime                                  \
-	                           && lay[0].count[0] < 5                           \
-	                           && lay[0].count[1] < 5                           \
-	                           && lay[1].count[0] < 5                           \
-	                           && lay[1].count[1] < 5, 1)) {                    \
-	        mkRawMatrixMult(pL, pR, pD, lay);                                   \
+	     if (mk_builtin_expect(!hint[0].runtime                                 \
+	                           && hint[0].count[0] < 5                          \
+	                           && hint[0].count[1] < 5                          \
+	                           && hint[1].count[0] < 5                          \
+	                           && hint[1].count[1] < 5, 1)) {                   \
+	        mkRawMatrixMult(pL, pR, pD, hint);                                  \
 	     } else {                                                               \
 	        float  tmpSum;                                                      \
 	        size_t rowsL;                                                       \
@@ -190,14 +187,14 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
 	        size_t j;                                                           \
 	        size_t iR;                                                          \
                                                                               \
-	        if (lay[0].runtime) {                                               \
+	        if (hint[0].runtime) {                                              \
 	           rowsL = matrixL->rows;                                           \
 	           colsL = matrixL->cols;                                           \
 	           colsR = matrixR->cols;                                           \
 	        } else {                                                            \
-	           rowsL = lay[0].count[0];                                         \
-	           colsL = lay[0].count[1];                                         \
-	           colsR = lay[0].count[1];                                         \
+	           rowsL = hint[0].count[0];                                        \
+	           colsL = hint[0].count[1];                                        \
+	           colsR = hint[0].count[1];                                        \
 	        }                                                                   \
                                                                               \
 	        for (i = 0; i < rowsL; i++)                                         \
@@ -223,8 +220,8 @@ void
 mkMatrixMatrixMul(MkMatrix * __restrict matrixL,
                   MkMatrix * __restrict matrixR,
                   MkMatrix * __restrict dest,
-                  const MkBufLayout lay[2]) {
-   switch (lay[0].type) {
+                  const MkHint hint[2]) {
+   switch (hint[0].type) {
       case MK_FLOAT:  mkMatrixMatrixMultL_impl(float);   break;
       case MK_DOUBLE: mkMatrixMatrixMultL_impl(double);  break;
       case MK_INT32:  mkMatrixMatrixMultL_impl(int32_t); break;
@@ -236,15 +233,15 @@ MK_INLINE
 void
 mkMatrixMatrixMulN(MkMatrix * __restrict matrices[],
                    MkMatrix * __restrict dest,
-                   size_t                len,
-                   const MkBufLayout     lay[]) {
+                   size_t len,
+                   const MkHint hint[]) {
    MkMatrix *matrixL;
    MkMatrix *matrixR;
    int       bufidx;
 
    bufidx = 0;
 
-   switch (lay[0].type) {
+   switch (hint[0].type) {
       case MK_FLOAT:  mkMatrixMatrixMulN_impl(float);   break;
       case MK_DOUBLE: mkMatrixMatrixMulN_impl(double);  break;
       case MK_INT32:  mkMatrixMatrixMulN_impl(int32_t); break;

@@ -26,7 +26,7 @@ extern "C" {
                                                                               \
      otherVal    = *(MK__TYPE *)other;                                        \
      itemPos     = (MK__TYPE *)matrix->value;                                 \
-     itemPos_end = itemPos + layout.count[0] * layout.count[1];               \
+     itemPos_end = itemPos + hint.count[0] * hint.count[1];                   \
                                                                               \
      do {                                                                     \
         *itemPos++ MK__OP##= otherVal;                                        \
@@ -41,8 +41,8 @@ MK_INLINE
 void
 mkMatrixScale(MkMatrix * __restrict matrix,
               void * __restrict other,
-              const MkBufLayout layout) {
-   switch (layout.type) {
+              const MkHint hint) {
+   switch (hint.type) {
       case MK_FLOAT:  MK__MAT_TMPL_SCALAR(*, float)
       case MK_DOUBLE: MK__MAT_TMPL_SCALAR(*, double)
       case MK_INT32:  MK__MAT_TMPL_SCALAR(*, int32_t)
@@ -55,8 +55,8 @@ MK_INLINE
 void
 mkMatrixAdd(MkMatrix * __restrict matrix,
             void * __restrict other,
-            const MkBufLayout layout) {
-   switch (layout.type) {
+            const MkHint hint) {
+   switch (hint.type) {
       case MK_FLOAT:  MK__MAT_TMPL_SCALAR(+, float)
       case MK_DOUBLE: MK__MAT_TMPL_SCALAR(+, double)
       case MK_INT32:  MK__MAT_TMPL_SCALAR(+, int32_t)
@@ -69,8 +69,8 @@ MK_INLINE
 void
 mkMatrixSub(MkMatrix * __restrict matrix,
             void * __restrict other,
-            const MkBufLayout layout) {
-   switch (layout.type) {
+            const MkHint hint) {
+   switch (hint.type) {
       case MK_FLOAT:  MK__MAT_TMPL_SCALAR(-, float)
       case MK_DOUBLE: MK__MAT_TMPL_SCALAR(-, double)
       case MK_INT32:  MK__MAT_TMPL_SCALAR(-, int32_t)
@@ -83,8 +83,8 @@ MK_INLINE
 void
 mkMatrixDiv(MkMatrix * __restrict matrix,
             void * __restrict other,
-            const MkBufLayout layout) {
-   switch (layout.type) {
+            const MkHint hint) {
+   switch (hint.type) {
       case MK_FLOAT:  MK__MAT_TMPL_SCALAR(/, float)
       case MK_DOUBLE: MK__MAT_TMPL_SCALAR(/, double)
       case MK_INT32:  MK__MAT_TMPL_SCALAR(/, int32_t)
