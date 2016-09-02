@@ -13,7 +13,7 @@ AM_CFLAGS = -Wall \
             -O3 \
             -Wstrict-aliasing=2 \
             -fstrict-aliasing \
-            -Wpedantic \
+            -pedantic \
             -Weffc++ \
             -Wno-overlength-strings
 
@@ -23,6 +23,7 @@ libmk_la_LDFLAGS = -no-undefined -version-info 0:1:0
 include_HEADERS = include/mk.h \
                   include/mk-common.h \
                   include/mk-matrix.h \
+                  include/mk-mem.h \
                   include/mk-vector.h \
                   include/impl/mk-intrin.h \
                   include/impl/mk-intrin-sse.h \
