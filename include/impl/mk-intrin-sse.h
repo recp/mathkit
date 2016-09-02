@@ -13,7 +13,7 @@
 
 /* float */
 #define _mm_madd_ps(L, R0, R1)                                                \
-   _mm_add_ps(_mm_mul_ps(_mm_set1_ps(*L), R0),                                \
+   _mm_add_ps(_mm_mul_ps(_mm_set1_ps(*(L)), R0),                              \
               _mm_mul_ps(_mm_set1_ps(*(L + 1)), R1))
 
 #define _mm_madd4_ps(L, R0, R1, R2, R3)                                       \
@@ -26,7 +26,7 @@
 
 /* double */
 #define _mm_madd_pd(L, R0, R1)                                                \
-   _mm_add_pd(_mm_mul_pd(_mm_set1_pd(*L), R0),                                \
+   _mm_add_pd(_mm_mul_pd(_mm_set1_pd(*(L)), R0),                              \
               _mm_mul_pd(_mm_set1_pd(*(L + 1)), R1))
 
 #define _mm_madd4_pd(L, R0, R1, R2, R3)                                       \
