@@ -29,9 +29,6 @@ typedef struct MkMatrix {
    int          bufindex;
 } MkMatrix;
 
-#include "impl/mki-matrix-sc.h"
-#include "impl/mki-matrix-mat.h"
-
 MK_EXPORT
 void
 mkMatrixPrint(MkMatrix * __restrict matrix,
@@ -70,7 +67,6 @@ mkMatrixScale(MkMatrix * __restrict matrix,
               void * __restrict other,
               const MkBufLayout layout);
 
-
 MK_INLINE
 void
 mkMatrixAdd(MkMatrix * __restrict matrix,
@@ -88,6 +84,35 @@ void
 mkMatrixDiv(MkMatrix * __restrict matrix,
             void * __restrict other,
             const MkBufLayout layout);
+
+MK_INLINE
+void
+mkMatrixTranspose(MkMatrix * __restrict matrix,
+                  void * __restrict bufs[2],
+                  const MkBufLayout lay);
+
+MK_INLINE
+void
+mkMatrixTransposeTo(MkMatrix * __restrict matrix,
+                    void * __restrict dest,
+                    const MkBufLayout lay);
+
+MK_INLINE
+void
+mkMatrixMatrixMul(MkMatrix * __restrict matrixL,
+                  MkMatrix * __restrict matrixR,
+                  MkMatrix * __restrict dest,
+                  const MkBufLayout lay[2]);
+
+MK_INLINE
+void
+mkMatrixMatrixMulN(MkMatrix * __restrict matrices[],
+                   MkMatrix * __restrict dest,
+                   size_t len,
+                   const MkBufLayout lay[]);
+
+#include "impl/mki-matrix-sc.h"
+#include "impl/mki-matrix-mat.h"
 
 #ifdef __cplusplus
 }
