@@ -15,8 +15,7 @@ AM_CFLAGS = -Wall \
             -fstrict-aliasing \
             -Wpedantic \
             -Weffc++ \
-            -Wno-overlength-strings \
-            -Wno-static-in-inline
+            -Wno-overlength-strings
 
 lib_LTLIBRARIES = libmk.la
 libmk_la_LDFLAGS = -no-undefined -version-info 0:1:0
