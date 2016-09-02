@@ -17,6 +17,7 @@ extern "C" {
 #include <stdio.h>
 
 #include "mk-common.h"
+#include "mk-mem.h"
 #include "mk-vector.h"
 #include "mk-matrix.h"
 

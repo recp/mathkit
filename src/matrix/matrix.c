@@ -8,8 +8,6 @@
 #include "../../include/mk.h"
 #include "../../include/mk-matrix.h"
 
-#include "../mk__mem.h"
-
 #include <assert.h>
 #include <string.h>
 
