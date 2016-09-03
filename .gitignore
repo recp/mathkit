@@ -47,3 +47,4 @@ COPYING
 .idea/*
 *.VC.db
 cscope.*
+!mathkit.vcxproj
