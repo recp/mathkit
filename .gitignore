@@ -46,3 +46,4 @@ stamp*
 COPYING
 .idea/*
 *.VC.db
+cscope.*
