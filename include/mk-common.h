@@ -24,12 +24,16 @@
 #  define MK_PRAGMA_UNROLL(n)
 #  define MK_INLINE __forceinline  
 #  define mk_builtin_expect(exp, c) exp
+#  define mkVLANew(T, S) T *tmp = malloc(S)
+#  define mkVLAFree(V) free(V)
 #else
 #  define MK_EXPORT      __attribute__((visibility("default")))
 #  define _mathkit_hide __attribute__((visibility("hidden")))
 #  define MK_PRAGMA_UNROLL_4 _Pragma("unroll(4)")
 #  define MK_INLINE static inline __attribute((always_inline))
 #  define mk_builtin_expect(exp, c) __builtin_expect(exp, c)
+#  define mkVLANew(T, S) T tmp[S]
+#  define mkVLAFree(V)
 #endif
 
 #define MK_ARRAY_LEN(ARR) sizeof(ARR) / sizeof(ARR[0]);

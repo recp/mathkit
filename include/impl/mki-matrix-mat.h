@@ -157,7 +157,7 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
 	  float *pR;                                                                \
 	  float *pD;                                                                \
 	  float *bufs[2];                                                           \
-	  float  tmp[matrices[0]->rows * matrices[len - 1]->cols];                  \
+	  mkVLANew(float, matrices[0]->rows * matrices[len - 1]->cols);             \
                                                                               \
 	  bufs[0] = dest->value;                                                    \
 	  bufs[1] = tmp;                                                            \
@@ -213,6 +213,8 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
                                                                               \
 	  if (!bufidx)                                                              \
 	     mk__memcpy(dest->value, pR, sizeof(tmp));                              \
+                                                                              \
+    mkVLAFree(tmp);                                                           \
   } while (0)
 
 MK_INLINE
