@@ -1,0 +1,13 @@
+platform:
+  - x86
+  - x64
+  - Any CPU
+
+configuration:
+  - Debug
+  - Release
+
+build:
+  parallel: true
+  project: mathkit.vcxproj
+  verbosity: detailed
