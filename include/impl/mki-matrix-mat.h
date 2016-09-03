@@ -104,7 +104,7 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
    }
 }
 
-#define mkMatrixMatrixMultL_impl(T)                                           \
+#define mkMatrixMatrixMul_impl(T)                                             \
   do {                                                                        \
    T     *pL;                                                                 \
    T     *pR;                                                                 \
@@ -153,22 +153,22 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
 
 #define mkMatrixMatrixMulN_impl(T)                                            \
   do {                                                                        \
-	  float *pL;                                                                \
-	  float *pR;                                                                \
-	  float *pD;                                                                \
-	  float *bufs[2];                                                           \
-	  mkVLANew(float, matrices[0]->rows * matrices[len - 1]->cols);             \
+	  T *pL;                                                                    \
+	  T *pR;                                                                    \
+	  T *pD;                                                                    \
+	  T *bufs[2];                                                               \
+	  mkVLANew(T, matrices[0]->rows * matrices[len - 1]->cols);                 \
                                                                               \
-	  bufs[0] = dest->value;                                                    \
+	  bufs[0] = (T *)dest->value;                                               \
 	  bufs[1] = tmp;                                                            \
                                                                               \
 	  matrixR = matrices[--len];                                                \
-	  pR = (float *)matrixR->value;                                             \
+	  pR = (T *)matrixR->value;                                                 \
                                                                               \
 	  do {                                                                      \
 	     matrixL = matrices[--len];                                             \
                                                                               \
-	     pL = (float *)matrixL->value;                                          \
+	     pL = (T *)matrixL->value;                                              \
 	     pD = bufs[bufidx];                                                     \
                                                                               \
 	     /* max allowed size is 4x4 for manual computation */                   \
@@ -179,7 +179,7 @@ mkMatrixTransposeTo(MkMatrix * __restrict matrix,
 	                           && hint[1].count[1] < 5, 1)) {                   \
 	        mkRawMatrixMult(pL, pR, pD, hint);                                  \
 	     } else {                                                               \
-	        float  tmpSum;                                                      \
+	        T  tmpSum;                                                          \
 	        size_t rowsL;                                                       \
 	        size_t colsR;                                                       \
 	        size_t colsL;                                                       \
@@ -224,10 +224,10 @@ mkMatrixMatrixMul(MkMatrix * __restrict matrixL,
                   MkMatrix * __restrict dest,
                   const MkHint hint[2]) {
    switch (hint[0].type) {
-      case MK_FLOAT:  mkMatrixMatrixMultL_impl(float);   break;
-      case MK_DOUBLE: mkMatrixMatrixMultL_impl(double);  break;
-      case MK_INT32:  mkMatrixMatrixMultL_impl(int32_t); break;
-      case MK_INT64:  mkMatrixMatrixMultL_impl(int64_t); break;
+      case MK_FLOAT:  mkMatrixMatrixMul_impl(float);   break;
+      case MK_DOUBLE: mkMatrixMatrixMul_impl(double);  break;
+      case MK_INT32:  mkMatrixMatrixMul_impl(int32_t); break;
+      case MK_INT64:  mkMatrixMatrixMul_impl(int64_t); break;
    }
 }
 
