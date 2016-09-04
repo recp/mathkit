@@ -98,5 +98,10 @@ $ msbuild mathkit.vcxproj /p:Configuration=Release
     - [ ] Large matrix optimisations (SSE, AVX)
 - [ ] Col Major Matrices
 - [ ] Vectors
+    - [ ] Basic struct
+    - [ ] Normalize, Cross, Dot products
+- [ ] GL Math
+    - [ ] basic funcs(lookAt, translate, rotate...) 
 - [ ] Matrix - Vectors
 - [ ] Tests, Benchmarks
+- [ ] Documentation
