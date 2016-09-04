@@ -8,6 +8,10 @@
 #ifndef mk_common_h
 #define mk_common_h
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* since C99 or compiler ext */
 #include <stdbool.h>
 #include <stdint.h>
@@ -89,4 +93,7 @@ mkItemSize(const MkHint hint) {
    }
 }
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* mk_common_h */

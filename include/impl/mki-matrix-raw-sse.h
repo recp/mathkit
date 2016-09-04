@@ -8,6 +8,10 @@
 #ifndef mk_matrix_impl_mat_raw_sse_h
 #define mk_matrix_impl_mat_raw_sse_h
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "mk-intrin-sse.h"
 
 #define mkRawMatrixMult4x4x4_sse_s(L, R, D)                                   \
@@ -351,5 +355,9 @@
       _mm_store_pd(D + 2, _mm_madd_pd(L,     r0, r1));                        \
       _mm_store_pd(D + 6, _mm_madd_pd(L + 4, r0, r1));                        \
    } while (0)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* mk_matrix_impl_mat_raw_sse_h */

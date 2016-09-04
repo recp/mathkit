@@ -8,6 +8,10 @@
 #ifndef mk_intrin_sse_h
 #define mk_intrin_sse_h
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <xmmintrin.h>
 #include <emmintrin.h>
 
@@ -36,5 +40,9 @@
 #define _mm_madd3_pd(L, R0, R1, R2)                                           \
   _mm_add_pd(_mm_madd_pd(L, R0, R1),                                          \
              _mm_mul_pd(_mm_set1_pd(*(L + 2)), R2))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* mk_intrin_sse_h */

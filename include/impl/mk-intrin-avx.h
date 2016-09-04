@@ -7,6 +7,9 @@
 
 #ifndef mk_intrin_avx_h
 #define mk_intrin_avx_h
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <immintrin.h>
 
@@ -50,4 +53,7 @@
                                                                               \
    } while (0)
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* mk_intrin_avx_h */
