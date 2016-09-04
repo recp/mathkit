@@ -53,6 +53,44 @@ mkVectorNew(void * __restrict value,
    return vec;
 }
 
+#define mkVectorDot_impl(T)                                                   \
+  do {                                                                        \
+    T *pA;                                                                    \
+    T *pB;                                                                    \
+                                                                              \
+    pA = (T *)a->value;                                                       \
+    pB = (T *)b->value;                                                       \
+                                                                              \
+    if (!hint.runtime)                                                        \
+       count = hint.count[0];                                                 \
+    else                                                                      \
+       count = a->count;                                                      \
+                                                                              \
+    for (i = 0; i < count; i++)                                               \
+       dot += pA[i] * pB[i];                                                  \
+  } while (0)
+
+MK_INLINE
+double
+mkVectorDot(MkVector * __restrict a,
+            MkVector * __restrict b,
+            const MkHint hint) {
+   size_t count;
+   size_t i;
+   double dot;
+
+   dot = 0.0;
+
+   switch (hint.type) {
+      case MK_FLOAT:  mkVectorDot_impl(float);   break;
+      case MK_DOUBLE: mkVectorDot_impl(double);  break;
+      case MK_INT32:  mkVectorDot_impl(int32_t); break;
+      case MK_INT64:  mkVectorDot_impl(int64_t); break;
+   }
+
+   return dot;
+}
+
 #ifdef __cplusplus
 }
 #endif
