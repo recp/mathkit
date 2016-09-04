@@ -17,19 +17,35 @@ extern "C" {
 #include <stdio.h>
 
 #include "mk-common.h"
-#include "mk-vector.h"
-
-typedef enum MkVecFlags {
-  MK_VEC_FLAGS_COLUMN = 0,
-  MK_VEC_FLAGS_ROW    = 1
-} MkVecFlags;
 
 typedef struct MkVector {
-  size_t     itemSize;
-  size_t     itemCount;
-  char      *value;
-  MkVecFlags flags;
+  void   *value;
+  size_t  isize;
+  size_t  count;
+  bool    columnv;
 } MkVector;
+
+MK_INLINE
+void
+mkVectorInit(MkVector * __restrict vec,
+             void * __restrict value,
+             const MkHint hint) {
+   vec->count = hint.count[0];
+   vec->isize = mkItemSize(hint);
+   vec->value = value;
+}
+
+MK_INLINE
+MkVector *
+mkVectorNew(void * __restrict value,
+            const MkHint hint) {
+   MkVector *vec;
+
+   vec = (MkVector *)malloc(sizeof(*vec));
+   mkVectorInit(vec, value, hint);
+
+   return vec;
+}
 
 #ifdef __cplusplus
 }
