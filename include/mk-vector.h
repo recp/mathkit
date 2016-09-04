@@ -25,6 +25,12 @@ typedef struct MkVector {
   bool    columnv;
 } MkVector;
 
+MK_EXPORT
+void
+mkVectorPrint(MkVector * __restrict vec,
+              MkPrintFn itemPrinter,
+              FILE * __restrict ostream);
+
 MK_INLINE
 void
 mkVectorInit(MkVector * __restrict vec,
