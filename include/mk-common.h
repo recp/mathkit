@@ -78,8 +78,8 @@ typedef struct MkHint {
    bool       columnMajor;
 } MkHint;
 
-#define MK_HINT(MK__TYPE, MK__M, MK__N, MK__RT)                         \
-  (MkHint){MK__TYPE, MK__M, MK__N, MK__RT}
+#define MK_HINT(MK__TYPE, MK__M, MK__N, MK__RT)                               \
+  (MkHint){MK__TYPE, {MK__M, MK__N}, MK__RT, false}
 
 MK_INLINE
 size_t

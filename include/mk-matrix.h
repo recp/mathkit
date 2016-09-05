@@ -21,7 +21,6 @@ extern "C" {
 
 typedef struct MkMatrix {
    void        *value;
-   MkHint      *hint;
    size_t       rows;
    size_t       cols;
    size_t       isize;
