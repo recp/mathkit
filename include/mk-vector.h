@@ -201,6 +201,59 @@ mkVectorNormalize(MkVector * __restrict a,
    }
 }
 
+#define mkVectorVectorSc_impl(T, op)                                          \
+  do {                                                                        \
+    T *pA;                                                                    \
+    T *pB;                                                                    \
+    T *pD;                                                                    \
+                                                                              \
+    pA = (T *)a->value;                                                       \
+    pB = (T *)b->value;                                                       \
+    pD = (T *)dest->value;                                                    \
+                                                                              \
+    if (!hint.runtime)                                                        \
+       count = hint.count[0];                                                 \
+    else                                                                      \
+       count = a->count;                                                      \
+                                                                              \
+    for (i = 0; i < count; i++)                                               \
+       pD[i] = pA[i] op pB[i];                                                \
+  } while (0)
+
+MK_INLINE
+void
+mkVectorVectorSub(MkVector * __restrict a,
+                  MkVector * __restrict b,
+                  MkVector * __restrict dest,
+                  const MkHint hint) {
+   size_t count;
+   size_t i;
+
+   switch (hint.type) {
+      case MK_FLOAT:  mkVectorVectorSc_impl(float,   -); break;
+      case MK_DOUBLE: mkVectorVectorSc_impl(double,  -); break;
+      case MK_INT32:  mkVectorVectorSc_impl(int32_t, -); break;
+      case MK_INT64:  mkVectorVectorSc_impl(int64_t, -); break;
+   }
+}
+
+MK_INLINE
+void
+mkVectorVectorAdd(MkVector * __restrict a,
+                  MkVector * __restrict b,
+                  MkVector * __restrict dest,
+                  const MkHint hint) {
+   size_t count;
+   size_t i;
+
+   switch (hint.type) {
+      case MK_FLOAT:  mkVectorVectorSc_impl(float,   +); break;
+      case MK_DOUBLE: mkVectorVectorSc_impl(double,  +); break;
+      case MK_INT32:  mkVectorVectorSc_impl(int32_t, +); break;
+      case MK_INT64:  mkVectorVectorSc_impl(int64_t, +); break;
+   }
+}
+
 #ifdef __cplusplus
 }
 #endif
