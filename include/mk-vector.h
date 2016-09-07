@@ -91,6 +91,36 @@ mkVectorDot(MkVector * __restrict a,
    return dot;
 }
 
+#define mkVectorCross_impl(T)                                                 \
+  do {                                                                        \
+   T *pA;                                                                     \
+   T *pB;                                                                     \
+   T *pD;                                                                     \
+                                                                              \
+   pA = (T *)a->value;                                                        \
+   pB = (T *)b->value;                                                        \
+   pD = (T *)dest->value;                                                     \
+                                                                              \
+   /* (u2.v3 - u3.v2, u3.v1 - u1.v3, u1.v2 - u2.v1) */                        \
+   pD[0] = pA[1] * pB[2] - pA[2] * pB[1];                                     \
+   pD[1] = pA[2] * pB[0] - pA[0] * pB[2];                                     \
+   pD[2] = pA[0] * pB[1] - pA[1] * pB[0];                                     \
+  } while (0)
+
+MK_INLINE
+void
+mkVectorCross(MkVector * __restrict a,
+              MkVector * __restrict b,
+              MkVector * __restrict dest,
+              const MkHint hint) {
+   switch (hint.type) {
+      case MK_FLOAT:  mkVectorCross_impl(float);   break;
+      case MK_DOUBLE: mkVectorCross_impl(double);  break;
+      case MK_INT32:  mkVectorCross_impl(int32_t); break;
+      case MK_INT64:  mkVectorCross_impl(int64_t); break;
+   }
+}
+
 #ifdef __cplusplus
 }
 #endif
