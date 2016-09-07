@@ -15,6 +15,7 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "mk-common.h"
 
@@ -119,6 +120,49 @@ mkVectorCross(MkVector * __restrict a,
       case MK_INT32:  mkVectorCross_impl(int32_t); break;
       case MK_INT64:  mkVectorCross_impl(int64_t); break;
    }
+}
+
+#define mkVectorNorm_impl(T)                                                  \
+  do {                                                                        \
+    T *pA;                                                                    \
+                                                                              \
+    pA = (T *)a->value;                                                       \
+                                                                              \
+    if (!hint.runtime)                                                        \
+      count = hint.count[0];                                                  \
+    else                                                                      \
+      count = a->count;                                                       \
+                                                                              \
+    for (i = 0; i < count; i++)                                               \
+      norm += pA[i] * pA[i];                                                  \
+  } while (0)
+
+/* Euclidean norm */
+MK_INLINE
+double
+mkVectorNorm(MkVector * __restrict a,
+             const MkHint hint) {
+   size_t count;
+   size_t i;
+   double norm;
+
+   norm = 0.0;
+
+   switch (hint.type) {
+      case MK_FLOAT:  mkVectorNorm_impl(float);   break;
+      case MK_DOUBLE: mkVectorNorm_impl(double);  break;
+      case MK_INT32:  mkVectorNorm_impl(int32_t); break;
+      case MK_INT64:  mkVectorNorm_impl(int64_t); break;
+   }
+
+   return sqrt(norm);
+}
+
+MK_INLINE
+double
+mkVectorMagnitude(MkVector * __restrict a,
+                  const MkHint hint) {
+   return mkVectorNorm(a, hint);
 }
 
 #ifdef __cplusplus
