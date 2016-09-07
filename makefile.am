@@ -25,6 +25,7 @@ include_HEADERS = include/mk.h \
                   include/mk-matrix.h \
                   include/mk-mem.h \
                   include/mk-vector.h \
+                  include/mk-glm.h \
                   include/impl/mk-intrin.h \
                   include/impl/mk-intrin-sse.h \
                   include/impl/mk-intrin-avx.h \
@@ -36,4 +37,5 @@ libmk_la_SOURCES=\
     src/mathkit.c \
     src/mk_static.c \
     src/vector/mk_vector.c \
-    src/matrix/matrix.c
+    src/matrix/matrix.c \
+    src/glm/mk_glm.c

@@ -30,9 +30,9 @@
     <ClInclude Include="include\mk-matrix.h" />
     <ClInclude Include="include\mk-mem.h" />
     <ClInclude Include="include\mk-vector.h" />
+    <ClInclude Include="include\mk-glm.h" />
     <ClInclude Include="include\mk.h" />
     <ClInclude Include="src\config.h" />
-    <ClInclude Include="src\mk__mem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.c" />
@@ -40,6 +40,7 @@
     <ClCompile Include="src\matrix\matrix.c" />
     <ClCompile Include="src\mk_static.c" />
     <ClCompile Include="src\vector\mk_vector.c" />
+    <ClCompile Include="src\glm\mk_glm.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3AC168DE-277C-4D2A-90CE-C0F253799A2D}</ProjectGuid>
