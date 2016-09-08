@@ -26,7 +26,7 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
   rows     = matrix->rows;
   cols     = matrix->cols;
   pos      = matrix->value;
-  itemSize = matrix->isize;
+  itemSize = mkItemSizeT(matrix->itemType);
 
   fprintf(ostream, "Matrix (%zux%zu):\n", rows, cols);
 

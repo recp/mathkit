@@ -15,6 +15,7 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "mk-common.h"
 #include "mk-vector.h"
@@ -40,12 +41,13 @@ extern "C" {
                                0l, 0l, 0l, 1l}
 
 typedef struct MkMatrix {
-   void        *value;
-   size_t       rows;
-   size_t       cols;
-   size_t       isize;
-   size_t       count;
-   int          bufindex;
+   void      *value;
+   size_t     rows;
+   size_t     cols;
+   int32_t    index;
+   MkItemType itemType;
+   bool       columnMajor;
+   int    bufindex;
 } MkMatrix;
 
 MK_EXPORT
@@ -68,17 +70,17 @@ MK_INLINE
 void
 mkMatrixInit(MkMatrix * __restrict matrix,
              void * __restrict value,
-             bool isIdentity,
+             bool fillIdentity,
              const MkHint hint) {
+   matrix->rows        = hint.count[0];
+   matrix->cols        = hint.count[1];
+   matrix->bufindex    = 0;
+   matrix->value       = value;
+#ifndef MK_COLUMN_MAJOR_LAYOUT
+   matrix->columnMajor = false;
+#endif
 
-   matrix->count    = hint.count[0] * hint.count[1];
-   matrix->rows     = hint.count[0];
-   matrix->cols     = hint.count[1];
-   matrix->isize    = mkItemSize(hint);
-   matrix->bufindex = 0;
-   matrix->value    = value;
-
-   if (isIdentity)
+   if (fillIdentity)
       mkMatrixFillIdentity(matrix, hint);
 }
 

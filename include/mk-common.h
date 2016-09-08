@@ -93,6 +93,18 @@ mkItemSize(const MkHint hint) {
    }
 }
 
+MK_INLINE
+size_t
+mkItemSizeT(MkItemType itemType) {
+   switch (itemType) {
+      case MK_FLOAT:  return sizeof(float);   break;
+      case MK_DOUBLE: return sizeof(double);  break;
+      case MK_INT32:  return sizeof(int32_t); break;
+      case MK_INT64:  return sizeof(int64_t); break;
+      default:        return 0;               break;
+   }
+}
+
 #ifdef __cplusplus
 }
 #endif

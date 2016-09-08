@@ -20,10 +20,10 @@ extern "C" {
 #include "mk-common.h"
 
 typedef struct MkVector {
-  void   *value;
-  size_t  isize;
-  size_t  count;
-  bool    columnv;
+  void      *value;
+  MkItemType itemType;
+  size_t     count;
+  bool       columnv;
 } MkVector;
 
 MK_EXPORT
@@ -37,9 +37,9 @@ void
 mkVectorInit(MkVector * __restrict vec,
              void * __restrict value,
              const MkHint hint) {
-   vec->count = hint.count[0];
-   vec->isize = mkItemSize(hint);
-   vec->value = value;
+   vec->count    = hint.count[0];
+   vec->itemType = hint.type;
+   vec->value    = value;
 }
 
 MK_INLINE

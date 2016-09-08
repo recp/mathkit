@@ -20,7 +20,7 @@ mkVectorPrint(MkVector * __restrict vec,
    size_t i;
 
    len      = vec->count;
-   itemSize = vec->isize;
+   itemSize = mkItemSizeT(vec->itemType);
    pos      = vec->value;
 
    fprintf(ostream, "Vector (%zu):\n", len);
