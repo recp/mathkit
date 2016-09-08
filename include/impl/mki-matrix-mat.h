@@ -251,6 +251,96 @@ mkMatrixMatrixMulN(MkMatrix * __restrict matrices[],
    }
 }
 
+#define mkMatrixFillIdentity_impl(T)                                          \
+  do {                                                                        \
+    T     *val;                                                               \
+    size_t cols;                                                              \
+    size_t rows;                                                              \
+    int    i;                                                                 \
+    int    j;                                                                 \
+                                                                              \
+    if (!hint.runtime) {                                                      \
+      rows = hint.count[0];                                                   \
+      cols = hint.count[1];                                                   \
+    } else {                                                                  \
+      rows = matrix->rows;                                                    \
+      cols = matrix->cols;                                                    \
+    }                                                                         \
+                                                                              \
+    val = matrix->value;                                                      \
+    for (i = 0; i < rows; i++)                                                \
+      for (j = 0; j < cols; j++)                                              \
+        val[i * rows + j] = i == j;                                           \
+  } while (0)
+
+MK_INLINE
+void
+mkMatrixFillIdentity(MkMatrix * __restrict matrix,
+                     const MkHint hint) {
+   switch (hint.type) {
+      case MK_FLOAT:  mkMatrixFillIdentity_impl(float);   break;
+      case MK_DOUBLE: mkMatrixFillIdentity_impl(double);  break;
+      case MK_INT32:  mkMatrixFillIdentity_impl(int32_t); break;
+      case MK_INT64:  mkMatrixFillIdentity_impl(int64_t); break;
+   }
+}
+
+#define mkMatrixIsIdentity_impl(T)                                            \
+  do {                                                                        \
+    T *pVal;                                                                  \
+    T  tVal;                                                                  \
+    size_t i;                                                                 \
+    size_t j;                                                                 \
+    size_t cols;                                                              \
+    size_t rows;                                                              \
+                                                                              \
+    pVal = (T *)matrix->value;                                                \
+                                                                              \
+    if (!hint.runtime) {                                                      \
+      rows = hint.count[0];                                                   \
+      cols = hint.count[1];                                                   \
+    } else {                                                                  \
+      rows = matrix->rows;                                                    \
+      cols = matrix->cols;                                                    \
+    }                                                                         \
+                                                                              \
+    for (i = 0; i < rows; i++) {                                              \
+      for (j = 0; j < cols; j++) {                                            \
+         tVal = pVal[i * rows + j];                                           \
+         if (i != j) {                                                        \
+            if (tVal != 0)                                                    \
+               goto ret;                                                      \
+                                                                              \
+            continue;                                                         \
+         }                                                                    \
+                                                                              \
+         if (tVal != 1)                                                       \
+            goto ret;                                                         \
+      }                                                                       \
+    }                                                                         \
+  } while (0)
+
+MK_INLINE
+bool
+mkMatrixIsIdentity(MkMatrix * matrix,
+                   const MkHint hint) {
+   bool isIdentity;
+
+   isIdentity = false;
+
+   switch (hint.type) {
+      case MK_FLOAT:  mkMatrixIsIdentity_impl(float);   break;
+      case MK_DOUBLE: mkMatrixIsIdentity_impl(double);  break;
+      case MK_INT32:  mkMatrixIsIdentity_impl(int32_t); break;
+      case MK_INT64:  mkMatrixIsIdentity_impl(int64_t); break;
+   }
+
+   isIdentity = true;
+
+ret:
+   return isIdentity;
+}
+
 #ifdef __cplusplus
 }
 #endif

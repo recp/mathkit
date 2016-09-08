@@ -56,8 +56,19 @@ mkMatrixPrint(MkMatrix * __restrict matrix,
 
 MK_INLINE
 void
+mkMatrixFillIdentity(MkMatrix * __restrict matrix,
+                     const MkHint hint);
+
+MK_INLINE
+bool
+mkMatrixIsIdentity(MkMatrix * matrix,
+                   const MkHint hint);
+
+MK_INLINE
+void
 mkMatrixInit(MkMatrix * __restrict matrix,
              void * __restrict value,
+             bool isIdentity,
              const MkHint hint) {
 
    matrix->count    = hint.count[0] * hint.count[1];
@@ -66,16 +77,20 @@ mkMatrixInit(MkMatrix * __restrict matrix,
    matrix->isize    = mkItemSize(hint);
    matrix->bufindex = 0;
    matrix->value    = value;
+
+   if (isIdentity)
+      mkMatrixFillIdentity(matrix, hint);
 }
 
 MK_INLINE
 MkMatrix *
 mkMatrixNew(void * __restrict value,
+            bool isIdentity,
             const MkHint hint) {
    MkMatrix *matrix;
 
    matrix = (MkMatrix *)malloc(sizeof(*matrix));
-   mkMatrixInit(matrix, value, hint);
+   mkMatrixInit(matrix, value, isIdentity, hint);
 
    return matrix;
 }
