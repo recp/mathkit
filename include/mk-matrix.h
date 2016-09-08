@@ -19,6 +19,26 @@ extern "C" {
 #include "mk-common.h"
 #include "mk-vector.h"
 
+#define MK_INIT_IDENTITY_4x4F {1.0f, 0.0f, 0.0f, 0.0f,                        \
+                               0.0f, 1.0f, 0.0f, 0.0f,                        \
+                               0.0f, 0.0f, 1.0f, 0.0f,                        \
+                               0.0f, 0.0f, 0.0f, 1.0f}
+
+#define MK_INIT_IDENTITY_4x4D {1.0, 0.0, 0.0, 0.0,                            \
+                               0.0, 1.0, 0.0, 0.0,                            \
+                               0.0, 0.0, 1.0, 0.0,                            \
+                               0.0, 0.0, 0.0, 1.0}
+
+#define MK_INIT_IDENTITY_4x4I {1, 0, 0, 0,                                    \
+                               0, 1, 0, 0,                                    \
+                               0, 0, 1, 0,                                    \
+                               0, 0, 0, 1}
+
+#define MK_INIT_IDENTITY_4x4L {1l, 0l, 0l, 0l,                                \
+                               0l, 1l, 0l, 0l,                                \
+                               0l, 0l, 1l, 0l,                                \
+                               0l, 0l, 0l, 1l}
+
 typedef struct MkMatrix {
    void        *value;
    size_t       rows;
